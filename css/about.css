@@ -1,68 +1,128 @@
 .about {
     padding: 100px 20px;
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
-    text-align: center;
 }
 
 .about h2 {
     font-size: 3rem;
+    text-align: center;
     color: var(--primary-color);
-    margin-bottom: 1rem;
+    margin-bottom: 3rem;
 }
 
 .about .name {
-    font-size: 1.25rem;
+    text-align: center;
+    font-size: 1.5rem;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 2rem;
-    opacity: 0.7;
-}
-
-.about p {
-    font-size: 1.15rem;
-    line-height: 1.8;
-    margin-bottom: 4rem;
-    color: var(--text-color);
-    opacity: 0.9;
-}
-
-.skills {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
-}
-
-.skill-card {
-    background: var(--card-bg);
-    border: 1px solid var(--glass-border);
-    padding: 2.5rem 1.5rem;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-}
-
-.skill-card:hover {
-    transform: translateY(-10px);
-    background: var(--secondary-color);
-    border-color: var(--primary-color);
-}
-
-.skill-icon {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
-    display: block;
-}
-
-.skill-card h3 {
-    font-size: 1.25rem;
     margin-bottom: 1rem;
     color: var(--primary-color);
 }
 
-.skill-card p {
-    font-size: 0.95rem;
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 3rem;
+}
+
+.about-section-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--glass-border);
+    padding-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Education & Experience Items */
+.cv-item {
+    margin-bottom: 2rem;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--primary-color);
+    position: relative;
+}
+
+.cv-item::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    background: var(--primary-color);
+    border-radius: 50%;
+}
+
+.cv-item h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+}
+
+.cv-item .date {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.cv-item .institution {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* Skills Grid */
+.skills-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.skill-category {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    transition: transform 0.3s ease;
+}
+
+.skill-category:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+}
+
+.skill-category h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.skill-category ul {
+    list-style: none;
+    padding: 0;
     margin: 0;
-    opacity: 0.7;
+}
+
+.skill-category li {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.skill-category li::before {
+    content: '→';
+    color: var(--primary-color);
+}
+
+@media (max-width: 992px) {
+    .about-content {
+        grid-template-columns: 1fr;
+    }
 }
