@@ -1,86 +1,96 @@
 :root {
-    /* Tema por defecto (claro) */
-    --primary-color: #04c5ff;
-    --secondary-color: #000000bb;
+    /* Tema Amber (Default) */
+    --primary-color: #fbbf24;
+    --secondary-color: rgba(20, 20, 20, 0.8);
     --background-color: #000000;
-    --text-color: #ebebeb;
-    --accent-color: #444; /* Un color de acento para detalles */
-    --hoverbtn-color: #0088aa8e;
+    --text-color: #f8fafc;
+    --accent-color: #451a03;
+    --hoverbtn-color: #d97706;
+    --card-bg: rgba(30, 30, 30, 0.5);
+    --glass-border: rgba(251, 191, 36, 0.1);
+    --btn-text: #000;
 }
 
-/* Tema oscuro */
-.dark-theme {
-    --primary-color: #c50101; /* FERRARIIIII */
-    --secondary-color: #0000009c;
-    --background-color: #1d0000;
-    --text-color: #ffffffd5;
-    --accent-color: #770000a9;
-    --hoverbtn-color: #ffe600c5;
-
+.sunset-theme {
+    --primary-color: #fbbf24;
+    --secondary-color: rgba(20, 20, 20, 0.8);
+    --background-color: #000000;
+    --text-color: #f8fafc;
+    --accent-color: #451a03;
+    --hoverbtn-color: #d97706;
+    --card-bg: rgba(30, 30, 30, 0.5);
+    --glass-border: rgba(251, 191, 36, 0.1);
+    --btn-text: #000;
 }
 
-/* Tema azul */
-.blue-theme {
-    --primary-color: #00f7ff;
-    --secondary-color: #07495aa8; 
-    --background-color: #0d1117; 
+.midnight-theme {
+    --primary-color: #38bdf8;
+    --secondary-color: rgba(15, 23, 42, 0.8);
+    --background-color: #0f172a;
+    --text-color: #f1f5f9;
+    --accent-color: #1e293b;
+    --hoverbtn-color: #0ea5e9;
+    --card-bg: rgba(30, 41, 59, 0.5);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --btn-text: #fff;
+}
+
+.nord-theme {
+    --primary-color: #88c0d0;
+    --secondary-color: rgba(46, 52, 64, 0.8);
+    --background-color: #2e3440;
+    --text-color: #eceff4;
+    --accent-color: #3b4252;
+    --hoverbtn-color: #81a1c1;
+    --card-bg: rgba(59, 66, 82, 0.5);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --btn-text: #2e3440;
+}
+
+.emerald-theme {
+    --primary-color: #10b981;
+    --secondary-color: rgba(6, 78, 59, 0.8);
+    --background-color: #022c22;
+    --text-color: #ecfdf5;
+    --accent-color: #064e3b;
+    --hoverbtn-color: #059669;
+    --card-bg: rgba(6, 78, 59, 0.4);
+    --glass-border: rgba(16, 185, 129, 0.1);
+    --btn-text: #fff;
+}
+
+.amethyst-theme {
+    --primary-color: #a855f7;
+    --secondary-color: rgba(88, 28, 135, 0.8);
+    --background-color: #2e1065;
+    --text-color: #faf5ff;
+    --accent-color: #4c1d95;
+    --hoverbtn-color: #9333ea;
+    --card-bg: rgba(76, 29, 149, 0.4);
+    --glass-border: rgba(168, 85, 247, 0.1);
+    --btn-text: #fff;
+}
+
+.crimson-theme {
+    --primary-color: #ef4444;
+    --secondary-color: rgba(127, 29, 29, 0.8);
+    --background-color: #450a0a;
+    --text-color: #fef2f2;
+    --accent-color: #7f1d1d;
+    --hoverbtn-color: #dc2626;
+    --card-bg: rgba(127, 29, 29, 0.4);
+    --glass-border: rgba(239, 68, 68, 0.1);
+    --btn-text: #fff;
+}
+
+.ghost-theme {
+    --primary-color: #ffffff;
+    --secondary-color: rgba(255, 255, 255, 0.1);
+    --background-color: #000000;
     --text-color: #ffffff;
-    --accent-color: #1a61a3a9;
-    --hoverbtn-color: #33a4ac;
-
-}
-
-/* Tema verde */
-.green-theme {
-    --primary-color: #28a745; /* Verde brillante */
-    --secondary-color: #1313139f; /* Gris muy oscuro */
-    --background-color: #000000;
-    --text-color: #f8f9fa; /* Blanco hueso */
-    --accent-color: #01b487; /* Un verde azulado para detalles */
-    --hoverbtn-color: #8fdb00;
-
-}
-
-/* Tema morado */
-.purple-theme {
-    --primary-color: #9d68ff; /* Morado intenso */
-    --secondary-color: #970cce81; /* Gris muy oscuro */
-    --background-color: #140044;
-    --text-color: #f2f2f2; /* Gris claro */
-    --accent-color: #a388d1; /* Un tono más claro de morado */
-    --hoverbtn-color: #9600aa;
-
-}
-
-/* Tema naranja */
-.orange-theme {
-    --primary-color: #fd7e14; /* Naranja vivo */
-    --secondary-color: #5a3300de; /* Gris muy oscuro */
-    --background-color: #000;
-    --text-color: #f8f9fa; /* Blanco hueso */
-    --accent-color: #92929285; /* Un gris muy claro */
-    --hoverbtn-color: #fc5000;
-
-}
-
-/* Tema rosa */
-.pink-theme {
-    --primary-color: #e83e8c; /* Rosa fuerte */
-    --secondary-color: #1e1e1e96; /* Gris muy oscuro */
-    --background-color: #000;
-    --text-color: #f2f2f2; /* Gris claro */
-    --accent-color: #d778e46b; /* Un amarillo mostaza */
-    --hoverbtn-color: #aa0055;
-
-}
-
-/* Tema gris */
-.gray-theme {
-    --primary-color: #000000; /* Ngro como el diaulo */
-    --secondary-color: #0000009c; /* Casi igual pero trasparencia */
-    --background-color: #fffefe; /* Blanco */
-    --text-color: #ffffff79; /* Gris medio */
-    --accent-color: #ff660071; /* what? */
-    --hoverbtn-color: #a78e0080;
-
+    --accent-color: #333333;
+    --hoverbtn-color: #cccccc;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --btn-text: #000;
 }

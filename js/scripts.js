@@ -26,33 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
     setLanguage(currentLang);
 
 
-    function alternateName() {
-        const title = document.getElementById('title');
-        const originalSpanishName = title.dataset.es;
-        const originalEnglishName = title.dataset.en;
-        const englishNickname = "I'm Zprit3";
-        const spanishNickname = "Soy Zprit3";
-    
-        title.style.transition = 'opacity 0.5s ease-in-out'; // Agregar transición CSS
-        title.style.opacity = 0;
-    
-        setTimeout(() => { // Usar setTimeout para simular el requestAnimationFrame
-            if (title.textContent === originalSpanishName) {
-                title.textContent = spanishNickname;
-            } else if (title.textContent === originalEnglishName) {
-                title.textContent = englishNickname;
-            } else if (title.textContent === englishNickname) {
-                title.textContent = originalEnglishName;
-            } else if (title.textContent === spanishNickname) {
-                title.textContent = originalSpanishName;
-            }
-    
-            title.style.opacity = 1;
-        }, 500); // Pequeño retraso para que la opacidad 0 sea visible
-    }
-    
-    setInterval(alternateName, 5000);
-
 });
 
 window.addEventListener('scroll', () => {

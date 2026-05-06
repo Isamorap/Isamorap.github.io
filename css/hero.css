@@ -1,36 +1,39 @@
-
 .hero {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     overflow: hidden;
-    height: 80vh;
+    height: 100vh;
     text-align: center;
-    margin-top: 80px;
-    scroll-margin-top: 150px
-
+    padding: 0 20px;
 }
 
 .hero-content {
     position: relative;
     z-index: 1;
+    max-width: 800px;
 }
 
 .hero-content h1 {
-    font-family: "Tourney", serif;    
-    font-size: 6em;
+    font-size: 6rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(to right, var(--primary-color), #fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease forwards;
-    transition: opacity 0.7s ease, transform 0.7s ease;
-    text-shadow: 0 0 10px var(--primary-color), 0 0 15px var(--primary-color), 0 0 200px var(--primary-color);
+    transform: translateY(30px);
+    animation: fadeInUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .hero-content p {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: var(--text-color);
     opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease 0.5s forwards;
+    transform: translateY(30px);
+    animation: fadeInUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
 }
 
 @keyframes fadeInUp {
@@ -47,9 +50,15 @@
     width: 100%;
     height: 100%;
     z-index: -1;
-    opacity: 0.7;
+    opacity: 0.5;
 }
 
-#hero-canvas > div:nth-child(2) {
-    display: none;
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 3.5rem;
+    }
+    
+    .hero-content p {
+        font-size: 1.1rem;
+    }
 }

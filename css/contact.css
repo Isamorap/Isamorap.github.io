@@ -1,135 +1,125 @@
-
-/* Estilos para la sección Contact */
 .contact {
-    text-align: center;
-    padding: 50px 20px;
-    background-color: var(--secondary-color);
-    border-radius: 10px;
-    margin: 150px auto;
+    padding: 100px 20px;
     max-width: 1200px;
-    scroll-margin-top: 150px
-
-
+    margin: 0 auto;
 }
 
 .contact h2 {
-    font-size: 2.5em;
+    font-size: 3rem;
+    text-align: center;
     color: var(--primary-color);
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
 }
 
 .contact p {
-    font-size: 1.1em;
-    line-height: 1.6;
-    max-width: 800px;
-    margin: 0 auto 40px;
-    color: #ccc; 
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 4rem;
+    opacity: 0.8;
 }
 
 .contact-container {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 40px;
-    max-width: 1000px;
-    margin: 0 auto;
+    justify-content: center;
+    align-items: stretch;
+    gap: 4rem;
 }
 
 .contact-form {
     flex: 1;
-    max-width: 600px;
-    text-align: left;
+    max-width: 500px;
+    background: var(--card-bg);
+    padding: 3rem;
+    border-radius: 30px;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(5px);
 }
 
 .form-group {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 2rem;
 }
 
 .form-group input,
 .form-group textarea {
     width: 100%;
-    padding: 10px;
-    background: var(--secondary-color);
-    border: 1px solid var(--accent-color);
-    border-radius: 5px;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
     color: var(--text-color);
-    font-size: 1em;
-    transition: border-color 0.3s;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
+
 .form-group input:focus,
 .form-group textarea:focus {
+    background: rgba(255, 255, 255, 0.1);
     border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 10px var(--primary-color); /* Color con valor hardcodeado */
 }
 
 .form-group label {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    color: #888; /* Este color se mantiene sin variable */
-    font-size: 1em;
-    transition: all 0.3s;
+    top: 1rem;
+    left: 1rem;
+    color: var(--text-color);
+    opacity: 0.5;
     pointer-events: none;
+    transition: all 0.3s ease;
 }
 
 .form-group input:focus + label,
 .form-group input:not(:placeholder-shown) + label,
 .form-group textarea:focus + label,
 .form-group textarea:not(:placeholder-shown) + label {
-    top: -10px;
-    left: 5px;
-    font-size: 0.8em;
+    top: -0.7rem;
+    left: 0.8rem;
+    font-size: 0.8rem;
+    opacity: 1;
     color: var(--primary-color);
-}
-
-.contact-form button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background: var(--primary-color);
-    color: var(--text-color);
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.contact-form button:hover {
-    background: var(--hoverbtn-color);
+    background: var(--background-color);
+    padding: 0 0.5rem;
 }
 
 .social-links {
-    flex: 1;
-    max-width: 300px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 1.5rem;
+    justify-content: center;
 }
 
 .social-link {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px;
-    background: var(--secondary-color);
-    border-radius: 5px;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
     text-decoration: none;
     color: var(--text-color);
-    transition: background 0.3s;
+    transition: all 0.3s ease;
+    min-width: 250px;
 }
 
 .social-link:hover {
+    transform: translateX(10px);
+    border-color: var(--primary-color);
     background: var(--accent-color);
 }
 
-.social-link img {
-    width: 24px;
-    height: 24px;
-}
-
-.social-link span {
-    font-size: 1em;
+@media (max-width: 768px) {
+    .contact-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .contact-form {
+        width: 100%;
+    }
+    
+    .social-links {
+        width: 100%;
+    }
 }
