@@ -1,17 +1,18 @@
-:root {
-    /* Tema Amber (Default) */
-    --primary-color: #fbbf24;
-    --secondary-color: rgba(20, 20, 20, 0.8);
-    --background-color: #000000;
-    --text-color: #f8fafc;
-    --accent-color: #451a03;
-    --hoverbtn-color: #d97706;
-    --card-bg: rgba(30, 30, 30, 0.5);
-    --glass-border: rgba(251, 191, 36, 0.1);
-    --btn-text: #000;
+:root, .cyan-theme {
+    /* Tema Deep Space Cyan (Default) */
+    --primary-color: #22d3ee;
+    --secondary-color: rgba(8, 15, 30, 0.85);
+    --background-color: #02060f;
+    --text-color: #ffffff;
+    --accent-color: #083344;
+    --hoverbtn-color: #06b6d4;
+    --card-bg: rgba(15, 40, 60, 0.6);
+    --glass-border: rgba(34, 211, 238, 0.2);
+    --btn-text: #02060f;
 }
 
 .sunset-theme {
+    /* Sunset Amber — kept as alternate option */
     --primary-color: #fbbf24;
     --secondary-color: rgba(20, 20, 20, 0.8);
     --background-color: #000000;
@@ -89,8 +90,8 @@
     --background-color: #000000;
     --text-color: #ffffff;
     --accent-color: #333333;
-    --hoverbtn-color: #cccccc;
-    --card-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.2);
+    --hoverbtn-color: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.3);
     --btn-text: #000;
 }

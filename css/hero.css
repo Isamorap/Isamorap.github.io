@@ -15,52 +15,38 @@
     max-width: 800px;
 }
 
-/* Glitch Effect Styles */
+/* Zero-gravity floating title */
 .hero-content h1 {
     font-size: 6rem;
     margin-bottom: 1.5rem;
     color: var(--text-color);
     position: relative;
     display: inline-block;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeInUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards, float 6s ease-in-out infinite;
-    cursor: pointer;
+    cursor: default;
+    opacity: 1; /* Keep it visible once animations start */
+    transform: translateY(0) scale(1);
+    animation:
+        heroEntrance 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+        zeroGravityFloat 8s ease-in-out 1.2s infinite;
+    transform-origin: center center;
+    will-change: transform, opacity;
+    /* Glow matching theme */
+    text-shadow: 0 0 40px var(--glass-border);
+    letter-spacing: -0.02em;
 }
 
-.hero-content h1::before,
-.hero-content h1::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    display: none;
+/* Hover: gravity pulse — expands and snaps back */
+.hero-content h1:hover {
+    opacity: 1; /* Explicitly ensure visibility */
+    animation:
+        gravityPulse 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+        zeroGravityFloat 8s ease-in-out 0.7s infinite;
 }
 
-.hero-content h1:hover::before,
-.hero-content h1:hover::after {
-    display: block;
-}
-
-.hero-content h1:hover::before {
-    left: 2px;
-    text-shadow: -2px 0 #ff00c1;
-    clip: rect(44px, 450px, 56px, 0);
-    animation: glitch-anim 5s infinite linear alternate-reverse;
-}
-
-.hero-content h1:hover::after {
-    left: -2px;
-    text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
-    animation: glitch-anim2 1s infinite linear alternate-reverse;
-}
-
+/* Scramble dud chars */
 .hero-content h1 .dud {
     color: var(--primary-color);
-    opacity: 0.5;
+    opacity: 0.6;
 }
 
 .hero-content p {
@@ -68,40 +54,89 @@
     line-height: 1.6;
     margin-bottom: 2rem;
     color: var(--text-color);
-    opacity: 0.8;
-    transform: translateY(30px);
-    animation: fadeInUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: heroEntrance 1s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
 }
 
-@keyframes fadeInUp {
+/* ── Buttons ── */
+.buttons {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: heroEntrance 1s cubic-bezier(0.22, 1, 0.36, 1) 0.7s forwards;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn {
+    padding: 0.9rem 2.2rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    letter-spacing: 0.05em;
+}
+
+.btn.primary {
+    background: var(--primary-color);
+    color: var(--btn-text);
+}
+
+.btn.primary:hover {
+    background: var(--hoverbtn-color);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(34, 211, 238, 0.3);
+}
+
+.btn.secondary {
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--glass-border);
+}
+
+.btn.secondary:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+/* ── Keyframes ── */
+
+/* Entry animation: slides up and fades in */
+@keyframes heroEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+/* Zero-gravity: subtle slow float with slight scale breathe */
+@keyframes zeroGravityFloat {
+    0%   { transform: translateY(0px)   scale(1);     }
+    20%  { transform: translateY(-14px) scale(1.02);  }
+    40%  { transform: translateY(-8px)  scale(1.01);  }
+    60%  { transform: translateY(-18px) scale(1.025); }
+    80%  { transform: translateY(-6px)  scale(1.01);  }
+    100% { transform: translateY(0px)   scale(1);     }
 }
 
-@keyframes glitch-anim {
-    0% { clip: rect(31px, 9999px, 94px, 0); }
-    4.1% { clip: rect(91px, 9999px, 43px, 0); }
-    8.3% { clip: rect(65px, 9999px, 59px, 0); }
-    12.5% { clip: rect(48px, 9999px, 29px, 0); }
-    16.6% { clip: rect(38px, 9999px, 91px, 0); }
-    20.8% { clip: rect(54px, 9999px, 78px, 0); }
-    25% { clip: rect(82px, 9999px, 35px, 0); }
-    /* ... and so on, I'll keep it simple for now */
-    100% { clip: rect(67px, 9999px, 12px, 0); }
+/* Gravity pulse on hover: grows big then snaps to normal like pulled by gravity */
+@keyframes gravityPulse {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.12) translateY(-12px); }
+    55%  { transform: scale(1.18) translateY(-16px); }
+    75%  { transform: scale(0.96) translateY(4px);  }
+    90%  { transform: scale(1.03) translateY(-2px); }
+    100% { transform: scale(1)   translateY(0);     }
 }
 
-@keyframes glitch-anim2 {
-    0% { clip: rect(44px, 9999px, 56px, 0); }
-    100% { clip: rect(10px, 9999px, 80px, 0); }
-}
-
+/* ── Background canvas ── */
 #hero-canvas {
     position: fixed;
     top: 0;
@@ -112,11 +147,12 @@
     opacity: 0.5;
 }
 
+/* ── Responsive ── */
 @media (max-width: 768px) {
     .hero-content h1 {
         font-size: 3.5rem;
     }
-    
+
     .hero-content p {
         font-size: 1.1rem;
     }

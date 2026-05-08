@@ -25,27 +25,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
     setLanguage(currentLang);
 
-    // Scramble Text Effect
+    // ── Cosmic Scramble Text Effect ──
     class TextScramble {
         constructor(el) {
             this.el = el;
-            this.chars = '!<>-_\\/[]{}—=+*^?#________';
+            this.chars = '·∙•°★☆✦✧∗⊹⋆ ░▒▓';
             this.update = this.update.bind(this);
+            this.isAnimating = false;
         }
         setText(newText) {
-            const oldText = this.el.innerText;
+            // Use the data-text attribute as the "real" base to avoid scrambling duds
+            const oldText = this.el.getAttribute('data-text') || this.el.innerText;
+            this.el.setAttribute('data-text', newText);
+            
             const length = Math.max(oldText.length, newText.length);
             const promise = new Promise((resolve) => this.resolve = resolve);
             this.queue = [];
             for (let i = 0; i < length; i++) {
                 const from = oldText[i] || '';
                 const to = newText[i] || '';
-                const start = Math.floor(Math.random() * 40);
-                const end = start + Math.floor(Math.random() * 40);
+                const start = Math.floor(Math.random() * 30);
+                const end = start + Math.floor(Math.random() * 30);
                 this.queue.push({ from, to, start, end });
             }
             cancelAnimationFrame(this.frameRequest);
             this.frame = 0;
+            this.isAnimating = true;
             this.update();
             return promise;
         }
@@ -69,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             this.el.innerHTML = output;
             if (complete === this.queue.length) {
+                this.isAnimating = false;
                 this.resolve();
             } else {
                 this.frameRequest = requestAnimationFrame(this.update);
@@ -83,11 +89,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const titleEl = document.getElementById('title');
     const fx = new TextScramble(titleEl);
 
+    // Initial run
+    setTimeout(() => {
+        const targetText = titleEl.getAttribute(`data-${currentLang}`) || titleEl.getAttribute('data-en');
+        fx.setText(targetText);
+    }, 1000);
+
+    // Hover trigger
     titleEl.addEventListener('mouseenter', () => {
-        fx.setText(titleEl.getAttribute('data-en'));
+        if (!fx.isAnimating) {
+            const targetText = titleEl.getAttribute(`data-${currentLang}`) || titleEl.getAttribute('data-en');
+            fx.setText(targetText);
+        }
     });
 
 });
+
 
 window.addEventListener('scroll', () => {
     const header = document.querySelector('header');

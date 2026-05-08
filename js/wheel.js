@@ -1,6 +1,6 @@
 const logo = document.querySelector('.logo');
 const tryMeMessage = document.getElementById('try-me-message');
-const themes = ['sunset-theme', 'midnight-theme', 'nord-theme', 'emerald-theme', 'amethyst-theme', 'crimson-theme', 'ghost-theme']; // Array de temas (en themes.css)
+const themes = ['cyan-theme', 'midnight-theme', 'nord-theme', 'emerald-theme', 'amethyst-theme', 'crimson-theme', 'sunset-theme', 'ghost-theme']; // Array de temas (en themes.css)
 let currentThemeIndex = 0; // Índice del tema actual
 
 // Función para cambiar el tema
