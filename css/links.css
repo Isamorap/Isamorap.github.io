@@ -187,16 +187,25 @@ h1 .dud {
 
 @media (max-width: 768px) {
     .social-sidebar {
-        position: relative;
+        position: fixed;
         left: 0;
-        top: 0;
-        transform: none;
+        right: 0;
+        bottom: 90px; /* Más espacio para evitar overlapping y dar aire */
+        top: auto;
+        margin: 0;
         flex-direction: row;
         justify-content: center;
-        margin-top: 3rem;
+        gap: 2rem;
+        z-index: 100;
     }
     
+    .social-icon {
+        opacity: 0.5; /* Más transparente */
+        font-size: 1.2rem; /* Más pequeño */
+    }
+
     .social-icon:hover {
+        opacity: 1;
         transform: translateY(-5px);
     }
 }

@@ -6,27 +6,30 @@
     height: 100vh;
     width: 80px;
     background: transparent;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(10px);
     border-right: 1px solid var(--glass-border);
     z-index: 1000;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 2rem 0;
-    transition: all 0.4s ease;
-    overflow: visible; /* Permite que las etiquetas salgan de la barra */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
 }
 
 .sidebar:hover {
-    background: rgba(0, 0, 0, 0.4);
+    width: 240px;
+    background: rgba(0, 0, 0, 0.2);
 }
 
 /* Logo Styles */
 .logo {
-    margin-bottom: 4rem;
+    position: absolute;
+    top: 2rem;
     width: 100%;
     display: flex;
     justify-content: center;
+    z-index: 10;
 }
 
 .logo-container {
@@ -103,11 +106,14 @@
 
 /* Navigation Menu */
 .sidebar-nav {
-    flex-grow: 1;
+    position: absolute;
+    top: 50%;
+    left: 0;
     width: 100%;
+    transform: translateY(-50%);
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
 }
 
 .sidebar-nav ul {
@@ -115,9 +121,6 @@
     padding: 0;
     margin: 0;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
 }
 
 .sidebar-nav li {
@@ -142,26 +145,17 @@
 }
 
 .sidebar-nav .nav-label {
-    position: absolute;
-    left: 70px;
-    background: var(--secondary-color);
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    border: 1px solid var(--glass-border);
     font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     font-weight: 500;
     opacity: 0;
     transform: translateX(-10px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: none;
-    color: var(--primary-color);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
-.nav-link:hover .nav-label {
+.sidebar:hover .nav-label {
     opacity: 1;
-    transform: translateX(10px);
+    transform: translateX(0);
 }
 
 .sidebar-nav .nav-link:hover {
@@ -174,10 +168,13 @@
 
 /* Sidebar Footer */
 .sidebar-footer {
+    position: absolute;
+    bottom: 1rem;
     width: 100%;
     display: flex;
     justify-content: center;
     padding-bottom: 1rem;
+    z-index: 10;
 }
 
 #language-toggle {
@@ -206,41 +203,80 @@
 @media (max-width: 768px) {
     .sidebar {
         width: 100%;
-        height: 70px;
+        height: 65px;
         bottom: 0;
         top: auto;
         flex-direction: row;
         border-right: none;
         border-top: 1px solid var(--glass-border);
         padding: 0 1rem;
-        justify-content: space-around;
-        background: var(--secondary-color); /* Keep solid on mobile for readability */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(8, 15, 30, 0.4);
+        backdrop-filter: blur(15px);
+        overflow: visible;
     }
 
     .sidebar:hover {
         width: 100%;
+        background: rgba(8, 15, 30, 0.5);
     }
 
-    .logo, #try-me-message, .nav-label, .sidebar-footer {
+    .logo {
+        position: relative;
+        width: auto;
+        display: flex;
+        margin: 0;
+        transform: scale(0.65);
+        z-index: 5;
+    }
+
+    #try-me-message, .nav-label {
         display: none;
     }
 
     .sidebar-nav {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
         display: flex;
         align-items: center;
+        justify-content: center;
+        width: auto;
     }
 
     .sidebar-nav ul {
         display: flex;
-        justify-content: space-around;
+        flex-direction: row;
+        justify-content: center;
+        gap: 0.8rem;
         align-items: center;
     }
 
     .sidebar-nav .nav-link {
         padding: 0.5rem;
+        gap: 0;
+        opacity: 0.7;
     }
 
     .sidebar-nav .nav-link i {
-        font-size: 1.8rem;
+        font-size: 1.4rem;
+    }
+
+    .sidebar-footer {
+        position: static;
+        width: auto;
+        display: flex;
+        margin: 0;
+        transform: scale(0.8);
+        padding: 0;
+    }
+
+    #language-toggle {
+        min-width: 50px;
+        height: 35px;
+        font-size: 0.7rem;
     }
 }
