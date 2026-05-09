@@ -103,6 +103,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Theme Change Hint
+    const logoContainer = document.querySelector('.logo-container');
+    if (logoContainer) {
+        // Show hint after 2 seconds
+        setTimeout(() => {
+            logoContainer.classList.add('hint');
+            // Remove after 8 seconds or on first click
+            setTimeout(() => logoContainer.classList.remove('hint'), 8000);
+        }, 2000);
+
+        logoContainer.addEventListener('click', () => {
+            logoContainer.classList.remove('hint');
+        });
+    }
+
 });
 
 

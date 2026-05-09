@@ -147,11 +147,22 @@ h1 {
     transform: scale(0.98);
 }
 
-.social-icons {
-    margin-top: 3rem;
+h1 .dud {
+    color: var(--primary-color);
+    opacity: 0.6;
+}
+
+.social-sidebar {
+    position: fixed;
+    left: 40px;
+    top: 0;
+    bottom: 0;
+    height: fit-content;
+    margin: auto 0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     gap: 1.5rem;
+    z-index: 10;
 }
 
 .social-icon {
@@ -165,7 +176,29 @@ h1 {
 .social-icon:hover {
     opacity: 1;
     color: var(--primary-color);
-    transform: translateY(-3px);
+    transform: translateX(5px);
+}
+
+@media (max-width: 1024px) {
+    .social-sidebar {
+        left: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .social-sidebar {
+        position: relative;
+        left: 0;
+        top: 0;
+        transform: none;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 3rem;
+    }
+    
+    .social-icon:hover {
+        transform: translateY(-5px);
+    }
 }
 
 /* Staggered Delay for items */
@@ -175,6 +208,4 @@ h1 {
 .animate:nth-child(4) { animation-delay: 0.4s; }
 .animate:nth-child(5) { animation-delay: 0.5s; }
 .animate:nth-child(6) { animation-delay: 0.6s; }
-.animate:nth-child(7) { animation-delay: 0.7s; }
-.animate:nth-child(8) { animation-delay: 0.8s; }
 

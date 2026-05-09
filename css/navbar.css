@@ -5,21 +5,20 @@
     left: 0;
     height: 100vh;
     width: 80px;
-    background: transparent; /* Totally transparent as requested */
-    backdrop-filter: blur(10px); /* Subtle blur to keep text readable */
+    background: transparent;
+    backdrop-filter: blur(15px);
     border-right: 1px solid var(--glass-border);
     z-index: 1000;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 2rem 0;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    overflow: hidden;
+    transition: all 0.4s ease;
+    overflow: visible; /* Permite que las etiquetas salgan de la barra */
 }
 
 .sidebar:hover {
-    width: 240px;
-    background: rgba(0, 0, 0, 0.2); /* Very subtle dark overlay on hover */
+    background: rgba(0, 0, 0, 0.4);
 }
 
 /* Logo Styles */
@@ -74,20 +73,41 @@
     text-transform: uppercase;
     color: var(--primary-color);
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: all 0.3s;
     background: var(--accent-color);
-    padding: 2px 6px;
+    padding: 4px 8px;
     border-radius: 4px;
+    border: 1px solid var(--primary-color);
+    white-space: nowrap;
 }
 
-.sidebar:hover #try-me-message {
+/* Invitation animation */
+.logo-container.hint #try-me-message {
     opacity: 1;
+    animation: pulseHint 2s infinite;
+}
+
+@keyframes pulseHint {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(34, 211, 238, 0); }
+    50% { transform: scale(1.05); box-shadow: 0 0 10px rgba(34, 211, 238, 0.5); }
+}
+
+.logo-container:hover #try-me-message {
+    opacity: 1;
+    animation: none;
+}
+
+.logo-container:hover .logo-circle {
+    transform: rotate(360deg);
 }
 
 /* Navigation Menu */
 .sidebar-nav {
     flex-grow: 1;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .sidebar-nav ul {
@@ -95,6 +115,9 @@
     padding: 0;
     margin: 0;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .sidebar-nav li {
@@ -119,17 +142,26 @@
 }
 
 .sidebar-nav .nav-label {
+    position: absolute;
+    left: 70px;
+    background: var(--secondary-color);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--glass-border);
     font-family: 'Outfit', sans-serif;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 500;
     opacity: 0;
     transform: translateX(-10px);
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    color: var(--primary-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.sidebar:hover .nav-label {
+.nav-link:hover .nav-label {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(10px);
 }
 
 .sidebar-nav .nav-link:hover {
