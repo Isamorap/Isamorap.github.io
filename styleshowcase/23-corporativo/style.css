@@ -1,0 +1,346 @@
+/* ==========================================================================
+   ESTILO 23 · CORPORATIVO — la línea de base de producto
+   --------------------------------------------------------------------------
+   Modo nativo: claro. Modos implementados: light + dark (ambos en este archivo).
+
+   Identidad en tres decisiones:
+     1. PROFUNDIDAD POR SOMBRA TEÑIDA. La elevación se cuenta con una sombra
+        de dos capas teñida al azul marino, nunca negro puro. Es lo contrario
+        que Swiss (que cuenta con el grosor del filete) y que Cyberpunk
+        (que cuenta con el resplandor).
+     2. BORDE QUE SE VE. `--line-strong` sube a 3.99:1 sobre papel para que el
+        filete de un control cumplir WCAG 1.4.11. `--line-soft` sigue siendo
+        decorativo y no delimita nada accionable.
+     3. UN SOLO ACENTO CÁLIDO, EL COBRE. Y es escaso: eyebrow, botón de
+        acento, numerales del menú y anillo de foco. Nada más.
+
+   Qué NO cambia: estructura, densidad, jerarquía de acciones ni la escala
+   tipográfica. Este skin no inventa vocabulario: las familias semánticas se
+   llaman éxito / aviso / crítico / información / neutro, nunca un estado de
+   negocio. La palabra la pone el proyecto; el color, el token.
+
+   Modo oscuro: inversión medida, no rediseño. El cobre NO se aclara como
+   superficie porque el botón de acento lleva texto blanco: se oscurece a
+   --accent-700 (#b45309, 5.02:1). El primario se invierte a papel sobre
+   tinta porque el relleno marino desaparece sobre el fondo oscuro.
+
+   Este archivo solo redefine tokens dentro de [data-style="corporativo"];
+   nunca edita ../components.css. Alcance: los 4 bloques del espécimen.
+   ========================================================================== */
+
+[data-style="corporativo"] {
+  background-color: #f6f8fa;
+  color-scheme: light;
+
+  /* ---- Superficies: papel blanco sobre un gris muy frío ---- */
+  --bg-page: #f6f8fa;
+  --bg-raised: #ffffff;
+  --bg-sunken: #f4f6f8;
+  --bg-nav: rgba(255, 255, 255, 0.86);
+
+  /* ---- Texto: azul marino, cuatro pasos ---- */
+  --text-strong: #0f2432;
+  --text-body: #3a4c5b;
+  --text-soft: #64748b;
+  --text-faint: #7d93a7;
+
+  /* ---- Líneas: la suave separa, la fuerte delimita un control ---- */
+  --line-soft: #e3e9ef;
+  --line-strong: #6b8296;
+
+  /* ---- Tinta estructural: el azul marino es el color del cromo ---- */
+  --brand-ink: #00334e;
+  --brand-ink-deep: #06283a;
+  --brand-paper: #ffffff;
+
+  /* ---- Acento: cobre. El único color cálido del sistema. ---- */
+  --accent-100: #fbeedd;
+  --accent-500: #c96f2e;
+  --accent-700: #96521f;
+
+  /* ---- Apoyo y frío: superficies e información ---- */
+  --support-100: #e3efe7;
+
+  /* ---- Semánticos: los sólidos se oscurecen para admitir texto blanco ----
+     La barra lateral (.dbar) y el botón destructivo llevan texto blanco de
+     8px/800 encima del sólido. Con los sólidos de la base (#10b981, #f59e0b,
+     #ef4444) ese texto daba 2.5–3.8:1 y no llegaba a AA. Aquí cada sólido
+     está elegido para pasar 4.5:1 con blanco, y el modo oscuro reutiliza
+     los mismos: la barra se lee igual en los dos temas. */
+  --ok-bg: #d1fae5;
+  --ok-fg: #065f46;
+  --ok-solid: #047857;
+  --warn-bg: #fef3c7;
+  --warn-fg: #92400e;
+  --warn-solid: #b45309;
+  --ember-bg: #ffedd5;
+  --ember-fg: #9a3412;
+  --ember-solid: #c2410c;
+  --bad-bg: #fee2e2;
+  --bad-fg: #991b1b;
+  --bad-solid: #dc2626;
+  --info-bg: #e0f2fe;
+  --info-fg: #075985;
+  --info-solid: #0369a1;
+
+  /* ---- Forma: radios de producto, blandos pero no redondeados ---- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* ---- Profundidad: dos capas teñidas al azul marino, nunca negro ---- */
+  --shadow-1:
+    0 1px 2px rgba(6, 40, 58, 0.05),
+    0 4px 14px rgba(6, 40, 58, 0.07);
+  --shadow-2:
+    0 2px 4px rgba(6, 40, 58, 0.06),
+    0 14px 34px rgba(6, 40, 58, 0.13);
+  --shadow-3:
+    0 4px 10px rgba(6, 40, 58, 0.16),
+    0 24px 60px rgba(6, 40, 58, 0.26);
+
+  /* ---- Movimiento: funcional y calmado ---- */
+  --dur-1: 160ms;
+  --dur-2: 280ms;
+  --dur-3: 650ms;
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* ---- Puente documentado en _template/specimen.css (hardcodes de components.css) ---- */
+  --skin-on-solid: #ffffff;
+  --skin-on-dark: #ffffff;
+  --skin-on-dark-soft: #c9d7e4;
+  --skin-scrim: #0d1620cc;
+  --skin-tint: #00334e14;
+  --skin-tint-strong: #00334e24;
+  --skin-ring: #00334e00;
+  --skin-ring-dark: #ffffff00;
+  --skin-tray: #eef2f6;
+  --skin-tray-radius: 12px;
+  --skin-light-bg: #ffffff;
+  --skin-light-fg: #00334e;
+  --skin-light-bg-hover: #eef2f6;
+  --skin-inverse: #00334e;
+}
+
+  --support-500: #2f6b4f;
+  --support-700: #1e4a37;
+  --cool-100: #e0f2fe;
+
+/* ==========================================================================
+   LA FIRMA
+   ========================================================================== */
+
+/* ---- 1. Profundidad: la sombra teñida ES la jerarquía ----
+   El hover no cambia el color del botón: sube un nivel de sombra. Es la
+   diferencia con Swiss, donde el hover invierte la tinta. */
+[data-style="corporativo"] .btn-primary,
+[data-style="corporativo"] .btn-accent {
+  border-color: transparent;
+}
+[data-style="corporativo"] .btn-primary:hover,
+[data-style="corporativo"] .btn-accent:hover {
+  filter: none;
+}
+
+/* ---- 2. Inhabilitado con COLOR MEDIDO, no con opacidad ----
+   `opacity: .45` (lo que hace components.css por defecto) deja el texto en
+   ~2:1 y vuelve invisible el límite del control. Acá el texto conserva
+   4.76:1 y el filete llega al 3:1 que pide WCAG 1.4.11. Mismo criterio que
+   Swiss, resuelto acá por color en vez de por inversión. */
+[data-style="corporativo"] .btn:disabled,
+[data-style="corporativo"] .btn:disabled:hover {
+  background: var(--bg-sunken);
+  color: var(--text-soft);
+  border-color: var(--line-strong);
+  opacity: 1;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ---- 3. El acento es escaso: cobre en cuatro lugares y ni uno más ---- */
+[data-style="corporativo"] .eyebrow {
+  background: transparent;
+  color: var(--accent-700);
+  border-radius: 0;
+  border-left: 2px solid var(--accent-500);
+  padding: 0 0 0 10px;
+  margin: 0 0 var(--space-4);
+}
+[data-style="corporativo"] .menu a b { color: var(--accent-700); }
+/* El anillo de foco también es cobre: es la señal más cara de la pantalla,
+   así que tiene el color del acento y no el de la tinta. */
+[data-style="corporativo"] .btn:focus-visible,
+[data-style="corporativo"] .iconbtn:focus-visible,
+[data-style="corporativo"] .menubtn:focus-visible,
+[data-style="corporativo"] .field input:focus-visible,
+[data-style="corporativo"] .field select:focus-visible,
+[data-style="corporativo"] .ck button:focus-visible,
+[data-style="corporativo"] .swatch:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 2px;
+}
+
+/* ---- 4. Controles: filete que sí delimita ---- */
+[data-style="corporativo"] .iconbtn,
+[data-style="corporativo"] .menubtn,
+[data-style="corporativo"] .field input,
+[data-style="corporativo"] .field select,
+[data-style="corporativo"] .ck button {
+  border-color: var(--line-strong);
+}
+[data-style="corporativo"] .iconbtn:hover,
+[data-style="corporativo"] .iconbtn:active {
+  background: var(--skin-tint);
+  border-color: var(--brand-ink);
+}
+/* El hover del secundario es un plano de tinta al 8%: menos superficie que
+   un relleno y más legible que un cambio de color de texto. */
+[data-style="corporativo"] .btn-secondary:hover,
+[data-style="corporativo"] .btn-ghost:hover {
+  background: var(--skin-tint);
+}
+[data-style="corporativo"] .brand { color: var(--brand-ink); }
+
+/* ---- 5. Tarjetas: sombra 1 siempre, 2 al levantar ---- */
+[data-style="corporativo"] .kitcard,
+[data-style="corporativo"] .token-pane,
+[data-style="corporativo"] .btn-cell {
+  border-color: var(--line-soft);
+  box-shadow: var(--shadow-1);
+}
+[data-style="corporativo"] .swatch:hover,
+[data-style="corporativo"] .dcard:hover {
+  box-shadow: var(--shadow-2);
+}
+
+
+/* ==========================================================================
+   MODO OSCURO — inversión medida
+   --------------------------------------------------------------------------
+   La firma (sombra teñida, borde visible, un acento) NO depende del color,
+   así que el modo oscuro es inversión pura con DOS ajustes medidos:
+     · el cobre de superficie (#c96f2e) no admite texto blanco (3.62:1), así
+       que --accent-700 baja a #b45309 (5.02:1);
+     · el primario se invierte a papel sobre tinta: el marino de la base
+       desaparece sobre el fondo oscuro.
+   ========================================================================== */
+[data-theme="dark"][data-style="corporativo"] {
+  background-color: #0d1620;
+  color-scheme: dark;
+
+  --bg-page: #0d1620;
+  --bg-raised: #13202c;
+  --bg-sunken: #0a1219;
+  --bg-nav: rgba(13, 22, 32, 0.86);
+
+  --text-strong: #eef3f7;
+  --text-body: #b9c6d2;
+  --text-soft: #8398ab;
+  --text-faint: #5b7185;
+
+  --line-soft: #1d2c3a;
+  --line-strong: #55748f;
+
+  /* En oscuro la "tinta de marca" deja de ser una superficie y pasa a ser el
+     color de los rótulos y flechas sobre blanco (ver .btn-light). */
+  --brand-ink: #cfe0ec;
+  --brand-ink-deep: #1a2b39;
+  --brand-paper: #0d1620;
+
+  --accent-100: #3a2415;
+  --accent-500: #d97a3c;
+  --accent-700: #b45309;
+
+  --support-100: #152b22;
+  --support-500: #4ea77c;
+  --support-700: #8fdcb6;
+  --cool-100: #0f2c3d;
+  --cool-500: #38bdf8;
+  --cool-700: #7dd3fc;
+
+  /* Los sólidos NO se aclaran: llevan texto blanco encima y ya están
+     elegidos para pasar 4.5:1 (5.48 / 5.02 / 4.83). Aclararlos bajaría el
+     texto de la barra lateral por debajo de AA. Solo cambian los -bg y -fg. */
+  --ok-bg: #0c2e24;
+  --ok-fg: #6ee7b7;
+  --warn-bg: #33230c;
+  --warn-fg: #fcd34d;
+  --ember-bg: #2e1a0e;
+  --ember-fg: #fdba74;
+  --bad-bg: #3a1414;
+  --bad-fg: #fca5a5;
+  --info-bg: #0f2c3d;
+  --info-fg: #7dd3fc;
+
+  --shadow-1:
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 4px 14px rgba(0, 0, 0, 0.32);
+  --shadow-2:
+    0 2px 6px rgba(0, 0, 0, 0.45),
+    0 16px 40px rgba(0, 0, 0, 0.45);
+  --shadow-3:
+    0 4px 12px rgba(0, 0, 0, 0.5),
+    0 28px 64px rgba(0, 0, 0, 0.55);
+
+  /* Los sólidos (#047857, #b45309, #dc2626) son profundos también en oscuro, así
+     que el texto va blanco: con la tinta oscura quedaban a 3.32:1 (Éxito),
+     3.63:1 (Aviso) y 3.77:1 (Destructivo). Sobre el fondo oscuro se usa
+     --skin-on-dark. */
+  --skin-on-solid: #ffffff;
+  --skin-on-dark: #eef3f7;
+  --skin-on-dark-soft: #9fb2c4;
+  --skin-scrim: #000000bf;
+  --skin-tint: #ffffff14;
+  --skin-tint-strong: #ffffff24;
+  --skin-ring: #d97a3c;
+  --skin-tray: #16242f;
+  --skin-light-bg: #f6f8fa;
+  --skin-light-fg: #0d1620;
+  --skin-light-bg-hover: #e8eef4;
+  --skin-inverse: #eef3f7;
+}
+
+/* El primario invertido: en un fondo oscuro un relleno marino es invisible.
+   Acá la acción principal es el único control que cambia de signo.
+   El `:not(:disabled)` es necesario: esta regla es más específica que la del
+   estado inactivo, y sin el filtro el botón deshabilitado se pintaría como un
+   primario pleno — justo lo contrario de "inhabilitado". */
+[data-theme="dark"][data-style="corporativo"] .btn-primary:not(:disabled) {
+  background: #f6f8fa;
+  color: #06283a;
+  border-color: #f6f8fa;
+}
+[data-theme="dark"][data-style="corporativo"] .btn-primary:not(:disabled):hover {
+  background: #ffffff;
+}
+/* El botón claro lleva tinta del tema, no tinta de marca: en oscuro
+   --brand-ink es claro y sobre blanco no se leería. */
+[data-theme="dark"][data-style="corporativo"] .btn-light {
+  color: #0d1620;
+}
+[data-theme="dark"][data-style="corporativo"] .eyebrow {
+  color: var(--accent-500);
+}
+
+/* ---- 6. Barra lateral: el sólido ya cumple AA con su texto blanco ---- */
+[data-style="corporativo"] .dbar {
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+/* El chip activo se tiñe con SU familia y suma sombra: la selección pesa. */
+[data-style="corporativo"] .ck button.is-on {
+  box-shadow: var(--shadow-1);
+}
+
+/* ---- 7. Anotaciones: el código se lee en un plano hundido ---- */
+[data-style="corporativo"] .type-mono {
+  background: var(--bg-sunken);
+  border: 1px solid var(--line-soft);
+  color: var(--text-body);
+}
+[data-style="corporativo"] .blocktag { color: var(--text-soft); }
+
+  --cool-500: #0ea5e9;
+  --cool-700: #075985;

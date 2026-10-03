@@ -1,0 +1,113 @@
+{
+  "$meta": {
+    "id": "claymorphism",
+    "num": "01",
+    "nombre": "Claymorphism",
+    "familia": "materiales-blandos",
+    "status": "ready",
+    "archivos": { "skin": "style.css", "brief": "STYLE.md" },
+    "source_of_truth": "style.css",
+    "nota_hex": "Los colores de 8 dígitos son RGBA (#RRGGBBAA). Los de 6 son opacos.",
+    "nota": "Skin de la plantilla Showcase. Solo redefine tokens y overrides dentro de [data-style=\"claymorphism\"]; no modifica components.css."
+  },
+  "aplicacion": {
+    "atributo": "[data-style=\"claymorphism\"]",
+    "modo_nativo": "light",
+    "modos": ["light", "dark"],
+    "capa_de_modo": "[data-theme=\"dark\"][data-style=\"claymorphism\"]",
+    "alcance_de_esta_muestra": ["encabezado", "tokens", "botones", "estados-operativos"]
+  },
+  "veredicto": "experimental",
+  "robar": [
+    "El estado de hover que HUNDE la superficie (inset) en vez de levantarla: es el gesto que define una interfaz blanda y ningún otro estilo de la casa lo tiene.",
+    "La sombra doble como única forma de jerarquía: una sombra clara arriba-izquierda y otra oscura abajo-derecha, sobre un fondo del mismo tono que el objeto.",
+    "Campos de formulario hundidos (inset) frente a todos los demás, que los dibujan elevados: invierte la expectativa y se lee al instante.",
+    "Input deshabilitado con color MEDIDO en vez de opacidad: el texto conserva su relación con el fondo y el control no desaparece."
+  ],
+  "no_robar": [
+    "La receta completa en un producto real: sin filetes, los límites de los controles dependen de la sombra y se pierden en pantallas de bajo contraste.",
+    "El radio grande por defecto: 34px en tablas densas o listas de datos divide cada fila en islas y destruye la alineación.",
+    "La sombra doble en superficies pequeñas: por debajo de unos 40px de lado, el par de sombras se come el interior y el elemento se ensucia.",
+    "Clay en alto contraste o impresión: el volumen depende de gradientes suaves y se aplana por completo."
+  ],
+  "a11y": {
+    "contraste": "AA*",
+    "peor_caso": "Tinta #3b3226 sobre arcilla #efe9e0: 10.4:1 · Cuerpo #4a4033: 8.4:1 · Secundario #655946: 5.7:1 · Faint #6e6250: 4.9:1 · Acento-texto #8f3d10: 6.1:1 · Semánticos -fg sobre -bg: 5.2–7.6:1 · Dark tinta #f7f2ea sobre #332d26: 12.2:1",
+    "reglas": [
+      "EXCEPCIÓN DOCUMENTADA: los filetes --line-soft (1.37:1) y --line-strong (2.28:1) NO llegan al 3:1 de WCAG 1.4.11. Es el precio directo de la receta: aquí el límite lo dibuja la sombra, no la línea. Cualquier control cuyo contorno sea solo filete queda por debajo del umbral y necesita otra señal (sombra, relleno o cambio de tono).",
+      "El texto de acento usa --accent-700 (#8f3d10, 6.1:1), nunca --accent-500, igual que en el resto de la familia."
+    ]
+  },
+  "tokens": {
+    "--bg-page": "#e8e0d5",
+    "--bg-raised": "#efe9e0",
+    "--bg-sunken": "#ddd4c7",
+    "--bg-nav": "#efe9e0",
+    "--text-strong": "#3b3226",
+    "--text-body": "#4a4033",
+    "--text-soft": "#655946",
+    "--text-faint": "#6e6250",
+    "--line-soft": "#d3c8b8",
+    "--line-strong": "#a89a86",
+    "--brand-ink": "#8f3d10",
+    "--brand-ink-deep": "#6b2c0b",
+    "--brand-paper": "#efe9e0",
+    "--accent-100": "#f7e2d0",
+    "--accent-500": "#ad4a15",
+    "--accent-700": "#8f3d10",
+    "--support-100": "#e7ece2",
+    "--support-500": "#4a6b3d",
+    "--support-700": "#35502b",
+    "--cool-100": "#e2e8ea",
+    "--cool-500": "#40636e",
+    "--cool-700": "#2b464e",
+    "--ok-bg": "#dff0e4",
+    "--ok-fg": "#1f6b3f",
+    "--ok-solid": "#4a8a5c",
+    "--warn-bg": "#fbeed0",
+    "--warn-fg": "#8a5a00",
+    "--warn-solid": "#b8862a",
+    "--ember-bg": "#fbe6d5",
+    "--ember-fg": "#8a4416",
+    "--ember-solid": "#b06a35",
+    "--bad-bg": "#fadcdc",
+    "--bad-fg": "#9b2226",
+    "--bad-solid": "#c0565a",
+    "--info-bg": "#ddeaf5",
+    "--info-fg": "#1c4a6e",
+    "--info-solid": "#4a7fa5",
+    "--radius-sm": "14px",
+    "--radius-md": "20px",
+    "--radius-lg": "26px",
+    "--radius-xl": "34px",
+    "--radius-pill": "999px",
+    "--dur-1": "160ms",
+    "--dur-2": "240ms",
+    "--dur-3": "320ms"
+  },
+  "puente": {
+    "--skin-on-solid": "#ffffff",
+    "--skin-on-dark": "#f7f2ea",
+    "--skin-on-dark-soft": "#e0d6c8",
+    "--skin-scrim": "#4a4033e6",
+    "--skin-tint": "#4a40330f",
+    "--skin-tint-strong": "#4a40331f",
+    "--skin-ring": "#ffffff40",
+    "--skin-ring-dark": "#4a40331f",
+    "--skin-tray": "#efe9e0",
+    "--skin-tray-radius": "26px",
+    "--skin-light-bg": "#f7f2ea",
+    "--skin-light-fg": "#3b3226",
+    "--skin-light-bg-hover": "#ffffff",
+    "--skin-inverse": "#3b3226"
+  },
+  "modo_dark": {
+    "cambia": ["Arcilla cálida → arcilla profunda #2b2620, sin textura", "Tinta → crema #f7f2ea, y el acento se aclara a #ff9a5c", "La sombra clara se apaga: el relieve pasa a depender solo de la oscura, más profunda (#1c1813)"],
+    "nota": "La sombra doble y los radios grandes NO dependen del color, así que el modo oscuro no es un rediseño: es la misma forma con la paleta de noche. El único cambio real es que la luz rasante desaparece y hay que compensarlo separando más la sombra."
+  },
+  "palette": {
+    "Superficies": { "Arena": "#e8e0d5", "Arcilla": "#efe9e0", "Hundido": "#ddd4c7", "Luz": "#fffaf2" },
+    "Tinta y acento": { "Tinta": "#3b3226", "Secundaria": "#655946", "Terracota": "#ad4a15", "Arcilla profunda": "#6b2c0b" },
+    "Semánticos": { "Éxito": "#4a8a5c", "Aviso": "#b8862a", "Crítico": "#c0565a", "Neutro": "#a89a86" }
+  }
+}

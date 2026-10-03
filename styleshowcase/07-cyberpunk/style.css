@@ -1,0 +1,293 @@
+/* ==========================================================================
+   ESTILO 07 · CYBERPUNK
+   --------------------------------------------------------------------------
+   Neón magenta/cian sobre negro, scanlines y densidad de HUD.
+   Modo nativo: OSCURO (invierte a una paleta diurna apagada, sin neón).
+   Regla: solo tokens + overrides dentro de [data-style="cyberpunk"].
+   No modifica tokens.css, components.css ni gallery.js.
+   ========================================================================== */
+
+[data-style="cyberpunk"] {
+  /* ---- Superficies: negro con tinte violeta, nunca #000 puro ---- */
+  --bg-page: #05060a;
+  --bg-raised: #0b0e1a;
+  --bg-sunken: #030409;
+  --bg-nav: rgba(5, 6, 10, 0.86);
+
+  /* ---- Tinta: el texto base es un blanco azulado ---- */
+  --text-strong: #f2f6ff;
+  --text-body: #c3cfe0;
+  --text-soft: #93a3bb;
+  --text-faint: #7b8aa3; /* 5.79:1 sobre fondo — AA */
+  --line-soft: #1a2338;
+  --line-strong: #2f3d5c;
+
+  /* ---- Acentos: el par magenta/cian es la firma ---- */
+  --brand-ink: #00e5ff;
+  /* "deep" tiene que ser profundo: con el cian brillante (#00a8bd) la celda
+     que el espécimen rotula "contexto oscuro" quedaba clara y su rótulo a
+     1.12:1. Este tono mantiene el cian y deja el texto legible. */
+  --brand-ink-deep: #004956;
+  --brand-paper: #05060a;
+
+  --accent-100: #3a0a2a;
+  --accent-500: #ff2e97; /* 5.87:1 sobre fondo — AA */
+  --accent-700: #c451ff; /* 5.76:1; el lila puro #b026ff daba 4.40:1 y fallaba */
+
+  --support-100: #022b1d;
+  --support-500: #5cffc4;
+  --support-700: #046c4a;
+
+  --cool-100: #04222b;
+  --cool-500: #00e5ff;
+  --cool-700: #00637a;
+
+  /* ---- Semánticos: cada uno medido contra su propia superficie ---- */
+  --ok-bg: #022b1d;  --ok-fg: #5cffc4;  --ok-solid: #2bff9e;   /* 12.12:1 */
+  --warn-bg: #2e2205; --warn-fg: #ffd166; --warn-solid: #ffb020; /* 10.81:1 */
+  --bad-bg: #2b0713;  --bad-fg: #ff5c7a; --bad-solid: #ff2e6b;  /* 6.18:1 */
+  --info-bg: #04222b; --info-fg: #00e5ff; --info-solid: #00c8e0; /* 10.76:1 */
+
+
+  /* ==========================================================
+     PUENTE (--skin-*) · lo que el espécimen lee del skin
+     ========================================================== */
+  --skin-on-solid: #05060a;        /* texto sobre superficie de color */
+  --skin-on-dark: #f2f6ff;
+  --skin-on-dark-soft: #93a3bb;
+  /* Rótulo sobre la celda oscura (.btn-cell-dark): sin este token heredaba
+     --skin-on-dark-soft, que es tinta clara sobre el cian profundo. */
+  --skin-on-scrim-soft: #93a3bb;
+  --skin-scrim: #05060af2;
+  --skin-tint: #00e5ff1f;
+  --skin-tint-strong: #ff2e9726;
+  --skin-ring: #05060a4d;
+  --skin-ring-dark: #f2f6ff26;
+  --skin-tray: #0b0e1a;
+  --skin-tray-radius: 2px;
+  --skin-light-bg: #ff2e97;
+  --skin-light-fg: #05060a;        /* 5.87:1 — AA */
+  --skin-light-bg-hover: #c451ff;
+  --skin-inverse: #f2f6ff;
+
+  /* ==========================================================
+     EFECTOS (--fx-*) · bases compartidas del espécimen
+     Ver _template/specimen.css, sección "EFECTOS COMPARTIDOS"
+     ========================================================== */
+
+  /* Scanlines: 2px de línea, 3px de hueco. La opacidad va en el alpha para
+     no velar el texto que se apoya encima. */
+  --fx-scanline: repeating-linear-gradient(
+    180deg, #ffffff00 0 2px, #0000005c 2px 3px
+  );
+
+  /* Retícula de HUD de 32px en dos ejes. */
+  --fx-grid:
+    linear-gradient(#00e5ff0f 1px, #0000 1px),
+    linear-gradient(90deg, #00e5ff0f 1px, #0000 1px);
+  --fx-grid-size: 32px 32px;
+
+  /* Halo de neón. Se compone con --shadow-*, no lo sustituye. */
+  --fx-glow:
+    0 0 8px #00e5ff80,
+    0 0 20px #00e5ff40;
+  --fx-glow-soft: 0 0 40px #00e5ff1f;
+
+  /* Esquinas cortadas: recorte de 12px, asimétrico como los paneles de HUD. */
+  --fx-cut: polygon(
+    12px 0, 100% 0, 100% calc(100% - 12px),
+    calc(100% - 12px) 100%, 0 100%, 0 12px
+  );
+
+  /* ---- Forma: casi todo recto ---- */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius-pill: 0px;
+
+  /* ---- Sombras: el halo hace de profundidad ---- */
+  --shadow-1: 0 0 0 1px #1f2b45;
+  --shadow-2: 0 0 24px #00e5ff26, 0 0 2px #00e5ff4d;
+  --shadow-3: 0 0 48px #ff2e9733, 0 0 4px #00e5ff66;
+
+  /* ---- Movimiento: seco, sin rebote ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-1: 90ms;
+  --dur-2: 180ms;
+  --dur-3: 300ms;
+
+  /* Interletrado amplio: solo etiquetas del sistema. */
+  --tracking-wide: 0.22em;
+
+  /* Glitch: el display se duplica en cian y magenta. El texto real queda
+     intacto para el lector de pantalla. */
+  --fx-glitch-content: attr(data-text);
+  --fx-glitch-a: #00e5ff;
+  --fx-glitch-b: #ff2e97;
+  --fx-glitch-a-transform: translate(-2px, 0);
+  --fx-glitch-b-transform: translate(2px, 0);
+}
+
+/* ==========================================================================
+   MODO CLARO
+   --------------------------------------------------------------------------
+   Inversión deliberada y SIN neón: un halo luminoso sobre fondo claro es
+   ilegible, así que en claro el estilo se apoya solo en el color sólido y la
+   retícula, y el acento se oscurece hasta cumplir AA (6.67:1 / 6.05:1).
+   ========================================================================== */
+[data-theme="light"][data-style="cyberpunk"] {
+  --bg-page: #eef1f7;
+  --bg-raised: #ffffff;
+  --bg-sunken: #e2e7f0;
+  --bg-nav: rgba(238, 241, 247, 0.9);
+
+  --text-strong: #0a0d14;
+  --text-body: #232a38;
+  --text-soft: #4c5566;
+  --text-faint: #5c6473;
+  --line-soft: #cdd5e2;
+  --line-strong: #2a3346;
+
+  --brand-ink: #00637a;
+  --brand-ink-deep: #004956;
+  --brand-paper: #eef1f7;
+
+  --accent-100: #f7d9e8;
+  --accent-500: #a80050;  /* 6.67:1 sobre fondo claro */
+  --accent-700: #6b00a8;  /* 8.47:1 */
+
+  --support-100: #d6f5e7;
+  --support-500: #046c4a;
+  --support-700: #034c36;
+
+  --cool-100: #d3f1f7;
+  --cool-500: #00637a;
+  --cool-700: #004956;
+
+  --ok-bg: #d6f5e7;  --ok-fg: #046c4a;  --ok-solid: #0d855a;
+  --warn-bg: #fbeccb; --warn-fg: #7a4e00; --warn-solid: #a66700;
+  --bad-bg: #fddde3;  --bad-fg: #a3001c; --bad-solid: #c40024;
+  --info-bg: #d3f1f7; --info-fg: #00637a; --info-solid: #007e99;
+
+  --shadow-1: 0 1px 2px #0a0d1414, 0 2px 8px #0a0d1410;
+  --shadow-2: 0 2px 6px #0a0d141f, 0 10px 24px #0a0d141f;
+  --shadow-3: 0 4px 12px #0a0d1426, 0 20px 44px #0a0d1426;
+
+  /* El halo se apaga por completo en claro: es la razón de esta capa. */
+  --fx-glow: none;
+  --fx-glow-soft: none;
+  --fx-scanline: none;
+  --fx-cut: none;
+  --fx-glitch-content: none;
+  --fx-glitch-a-transform: none;
+  --fx-glitch-b-transform: none;
+
+  /* Retícula más discreta: en claro un cian al 6% todavía se ve. */
+  --fx-grid:
+    linear-gradient(#00637a12 1px, #0000 1px),
+    linear-gradient(90deg, #00637a12 1px, #0000 1px);
+
+  --skin-on-solid: #ffffff;
+  /* El scrim es casi negro también en claro, así que el texto sobre él tiene que
+     ser claro: con esta tinta oscura el chip quedaba a 1.26:1, ilegible.
+     --skin-on-dark-soft sigue siendo oscuro porque el pie y la cita van sobre
+     la página clara; para lo que sí va sobre el scrim está
+     --skin-on-scrim-soft. */
+  --skin-on-dark: #f2f6ff;
+  --skin-on-scrim-soft: #a9b4c8;
+  --skin-on-dark-soft: #4c5566;
+  --skin-scrim: #0a0d14e6;
+  --skin-tint: #00637a1f;
+  --skin-tint-strong: #a8005026;
+  --skin-ring: #ffffff4d;
+  --skin-ring-dark: #0a0d1426;
+  --skin-tray: #ffffff;
+  --skin-tray-radius: 2px;
+  --skin-light-bg: #a80050;
+  --skin-light-fg: #ffffff;        /* 7.55:1 — AAA */
+  --skin-light-bg-hover: #6b00a8;
+  --skin-inverse: #0a0d14;
+}
+
+/* ==========================================================================
+   OVERRIDES DE COMPONENTE
+   ========================================================================== */
+
+/* El filete pasa a ser luz, no separador. */
+[data-style="cyberpunk"] .shell,
+[data-style="cyberpunk"] .token-pane,
+[data-style="cyberpunk"] .frame,
+[data-style="cyberpunk"] .dcard,
+[data-style="cyberpunk"] .kitcard,
+[data-style="cyberpunk"] .stat {
+  border: 1px solid #00e5ff40;
+}
+
+[data-style="cyberpunk"] .btn-primary {
+  background: var(--cool-500);
+  color: var(--skin-on-solid);
+  border: 1px solid var(--cool-500);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+[data-style="cyberpunk"] .btn-accent {
+  background: var(--accent-500);
+  color: var(--skin-on-solid);
+  border: 1px solid var(--accent-500);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* Foco: anillo de neón visible sobre negro. */
+[data-style="cyberpunk"] :focus-visible {
+  outline: 2px solid var(--cool-500);
+  outline-offset: 2px;
+  box-shadow: 0 0 12px #00e5ffcc;
+}
+
+/* Etiquetas del sistema en mayúsculas: aquí el mayúsculas es recurso. */
+[data-style="cyberpunk"] .eyebrow,
+[data-style="cyberpunk"] .topbar-tile,
+[data-style="cyberpunk"] .stat-lbl {
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  font-size: var(--text-micro);
+}
+
+[data-style="cyberpunk"] .type-display {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  line-height: 0.95;
+}
+
+/* Glitch breve y discreto, no en bucle cerrado: el desplazamiento vive en
+   pasos sueltos y el resto del tiempo el texto se lee limpio. */
+@keyframes cyberpunk-glitch {
+  0%, 92%, 100% { transform: translate(0, 0); }
+  93% { transform: translate(-2px, 1px); }
+  95% { transform: translate(2px, -1px); }
+  97% { transform: translate(-1px, 0); }
+}
+
+[data-style="cyberpunk"] .type-display::before,
+[data-style="cyberpunk"] .type-display::after {
+  animation: cyberpunk-glitch 3.6s steps(1, end) infinite;
+}
+
+/* Deshabilitado con color medido, no opacidad (WCAG 1.4.11 pide 3:1). */
+[data-style="cyberpunk"] .btn-primary:disabled,
+[data-style="cyberpunk"] .btn-accent:disabled,
+[data-style="cyberpunk"] .btn-secondary:disabled {
+  background: #131a2b;
+  color: #7b8aa3;
+  border-color: #3a4763;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-style="cyberpunk"] .type-display::before,
+  [data-style="cyberpunk"] .type-display::after { animation: none; }
+}

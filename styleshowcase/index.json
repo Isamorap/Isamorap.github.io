@@ -1,0 +1,603 @@
+{
+  "$meta": {
+    "name": "Style Showcase — registro de agentes IA",
+    "version": "0.1",
+    "source_of_truth_ui": "registry.js",
+    "specimen": "_template/specimen.html?style=<id>",
+    "gallery": "index.html",
+    "note": "Espejo de registry.js para agentes: incluye solo lo que un agente necesita para elegir y aplicar un estilo. Si difieren, manda registry.js.",
+    "bloques_del_especimen": [
+      "encabezado",
+      "tokens",
+      "botones",
+      "tarjetas-y-datos"
+    ],
+    "reglas": [
+      "Este muestrario es un laboratorio visual agnóstico sobre componentes web desacoplados.",
+      "Cada estilo vive en su carpeta y solo redefine tokens dentro de [data-style=\"<id>\"]; nunca edita components.css.",
+      "Un estilo con veredicto distinto de 'adoptable' no entra a producción estándar.",
+      "Los hex de un estilo viven en su style.css y en su style.json, nunca fuera de su carpeta.",
+      "Ningún componente codifica un dato: las familias semánticas se nombran por su token (éxito, aviso, crítico, información, neutro) y la etiqueta la elige el proyecto que adopta el estilo. Prohibido escribir un estado de negocio en la etiqueta de un botón, pill, chip o barra lateral."
+    ]
+  },
+  "familias": {
+    "materiales-blandos": "Materiales blandos",
+    "ruido-brutal": "Ruido y brutal",
+    "retro-digital": "Retro-digital",
+    "sistema-razon": "Sistema y razón",
+    "materia-impresa": "Materia impresa",
+    "ornamento-historia": "Ornamento e historia"
+  },
+  "estilos": [
+    {
+      "n": "01",
+      "id": "claymorphism",
+      "nombre": "Claymorphism",
+      "familia": "materiales-blandos",
+      "modo": "light",
+      "modos": [
+        "light",
+        "dark"
+      ],
+      "a11y": "AA*",
+      "veredicto": "experimental",
+      "status": "ready",
+      "carpeta": "01-claymorphism",
+      "archivos": [
+        "style.css",
+        "style.json",
+        "STYLE.md"
+      ],
+      "resumen": "Plastilina: radios enormes, luz interior y cero línea dura."
+    },
+    {
+      "n": "02",
+      "id": "neumorphism",
+      "nombre": "Neumorphism",
+      "familia": "materiales-blandos",
+      "modo": "light",
+      "modos": [
+        "light",
+        "dark"
+      ],
+      "a11y": "AA*",
+      "veredicto": "solo-museo",
+      "status": "ready",
+      "carpeta": "02-neumorphism",
+      "archivos": [
+        "style.css",
+        "style.json",
+        "STYLE.md"
+      ],
+      "resumen": "Relieve tallado en el mismo color del fondo; contraste bajo por diseño."
+    },
+    {
+      "n": "03",
+      "id": "glassmorphism",
+      "nombre": "Glassmorphism",
+      "familia": "materiales-blandos",
+      "modo": "dark",
+      "modos": [
+        "dark",
+        "light"
+      ],
+      "a11y": "AA",
+      "veredicto": "experimental",
+      "status": "ready",
+      "carpeta": "03-glassmorphism",
+      "archivos": [
+        "style.css",
+        "style.json",
+        "STYLE.md"
+      ],
+      "resumen": "Vidrio: superficies translúcidas, blur de fondo y un filo de luz arriba."
+    },
+    {
+      "n": "04",
+      "id": "ethereal",
+      "nombre": "Ethereal",
+      "familia": "materiales-blandos",
+      "modo": "light",
+      "modos": [
+        "light",
+        "dark"
+      ],
+      "a11y": "AA",
+      "veredicto": "experimental",
+      "status": "ready",
+      "carpeta": "04-ethereal",
+      "archivos": [
+        "style.css",
+        "style.json",
+        "STYLE.md"
+      ],
+      "resumen": "Nubes: gradientes suaves, mucho aire y movimiento lentísimo."
+    },
+    {
+      "n": "05",
+      "id": "neo-brutalism",
+      "nombre": "Neo-Brutalism",
+      "familia": "ruido-brutal",
+      "modo": "light",
+      "modos": [
+        "light",
+        "dark"
+      ],
+      "a11y": "AA",
+      "veredicto": "adoptable",
+      "status": "ready",
+      "carpeta": "05-neo-brutalism",
+      "archivos": [
+        "style.css",
+        "style.json",
+        "STYLE.md"
+      ],
+      "resumen": "Borde negro grueso, radio 0 y sombra dura desplazada."
+    },
+    {
+      "n": "06",
+      "id": "cybercore",
+      "nombre": "Cybercore",
+      "familia": "ruido-brutal",
+      "modo": "dark",
+      "modos": ["dark", "light"],
+      "a11y": "AA",
+      "veredicto": "solo-museo",
+      "status": "ready",
+      "resumen": "Terminal industrial: mono, rejilla y verde sobre negro."
+    },
+    {
+      "n": "07",
+      "id": "cyberpunk",
+      "nombre": "Cyberpunk",
+      "familia": "ruido-brutal",
+      "modo": "dark",
+      "modos": [
+        "dark",
+        "light"
+      ],
+      "a11y": "AA",
+      "veredicto": "solo-museo",
+      "status": "ready",
+      "resumen": "Neón magenta/cian, scanlines y densidad de HUD."
+    },
+    {
+      "n": "08",
+      "id": "maximalism",
+      "nombre": "Maximalism",
+      "familia": "ruido-brutal",
+      "modo": "light",
+      "modos": [
+        "light",
+        "dark"
+      ],
+      "a11y": "AA",
+      "veredicto": "experimental",
+      "status": "ready",
+      "resumen": "Todo importa: varias tipografías, capas y color saturado."
+    },
+    {
+      "n": "09",
+      "id": "y2k-aesthetic",
+      "nombre": "Y2K Aesthetic",
+      "familia": "retro-digital",
+      "modo": "light",
+      "modos": [
+        "light",
+        "dark"
+      ],
+      "a11y": "AA",
+      "veredicto": "solo-museo",
+      "status": "ready",
+      "resumen": "Cromo, burbujas y biseles brillantes de fin de milenio."
+    },
+    {
+      "n": "10",
+      "id": "synthwave",
+      "nombre": "Synthwave",
+      "familia": "retro-digital",
+      "modo": "dark",
+      "modos": [],
+      "a11y": "AA*",
+      "veredicto": "experimental",
+      "status": "planned",
+      "resumen": "Atardecer del 84: magenta y naranja sobre rejilla."
+    },
+    {
+      "n": "11",
+      "id": "pixel-art",
+      "nombre": "Pixel Art",
+      "familia": "retro-digital",
+      "modo": "dark",
+      "modos": [],
+      "a11y": "AA",
+      "veredicto": "experimental",
+      "status": "planned",
+      "resumen": "Bordes pixelados, sin antialias y paleta limitada."
+    },
+    {
+      "n": "12",
+      "id": "swiss",
+      "nombre": "Swiss Design",
+      "familia": "sistema-razon",
+      "modo": "light",
+      "modos": [
+        "light",
+        "dark"
+      ],
+      "a11y": "AA",
+      "veredicto": "adoptable",
+      "status": "ready",
+      "carpeta": "12-swiss",
+      "archivos": [
+        "style.css",
+        "style.json",
+        "STYLE.md"
+      ],
+      "resumen": "Rejilla implacable, sans neutral y un rojo de acento."
+    },
+    {
+      "n": "13",
+      "id": "minimalism",
+      "nombre": "Minimalism",
+      "familia": "sistema-razon",
+      "modo": "light",
+      "modos": [],
+      "a11y": "AA",
+      "veredicto": "adoptable",
+      "status": "planned",
+      "resumen": "Aire, una tipografía, un acento y ninguna sombra."
+    },
+    {
+      "n": "14",
+      "id": "bento-grid",
+      "nombre": "Bento Grid",
+      "familia": "sistema-razon",
+      "modo": "light",
+      "modos": [],
+      "a11y": "AA",
+      "veredicto": "adoptable",
+      "status": "planned",
+      "resumen": "Módulos de distinto peso: la jerarquía la da el tamaño."
+    },
+    {
+      "n": "15",
+      "id": "editorial",
+      "nombre": "Editorial Design",
+      "familia": "sistema-razon",
+      "modo": "light",
+      "modos": [],
+      "a11y": "AA",
+      "veredicto": "adoptable",
+      "status": "planned",
+      "resumen": "Revista: serif alta, capitular y texto a dos columnas."
+    },
+    {
+      "n": "16",
+      "id": "scrapbook",
+      "nombre": "Scrapbook",
+      "familia": "materia-impresa",
+      "modo": "light",
+      "modos": [],
+      "a11y": "AA",
+      "veredicto": "experimental",
+      "status": "planned",
+      "resumen": "Papel recortado, cintas y rotaciones fuera de eje."
+    },
+    {
+      "n": "17",
+      "id": "conceptual-sketch",
+      "nombre": "Conceptual Sketch",
+      "familia": "materia-impresa",
+      "modo": "light",
+      "modos": [],
+      "a11y": "AA",
+      "veredicto": "experimental",
+      "status": "planned",
+      "resumen": "Lápiz y papel: líneas imperfectas y anotaciones."
+    },
+    {
+      "n": "18",
+      "id": "bohemian",
+      "nombre": "Bohemian",
+      "familia": "materia-impresa",
+      "modo": "light",
+      "modos": [],
+      "a11y": "AA",
+      "veredicto": "experimental",
+      "status": "planned",
+      "resumen": "Terracota, textil, arcos y ornamentos vegetales."
+    },
+    {
+      "n": "19",
+      "id": "wabi-sabi",
+      "nombre": "Wabi-Sabi",
+      "familia": "materia-impresa",
+      "modo": "light",
+      "modos": [],
+      "a11y": "AA",
+      "veredicto": "experimental",
+      "status": "planned",
+      "resumen": "Imperfección serena: beige, textura y asimetría."
+    },
+    {
+      "n": "20",
+      "id": "victorian",
+      "nombre": "Victorian",
+      "familia": "ornamento-historia",
+      "modo": "light",
+      "modos": [],
+      "a11y": "AA",
+      "veredicto": "solo-museo",
+      "status": "planned",
+      "resumen": "Ornamento, filetes y serif de contraste alto."
+    },
+    {
+      "n": "21",
+      "id": "luxury-typography",
+      "nombre": "Luxury Typography",
+      "familia": "ornamento-historia",
+      "modo": "dark",
+      "modos": [],
+      "a11y": "AA",
+      "veredicto": "adoptable",
+      "status": "planned",
+      "resumen": "Serif de alta gama, tracking amplio y mucho negro."
+    },
+    {
+      "n": "22",
+      "id": "surrealism",
+      "nombre": "Surrealism",
+      "familia": "ornamento-historia",
+      "modo": "light",
+      "modos": [],
+      "a11y": "AA",
+      "veredicto": "solo-museo",
+      "status": "planned",
+      "resumen": "Colisión de escalas y sombras imposibles."
+    },
+    {
+      "n": "23",
+      "id": "corporativo",
+      "nombre": "Corporativo",
+      "familia": "sistema-razon",
+      "modo": "light",
+      "modos": [
+        "light",
+        "dark"
+      ],
+      "a11y": "AA",
+      "veredicto": "adoptable",
+      "status": "ready",
+      "carpeta": "23-corporativo",
+      "archivos": [
+        "style.css",
+        "style.json",
+        "STYLE.md"
+      ],
+      "resumen": "Línea de base de producto: tinta azul marino, un solo acento cobre y sombra teñida en dos capas."
+    }
+  ],
+  "palette": {
+    "claymorphism": {
+      "Superficies": {
+        "Arena": "#e8e0d5",
+        "Arcilla": "#efe9e0",
+        "Hundido": "#ddd4c7",
+        "Luz": "#fffaf2"
+      },
+      "Tinta y acento": {
+        "Tinta": "#3b3226",
+        "Secundaria": "#655946",
+        "Terracota": "#ad4a15",
+        "Arcilla profunda": "#6b2c0b"
+      },
+      "Semánticos": {
+        "Éxito": "#4a8a5c",
+        "Aviso": "#b8862a",
+        "Crítico": "#c0565a",
+        "Neutro": "#a89a86"
+      }
+    },
+    "neumorphism": {
+      "Superficies": {
+        "Plano": "#e0e5ec",
+        "Superficie": "#e0e5ec",
+        "Relieve claro": "#ffffff",
+        "Relieve sombra": "#a3b1c6"
+      },
+      "Tinta y acento": {
+        "Talla": "#2d3748",
+        "Secundaria": "#556070",
+        "Terracota": "#a8480f",
+        "Terracota texto": "#8a3d0c"
+      },
+      "Semánticos": {
+        "Éxito": "#047857",
+        "Aviso": "#b45309",
+        "Crítico": "#dc2626",
+        "Neutro": "#556070"
+      }
+    },
+    "ethereal": {
+      "Superficies": {
+        "Cielo": "#f7f6fb",
+        "Nube": "#fdfcff",
+        "Hundido": "#f2f0f9",
+        "Tinta": "#2b2a45"
+      },
+      "Tinta y acento": {
+        "Índigo": "#3a3760",
+        "Secundaria": "#6b6885",
+        "Periwinkle": "#8f83e0",
+        "Lila claro": "#bdb2ee"
+      },
+      "Semánticos": {
+        "Éxito": "#047857",
+        "Aviso": "#b45309",
+        "Crítico": "#b91c1c",
+        "Neutro": "#6b6885"
+      }
+    },
+    "glassmorphism": {
+      "Superficies": {
+        "Cielo profundo": "#0b1220",
+        "Vidrio": "#ffffff1f",
+        "Vidrio 2": "#ffffff2e",
+        "Filo de luz": "#ffffff38"
+      },
+      "Tinta y acento": {
+        "Tinta": "#f2f7ff",
+        "Secundaria": "#c9d7ec",
+        "Cielo": "#38bdf8",
+        "Violeta": "#a855f7"
+      },
+      "Semánticos": {
+        "Éxito": "#6ee7b7",
+        "Aviso": "#fcd34d",
+        "Crítico": "#fca5a5",
+        "Neutro": "#9fb0c9"
+      }
+    },
+    "neo-brutalism": {
+      "Superficies": {
+        "Papel": "#f4f1e8",
+        "Nieve": "#ffffff",
+        "Hueso": "#e8e2d4",
+        "Negro": "#111111"
+      },
+      "Tinta y acento": {
+        "Tinta": "#111111",
+        "Secundaria": "#444444",
+        "Eléctrico": "#ffe500",
+        "Violeta": "#7c3aed"
+      },
+      "Semánticos": {
+        "Éxito": "#2fbf71",
+        "Aviso": "#ffb800",
+        "Crítico": "#ff4d4d",
+        "Neutro": "#c9c4b8"
+      }
+    },
+    "swiss": {
+      "Superficies": {
+        "Papel": "#ffffff",
+        "Blanco": "#ffffff",
+        "Hueso": "#f2f2f2",
+        "Tinta": "#0f0f0f"
+      },
+      "Tinta y acento": {
+        "Negro": "#0f0f0f",
+        "Secundaria": "#525252",
+        "Rojo": "#e1121c",
+        "Azul": "#2a6d9e"
+      },
+      "Semánticos": {
+        "Éxito": "#14804a",
+        "Aviso": "#b8801a",
+        "Crítico": "#c0272d",
+        "Neutro": "#737373"
+      }
+    },
+    "cyberpunk": {
+      "Superficies": {
+        "Vacío": "#05060a",
+        "Panel": "#0b0e1a",
+        "Hondo": "#030409",
+        "Filete": "#00e5ff40"
+      },
+      "Tinta y acento": {
+        "Blanco azulado": "#f2f6ff",
+        "Secundaria": "#93a3bb",
+        "Magenta": "#ff2e97",
+        "Cian": "#00e5ff"
+      },
+      "Semánticos": {
+        "Éxito": "#5cffc4",
+        "Aviso": "#ffd166",
+        "Crítico": "#ff5c7a",
+        "Neutro": "#7b8aa3"
+      }
+    },
+"cybercore": {
+      "Superficies": {
+        "Vacío": "#05090a",
+        "Panel": "#0b1214",
+        "Hondo": "#03070a",
+        "Tinta": "#04140d"
+      },
+      "Tinta y acento": {
+        "Fósforo": "#00ff9c",
+        "Secundaria": "#93b3a6",
+        "Ámbar": "#ffb000",
+        "Cian": "#38bdf8"
+      },
+      "Semánticos": {
+        "Éxito": "#4ade80",
+        "Aviso": "#ffb000",
+        "Crítico": "#ff4d5e",
+        "Neutro": "#93b3a6"
+      }
+    },
+    "maximalism": {
+      "Superficies": {
+        "Papel crema": "#fff6e9",
+        "Blanco roto": "#fffdf7",
+        "Hundido": "#f7e6cd",
+        "Tinta": "#1a1114"
+      },
+      "Tinta y acento": {
+        "Ciruela": "#3b1039",
+        "Secundaria": "#6b4f52",
+        "Magenta": "#d6006e",
+        "Cian": "#00707a"
+      },
+      "Semánticos": {
+        "Éxito": "#0f7a2e",
+        "Aviso": "#b45309",
+        "Crítico": "#c81e2e",
+        "Neutro": "#6b4f52"
+      }
+    },
+    "corporativo": {
+      "Superficies": {
+        "Papel": "#f6f8fa",
+        "Blanco": "#ffffff",
+        "Hueso": "#f4f6f8",
+        "Tinta": "#0f2432"
+      },
+      "Tinta y acento": {
+        "Marino": "#00334e",
+        "Secundaria": "#64748b",
+        "Cobre": "#c96f2e",
+        "Cobre texto": "#96521f"
+      },
+      "Semánticos": {
+        "Éxito": "#047857",
+        "Aviso": "#b45309",
+        "Crítico": "#dc2626",
+        "Neutro": "#64748b"
+      }
+    },
+    "y2k-aesthetic": {
+      "Superficies": {
+        "Azul hielo": "#eaf1f9",
+        "Blanco brillo": "#ffffff",
+        "Hundido": "#dde8f4",
+        "Tinta azul": "#0b1a3d"
+      },
+      "Tinta y acento": {
+        "Azul tinta": "#0b1a3d",
+        "Secundaria": "#4c5e84",
+        "Bubblegum": "#ff4fa3",
+        "Lima": "#7cb518"
+      },
+      "Semánticos": {
+        "Éxito": "#0d803d",
+        "Aviso": "#b45309",
+        "Crítico": "#c81e2e",
+        "Neutro": "#4c5e84"
+      }
+    }
+  }
+}

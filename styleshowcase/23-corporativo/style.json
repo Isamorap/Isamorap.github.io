@@ -1,0 +1,157 @@
+{
+  "$meta": {
+    "id": "corporativo",
+    "num": "23",
+    "nombre": "Corporativo",
+    "familia": "sistema-razon",
+    "status": "ready",
+    "archivos": { "skin": "style.css", "brief": "STYLE.md" },
+    "source_of_truth": "style.css",
+    "nota_hex": "Los colores de 8 dígitos son RGBA (#RRGGBBAA). Los de 6 son opacos.",
+    "nota": "Skin de la plantilla Showcase. Solo redefine tokens y overrides dentro de [data-style=\"corporativo\"]; no modifica components.css.",
+    "origen": "Adaptación de un sistema de tokens de producción preexistente, que ya era la base del laboratorio, traída ahora como skin. No conserva nombres de marca: la tinta es un azul marino genérico y el acento es cobre."
+  },
+  "aplicacion": {
+    "atributo": "[data-style=\"corporativo\"]",
+    "modo_nativo": "light",
+    "modos": ["light", "dark"],
+    "capa_de_modo": "[data-theme=\"dark\"][data-style=\"corporativo\"]",
+    "alcance_de_esta_muestra": ["encabezado", "tokens", "botones", "tarjetas-y-datos"]
+  },
+  "veredicto": "adoptable",
+  "robar": [
+    "Sombras teñidas al color de la tinta en dos capas, nunca negro puro: la sombra deja de ensuciar la superficie y pasa a pertenecer a la familia de la marca.",
+    "Subir `--line-strong` a 3.99:1 para que el filete de un control cumpla WCAG 1.4.11 de verdad, y dejar `--line-soft` solo para separadores decorativos.",
+    "Elegir los sólidos semánticos por su CONTRASTE CON TEXTO BLANCO, no por saturación: así la barra lateral y el botón destructivo leen bien sin cambiar de color entre temas.",
+    "Inhabilitado con color medido en vez de `opacity`: conserva 4.76:1 en el texto y 3:1 en el límite del control.",
+    "Hover que sube un nivel de sombra en vez de cambiar el color: el estado se comunica con profundidad, no con tinta.",
+    "Acento escaso con regla en vez de con buena intención: cobre solo en eyebrow, botón de acento, numerales de menú y anillo de foco."
+  ],
+  "no_robar": [
+    "El primario invertido en oscuro como norma: funciona porque acá hay un solo primario por vista; en una pantalla con tres acciones principales se invierte la jerarquía.",
+    "Un borde fuerte en tablas densas: 1px por celda vuelve el dato ilegible. El filete fuerte va en contenedores y controles, nunca en celdas.",
+    "Reutilizar los sólidos semánticos como color de texto: están calibrados para admitir blanco encima, no para ser tinta.",
+    "Confundir 'sobrio' con 'sin color': el gris frío y el cobre son la identidad; sin ellos esto es la base pelada."
+  ],
+  "a11y": {
+    "contraste": "AA",
+    "peor_caso": "Secundario #64748b sobre papel: 4.76:1 · Acento-texto #96521f sobre papel: 5.96:1 · Sólido crítico #dc2626 con blanco: 4.83:1 · Barra éxito #047857 con blanco: 5.48:1 · Barra aviso #b45309 con blanco: 5.02:1 · Dark acento #b45309 con blanco: 5.02:1",
+    "reglas": [
+      "El cobre #c96f2e da 3.62:1 sobre papel: nunca se usa como texto pequeño. Para texto de acento va --accent-700 (#96521f, 5.96:1).",
+      "En oscuro --accent-700 baja a #b45309 porque el botón de acento lleva texto blanco y #c96f2e solo daba 3.62:1. El token de superficie se oscurece; el color de texto de acento se aclara por separado (--accent-500 #d97a3c, 5.90:1).",
+      "Los sólidos semánticos son idénticos en claro y en oscuro a propósito: la barra lateral lleva texto blanco y aclarar el sólido en oscuro lo habría dejado en 2.5:1.",
+      "`--line-strong` (#6b8296 en claro, 3.99:1 / #55748f en oscuro, 3.71:1) es el único filete que delimita un control. `--line-soft` es decorativo y no le aplica el 3:1.",
+      "El foco es un anillo de cobre de 2px con offset 2: visible en ambos modos y no depende solo del color, porque el offset lo separa del control."
+    ]
+  },
+  "tipografia": {
+    "familia": "Montserrat (Google Fonts, ver <link> en el espécimen)",
+    "display": "1.15–4.2rem / 800 · interletrado -0.02em",
+    "tracking_display": "-0.02em",
+    "nota": "No se cambia la familia: la diferencia con Swiss no está en la fuente sino en que aquí la presión tipográfica es baja y las mayúsculas se reservan para el eyebrow y la barra vertical."
+  },
+  "forma": {
+    "radius_sm": "8px",
+    "radius_md": "12px",
+    "radius_lg": "16px",
+    "radius_xl": "24px",
+    "radius_pill": "999px",
+    "borde": "filete decorativo #e3e9ef; filete de control #6b8296 (3.99:1)"
+  },
+  "profundidad": {
+    "receta": "dos capas teñidas al azul marino (#06283a), nunca negro puro; el hover sube un nivel",
+    "shadow_1": "0 1px 2px rgba(6,40,58,.05), 0 4px 14px rgba(6,40,58,.07)",
+    "shadow_2": "0 2px 4px rgba(6,40,58,.06), 0 14px 34px rgba(6,40,58,.13)",
+    "shadow_3": "0 4px 10px rgba(6,40,58,.16), 0 24px 60px rgba(6,40,58,.26)"
+  },
+  "textura": { "receta": "ninguna: papel liso. La profundidad la aporta la sombra teñida, no un ruido de fondo" },
+  "movimiento": {
+    "dur_1": "160ms",
+    "dur_2": "280ms",
+    "dur_3": "650ms",
+    "ease": "cubic-bezier(.32,.72,0,1)",
+    "nota": "Funcional y calmado. El press es un scale(0.98) de la base; el hover es un cambio de profundidad, no de tinta."
+  },
+  "tokens": {
+    "--bg-page": "#f6f8fa",
+    "--bg-raised": "#ffffff",
+    "--bg-sunken": "#f4f6f8",
+    "--bg-nav": "rgba(255, 255, 255, 0.86)",
+    "--text-strong": "#0f2432",
+    "--text-body": "#3a4c5b",
+    "--text-soft": "#64748b",
+    "--text-faint": "#7d93a7",
+    "--line-soft": "#e3e9ef",
+    "--line-strong": "#6b8296",
+    "--brand-ink": "#00334e",
+    "--brand-ink-deep": "#06283a",
+    "--brand-paper": "#ffffff",
+    "--accent-100": "#fbeedd",
+    "--accent-500": "#c96f2e",
+    "--accent-700": "#96521f",
+    "--support-100": "#e3efe7",
+    "--support-500": "#2f6b4f",
+    "--support-700": "#1e4a37",
+    "--cool-100": "#e0f2fe",
+    "--cool-500": "#0ea5e9",
+    "--cool-700": "#075985",
+    "--ok-bg": "#d1fae5",
+    "--ok-fg": "#065f46",
+    "--ok-solid": "#047857",
+    "--warn-bg": "#fef3c7",
+    "--warn-fg": "#92400e",
+    "--warn-solid": "#b45309",
+    "--ember-bg": "#ffedd5",
+    "--ember-fg": "#9a3412",
+    "--ember-solid": "#c2410c",
+    "--bad-bg": "#fee2e2",
+    "--bad-fg": "#991b1b",
+    "--bad-solid": "#dc2626",
+    "--info-bg": "#e0f2fe",
+    "--info-fg": "#075985",
+    "--info-solid": "#0369a1",
+    "--radius-sm": "8px",
+    "--radius-md": "12px",
+    "--radius-lg": "16px",
+    "--radius-xl": "24px",
+    "--radius-pill": "999px",
+    "--dur-1": "160ms",
+    "--dur-2": "280ms",
+    "--dur-3": "650ms"
+  },
+  "puente": {
+    "--skin-on-solid": "#ffffff",
+    "--skin-on-dark": "#ffffff",
+    "--skin-on-dark-soft": "#c9d7e4",
+    "--skin-scrim": "#0d1620cc",
+    "--skin-tint": "#00334e14",
+    "--skin-tint-strong": "#00334e24",
+    "--skin-ring": "#00334e00",
+    "--skin-ring-dark": "#ffffff00",
+    "--skin-tray": "#eef2f6",
+    "--skin-tray-radius": "12px",
+    "--skin-light-bg": "#ffffff",
+    "--skin-light-fg": "#00334e",
+    "--skin-light-bg-hover": "#eef2f6",
+    "--skin-inverse": "#00334e"
+  },
+  "modo_dark": {
+    "cambia": [
+      "Papel → #0d1620 y planos a #13202c / #0a1219",
+      "Tinta → #eef3f7 y el filete fuerte pasa a #55748f (3.71:1)",
+      "El cobre de superficie se oscurece: --accent-700 #b45309, porque lleva texto blanco",
+      "El primario se invierte a papel #f6f8fa sobre tinta #06283a (14.37:1)",
+      "Los sólidos semánticos NO cambian: ya están calibrados para admitir texto blanco"
+    ],
+    "nota": "La firma (sombra teñida, borde visible, acento único) no depende del color, así que el modo oscuro es una inversión medida, no un rediseño."
+  },
+  "vocabulario": {
+    "regla": "Ningún componente de este skin codifica un dato. Las familias semánticas se nombran por su token (éxito, aviso, crítico, información, neutro) y la etiqueta la elige el proyecto que lo adopta.",
+    "prohibido": "Escribir un estado de negocio ('abierto', 'cerrado', 'pendiente', 'programado') en la etiqueta de un botón, pill, chip o barra lateral."
+  },
+  "palette": {
+    "Superficies": { "Papel": "#f6f8fa", "Blanco": "#ffffff", "Hueso": "#f4f6f8", "Tinta": "#0f2432" },
+    "Tinta y acento": { "Marino": "#00334e", "Secundaria": "#64748b", "Cobre": "#c96f2e", "Cobre texto": "#96521f" },
+    "Semánticos": { "Éxito": "#047857", "Aviso": "#b45309", "Crítico": "#dc2626", "Neutro": "#64748b" }
+  }
+}

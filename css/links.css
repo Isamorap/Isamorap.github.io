@@ -27,6 +27,14 @@ body {
     pointer-events: none;
 }
 
+/* La habitación viva detrás de las tarjetas, con viñeta para legibilidad */
+#hero-canvas::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(2, 6, 15, 0.15) 40%, rgba(2, 6, 15, 0.72) 100%);
+}
+
 .container {
     width: 100%;
     max-width: 480px;
@@ -104,7 +112,9 @@ h1 {
 }
 
 .bio {
-    font-size: 0.95rem;
+    font-family: 'Share Tech Mono', ui-monospace, monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
     opacity: 0.8;
     margin-bottom: 2rem;
 }
@@ -120,7 +130,7 @@ h1 {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     padding: 1.2rem;
-    border-radius: 16px;
+    border-radius: 8px;
     text-decoration: none;
     color: var(--text-color);
     font-weight: 600;
@@ -129,6 +139,13 @@ h1 {
     justify-content: space-between;
     backdrop-filter: blur(10px);
     transition: var(--transition);
+}
+
+.link-card span {
+    font-family: 'Share Tech Mono', ui-monospace, monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
 }
 
 .link-card i {

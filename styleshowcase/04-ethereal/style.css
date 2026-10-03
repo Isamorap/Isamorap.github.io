@@ -1,0 +1,412 @@
+/* ==========================================================================
+   ESTILO 04 · ETHEREAL — nubes, aire y movimiento lentísimo
+   --------------------------------------------------------------------------
+   Modo nativo: claro. Modos implementados: light + dark (ambos en este archivo).
+
+   Identidad en tres decisiones:
+     1. EL FONDO ES NUBES. Un degradado de manchas suaves va por detrás de todo,
+        y las superficies quedan casi blancas para que el texto siempre tenga un
+        plano conocido delante.
+     2. SOMBRAS ANCHAS Y MUY BAJAS. Tres capas, difuminado enorme, opacidad
+        mínima, teñidas al violeta: la profundidad se siente como una nube de
+        luz, no como una ficha apoyada.
+     3. EL TIEMPO SE ESTIRA. 220 / 700 / 2200 ms. El reveal del scroll tarda más
+        que en cualquier otro estilo: ese es el efecto, no un ajuste.
+
+   DOS TRUCOS QUE ESTE ESTILO NECESITA, Y POR QUÉ NO SON OPCIONALES:
+
+   · El degradado NO va en `--bg-page`. Ese token se usa como COLOR en
+     `components.css` (`.toast { color: var(--bg-page) }`), y una imagen de
+     gradiente ahí es un valor inválido para `color`: el texto del toast se
+     quedaría sin pintar. Por eso `--bg-page` sigue siendo un sólido y las
+     nubes van en `background-image` del body, más abajo.
+
+   · El botón de acento va en LILA CLARO con TINTA OSCURA, no blanco sobre
+     lila. El acento de este estilo es por definición claro, y el blanco sobre
+     lila no llega a AA. Invertir los dos es lo que hace que el lila siga
+     siendo etéreo y el texto siga siendo legible: 5.55:1 en el extremo
+     más oscuro del degradado.
+
+   Este archivo solo redefine tokens dentro de [data-style="ethereal"];
+   nunca edita ../components.css. Alcance: los 4 bloques del espécimen.
+   ========================================================================== */
+
+[data-style="ethereal"] {
+  background-color: #f7f6fb;
+  color-scheme: light;
+
+  /* ---- Superficies: sólidos, nunca el degradado (ver la nota de arriba) ---- */
+  --bg-page: #f7f6fb;
+  --bg-raised: #fdfcff;
+  --bg-sunken: #f2f0f9;
+  --bg-nav: rgba(253, 252, 255, 0.72);
+
+  /* ---- Texto: índigo profundo. Frío, pero nunca negro (nada de nube es negro) */
+  --text-strong: #2b2a45;
+  --text-body: #4a4863;
+  --text-soft: #6b6885;
+  --text-faint: #8b88a3;
+
+  /* ---- Líneas: violetas muy pálidas. La suave separa; la fuerte delimita ---- */
+  --line-soft: #e4e1f0;
+  --line-strong: #7d7a99;
+
+  /* ---- Tinta de marca: el índigo, un punto más frío que el texto fuerte ---- */
+  --brand-ink: #3a3760;
+  --brand-ink-deep: #2a2846;
+  --brand-paper: #fdfcff;
+
+  /* ---- Acento: periwinkle. Suave por diseño; como texto va el -700 ---- */
+  --accent-100: #efecfb;
+  --accent-500: #8f83e0;
+  --accent-700: #5b4fb0;
+
+  /* ---- Apoyo y frío: verde nube y azul hielo ---- */
+  --support-100: #ddf0e9;
+  --support-500: #2f7a63;
+  --support-700: #1f5a49;
+  --cool-100: #d9ecfb;
+  --cool-500: #2f7bbd;
+  --cool-700: #215a8c;
+
+  /* ---- Semánticos: los sólidos se miden contra texto blanco, como siempre ---- */
+  --ok-bg: #d7f2e6;
+  --ok-fg: #0d5c43;
+  --ok-solid: #047857;
+  --warn-bg: #fdeecd;
+  --warn-fg: #7a4a06;
+  --warn-solid: #b45309;
+  --ember-bg: #fbe6d8;
+  --ember-fg: #8a3a08;
+  --ember-solid: #c2410c;
+  --bad-bg: #fbdcdc;
+  --bad-fg: #8c1d1d;
+  --bad-solid: #b91c1c;
+  --info-bg: #d9ecfb;
+  --info-fg: #0b4a6f;
+  --info-solid: #0369a1;
+
+  /* ---- Forma: el aire se cuenta en el radio, no en el borde ---- */
+  --radius-sm: 14px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 34px;
+  --radius-pill: 999px;
+
+  /* ---- Profundidad: anchas, bajas y teñidas al violeta ----
+     Sin línea dura: la sombra hace de frontera. Por eso `--line-strong` sube
+     a 4.02:1 y se aplica a todo lo accionable, como en los demás estilos. */
+  --shadow-1:
+    0 2px 6px rgba(74, 72, 99, 0.04),
+    0 8px 24px rgba(120, 105, 190, 0.07);
+  --shadow-2:
+    0 4px 10px rgba(74, 72, 99, 0.05),
+    0 18px 48px rgba(120, 105, 190, 0.11);
+  --shadow-3:
+    0 8px 18px rgba(74, 72, 99, 0.06),
+    0 36px 80px rgba(120, 105, 190, 0.16);
+
+  /* ---- Movimiento: el tiempo estirado. Es la firma, no un ajuste. ----
+     `--dur-3` gobierna el reveal del scroll (`.rv` en components.css): con
+     2200 ms el contenido aparece como si se disolviera. */
+  --dur-1: 220ms;
+  --dur-2: 700ms;
+  --dur-3: 2200ms;
+  --ease-out: cubic-bezier(0.22, 0.61, 0.24, 1);
+
+  /* ---- Tipografía: el aire también es interlineado ----
+     Se abre el line-height del cuerpo (1.55 → 1.75) y del display (1.05 → 1.15).
+     La caja de texto respira aunque el padding no cambie. */
+  --leading-tight: 1.15;
+  --leading-body: 1.75;
+
+  /* ---- Puente documentado en _template/specimen.css ---- */
+  --skin-on-solid: #ffffff;
+  --skin-on-dark: #ffffff;
+  --skin-on-dark-soft: #d6d2ea;
+  --skin-scrim: #2a2846cc;
+  --skin-tint: #5b4fb012;
+  --skin-tint-strong: #5b4fb024;
+  --skin-ring: #5b4fb000;
+  --skin-ring-dark: #ffffff00;
+  --skin-tray: #ffffffb8;
+  --skin-tray-radius: 24px;
+  --skin-light-bg: #fdfcff;
+  --skin-light-fg: #3a3760;
+  --skin-light-bg-hover: #f2f0f9;
+  --skin-inverse: #2b2a45;
+
+  /* El halo difuso es justo lo que la capa compartida ofrece para este estilo:
+     una luz suave alrededor de la superficie, sin fronteras duras ni resplandor
+     de neón. Se enciende en las dos superficies grandes y en ningún otro lado. */
+  --fx-glow-soft: 0 0 40px rgba(168, 152, 235, 0.28);
+}
+
+/* Las nubes. Van en el body, no en `--bg-page` (ver la nota del encabezado).
+   Cuatro manchas radiales muy separadas, sin bordes duros, más un velo base.
+   `background-attachment: fixed` las ancla a la ventana: al hacer scroll el
+   cielo se queda quieto y solo se mueve el contenido, que es lo que hace que
+   la página se sienta liviana. */
+[data-style="ethereal"] body.specimen {
+  background-color: #f7f6fb;
+  background-image:
+    radial-gradient(52rem 40rem at 12% -8%, rgba(190, 178, 245, 0.42), transparent 62%),
+    radial-gradient(46rem 38rem at 92% 4%, rgba(168, 206, 238, 0.38), transparent 60%),
+    radial-gradient(60rem 46rem at 68% 42%, rgba(226, 178, 208, 0.30), transparent 64%),
+    radial-gradient(44rem 36rem at 8% 78%, rgba(176, 216, 208, 0.32), transparent 62%);
+  background-attachment: fixed, fixed, fixed, fixed;
+  background-repeat: no-repeat;
+}
+
+/* ==========================================================================
+   LA FIRMA
+   ========================================================================== */
+
+/* ---- 1. Superficies: casi translúcidas sobre las nubes ----
+   Las tarjetas se dejan en un blanco con un punto de alpha para que el cielo
+   se intuye detrás. El texto NO queda expuesto al cielo: `--text-body` sigue
+   medido contra un blanco casi opaco, que es lo que sostiene el AA.
+
+   `.btn-cell-dark` queda FUERA a propósito: es la celda que demuestra un
+   control sobre fondo oscuro, y si se pone blanca se pierde la demostración
+   entera. (Este selector pierde contra `.btn-cell-dark` en `components.css`
+   solo por especificidad, no por orden.) */
+[data-style="ethereal"] .kitcard,
+[data-style="ethereal"] .token-pane,
+[data-style="ethereal"] .btn-cell:not(.btn-cell-dark),
+[data-style="ethereal"] .swatch {
+  background: rgba(253, 252, 255, 0.82);
+  border-color: var(--line-soft);
+  box-shadow: var(--shadow-1);
+}
+[data-style="ethereal"] .kitcard:hover,
+[data-style="ethereal"] .btn-cell:hover {
+  box-shadow: var(--shadow-2);
+}
+
+/* La celda oscura conserva su propio fondo, pero se le da el radio del
+   estilo y se le quita la sombra: es un contexto, no una tarjeta. */
+[data-style="ethereal"] .btn-cell-dark {
+  background: var(--brand-ink-deep);
+  border-radius: var(--radius-md);
+  box-shadow: none;
+}
+
+/* ---- 2. El botón de acento: lila claro con tinta oscura ----
+   Es la decisión de accesibilidad del estilo. El acento es claro por diseño, y
+   el blanco sobre lila no llega a AA: en vez de oscurecer el lila (y perder el
+   aire) se invierte el par. Medido: 5.55:1 en el extremo más oscuro. */
+[data-style="ethereal"] .btn-accent {
+  background: linear-gradient(140deg, #e2dcfa, #bdb2ee);
+  color: #3d3570;
+  box-shadow: var(--shadow-1);
+}
+[data-style="ethereal"] .btn-accent:hover {
+  background: linear-gradient(140deg, #ece8fd, #c9c0f5);
+  box-shadow: var(--shadow-2);
+}
+
+/* ---- 3. El primario es índigo, no negro ----
+   Negro puro rompería la paleta; el índigo mantiene la nube fría y aun así da
+   11.08:1 con texto blanco. */
+[data-style="ethereal"] .btn-primary {
+  background: linear-gradient(145deg, #474270, #2f2c50);
+  color: #ffffff;
+}
+[data-style="ethereal"] .btn-primary:hover {
+  box-shadow: var(--shadow-2);
+}
+
+/* ---- 4. Inhabilitado con color medido ----
+   La opacidad sobre un cielo tan claro deja el texto en ~2:1. Con color fijo
+   conserva 5.21:1 y el filete sigue en 4.02:1. */
+[data-style="ethereal"] .btn:disabled {
+  background: var(--bg-sunken);
+  color: var(--text-soft);
+  border-color: var(--line-strong);
+  opacity: 1;
+  box-shadow: none;
+}
+
+/* ---- 5. Foco: dos señales, porque el estilo es claro por todos lados ---- */
+[data-style="ethereal"] .btn:focus-visible,
+[data-style="ethereal"] .iconbtn:focus-visible,
+[data-style="ethereal"] .menubtn:focus-visible,
+[data-style="ethereal"] .field input:focus-visible,
+[data-style="ethereal"] .field select:focus-visible,
+[data-style="ethereal"] .ck button:focus-visible,
+[data-style="ethereal"] .swatch:focus-visible {
+  outline: 2px solid var(--accent-700);
+  outline-offset: 3px;
+}
+
+/* ---- 6. El acento vive en tres lugares ---- */
+[data-style="ethereal"] .eyebrow {
+  background: var(--accent-100);
+  color: var(--accent-700);
+  border-radius: var(--radius-pill);
+}
+[data-style="ethereal"] .menu a b { color: var(--accent-700); }
+
+/* ---- 7. La barra lateral y el chip siguen siendo sólidos ----
+   Un estado no puede quedar sobre una nube translúcida: tiene que poder leerse
+   sin depender de lo que haya detrás. */
+[data-style="ethereal"] .dbar {
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+[data-style="ethereal"] .ck button.is-on {
+  box-shadow: var(--shadow-1);
+}
+[data-style="ethereal"] .type-mono {
+  background: var(--bg-sunken);
+  border: 1px solid var(--line-soft);
+  color: var(--text-body);
+}
+[data-style="ethereal"] .brand { color: var(--brand-ink); }
+
+/* ==========================================================================
+   MODO OSCURO — el cielo de noche, no el mismo cielo apagado
+   --------------------------------------------------------------------------
+   Las nubes se mantienen: son la identidad del estilo, y el modo oscuro de un
+   sistema de nubes es un cielo estrellado, no un cielo gris. Se bajan la
+   opacidad y la luminosidad de las manchas, y la superficie se vuelve un azul
+   noche en vez de negro.
+
+   El acento DA LA VUELTA: en claro el botón de acento es lila claro con tinta
+   oscura; en oscuro sigue siendo claro, porque un periwinkle apagado sobre
+   azul noche se pierde. Lo que cambia de signo es el texto, no el fondo.
+   ========================================================================== */
+[data-theme="dark"][data-style="ethereal"] {
+  background-color: #14131f;
+  color-scheme: dark;
+
+  --bg-page: #14131f;
+  --bg-raised: #1c1b2b;
+  --bg-sunken: #100f1a;
+  --bg-nav: rgba(28, 27, 43, 0.72);
+
+  --text-strong: #ece9f7;
+  --text-body: #c3bfdc;
+  --text-soft: #9c97bd;
+  --text-faint: #7d789e;
+
+  --line-soft: #2a2840;
+  --line-strong: #6b6690;
+
+  --brand-ink: #cfcaf0;
+  --brand-ink-deep: #100f1a;
+  --brand-paper: #1c1b2b;
+
+  --accent-100: #2b2748;
+  --accent-500: #a89cee;
+  --accent-700: #c9c0f5;
+
+  --support-100: #16302a;
+  --support-500: #5fbfa2;
+  --support-700: #9fe3cd;
+  --cool-100: #152b40;
+  --cool-500: #5aa6de;
+  --cool-700: #93cdf5;
+
+  --ok-bg: #10342a;
+  --ok-fg: #7fdcb4;
+  --ok-solid: #047857;
+  --warn-bg: #3a2a0d;
+  --warn-fg: #fcd34d;
+  --warn-solid: #b45309;
+  --ember-bg: #3a2011;
+  --ember-fg: #fdba74;
+  --ember-solid: #c2410c;
+  --bad-bg: #3d1818;
+  --bad-fg: #fca5a5;
+  --bad-solid: #b91c1c;
+  --info-bg: #123044;
+  --info-fg: #93cdf5;
+  --info-solid: #0369a1;
+
+  --radius-sm: 14px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 34px;
+
+  /* Sombras de noche: menos recorrido, más profundidad y mucho más difuso. */
+  --shadow-1:
+    0 2px 8px rgba(0, 0, 0, 0.34),
+    0 10px 30px rgba(80, 70, 150, 0.22);
+  --shadow-2:
+    0 4px 14px rgba(0, 0, 0, 0.4),
+    0 22px 56px rgba(80, 70, 150, 0.3);
+  --shadow-3:
+    0 10px 24px rgba(0, 0, 0, 0.46),
+    0 40px 90px rgba(80, 70, 150, 0.38);
+
+  --dur-1: 220ms;
+  --dur-2: 700ms;
+  --dur-3: 2200ms;
+  --ease-out: cubic-bezier(0.22, 0.61, 0.24, 1);
+
+  /* El texto sobre un sólido NO se invierte en oscuro. Con tinta oscura
+     (#14131f) sobre estos sólidos de media saturación todos caen a 3.10–3.81:1;
+     con blanco dan 4.83–5.93:1. Los sólidos son los mismos que en claro, así
+     que `--skin-on-solid` también: en este estilo el color sólido manda, y el
+     que se aclara en oscuro es `--text-body`, no lo que va encima. */
+  --skin-on-solid: #ffffff;
+  --skin-on-dark: #ece9f7;
+  --skin-on-dark-soft: #a8a3c8;
+  --skin-scrim: #0b0a14cc;
+  --skin-tint: #ffffff12;
+  --skin-tint-strong: #ffffff20;
+  --skin-ring: #a89cee;
+  --skin-tray: #ffffff14;
+  --skin-light-bg: #2a2840;
+  --skin-light-fg: #ece9f7;
+  --skin-light-bg-hover: #353350;
+  --skin-inverse: #ece9f7;
+
+  /* De noche el halo tiene que ser tenue: con el mismo alpha de día, sobre
+     una superficie oscura, se come el filete de los controles. */
+  --fx-glow-soft: 0 0 44px rgba(140, 126, 220, 0.16);
+}
+
+/* El cielo de noche: mismas cuatro nubes, más apagadas y frías. */
+[data-theme="dark"][data-style="ethereal"] body.specimen {
+  background-color: #14131f;
+  background-image:
+    radial-gradient(52rem 40rem at 12% -8%, rgba(92, 78, 168, 0.34), transparent 62%),
+    radial-gradient(46rem 38rem at 92% 4%, rgba(48, 84, 140, 0.3), transparent 60%),
+    radial-gradient(60rem 46rem at 68% 42%, rgba(126, 70, 110, 0.24), transparent 64%),
+    radial-gradient(44rem 36rem at 8% 78%, rgba(48, 108, 112, 0.26), transparent 62%);
+  background-attachment: fixed, fixed, fixed, fixed;
+  background-repeat: no-repeat;
+}
+
+/* Superficies nocturnas: menos translúcidas que de día. Sobre un cielo con
+   manchas, un blanco al 82% en oscuro deja el texto compitiendo con el
+   degradado; al 92% ya es un plano. Igual que en claro, la celda de contexto
+   oscuro queda fuera: es una demostración, no una tarjeta. */
+[data-theme="dark"][data-style="ethereal"] .kitcard,
+[data-theme="dark"][data-style="ethereal"] .token-pane,
+[data-theme="dark"][data-style="ethereal"] .btn-cell:not(.btn-cell-dark),
+[data-theme="dark"][data-style="ethereal"] .swatch {
+  background: rgba(28, 27, 43, 0.92);
+}
+[data-theme="dark"][data-style="ethereal"] .btn-cell-dark {
+  background: #0b0a14;
+  box-shadow: none;
+}
+/* El acento se mantiene claro en oscuro; lo que se invierte es el texto. */
+[data-theme="dark"][data-style="ethereal"] .btn-accent {
+  background: linear-gradient(140deg, #cfc7f5, #b0a5ea);
+  color: #1a1830;
+}
+[data-theme="dark"][data-style="ethereal"] .btn-accent:hover {
+  background: linear-gradient(140deg, #ded8fb, #bfb5f4);
+}
+/* El primario se aclara: el índigo de claro desaparece sobre el azul noche. */
+[data-theme="dark"][data-style="ethereal"] .btn-primary {
+  background: linear-gradient(145deg, #dedaf7, #c4bee9);
+  color: #1a1830;
+}
+[data-theme="dark"][data-style="ethereal"] .eyebrow {
+  color: var(--accent-700);
+}

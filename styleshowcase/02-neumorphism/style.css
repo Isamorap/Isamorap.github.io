@@ -1,0 +1,412 @@
+/* ==========================================================================
+   ESTILO 02 · NEUMORPHISM — relieve tallado en el mismo color
+   --------------------------------------------------------------------------
+   Modo nativo: claro. Modos implementados: light + dark (ambos en este archivo).
+
+   Identidad: la superficie y el fondo SON EL MISMO COLOR. No hay plano que
+   separe nada: lo único que da forma es un par de sombras, una clara arriba-
+   a la izquierda y otra oscura abajo-a la derecha, y el radio es enorme.
+
+     raised:  -8px -8px 16px <luz> ,  8px 8px 16px <sombra>
+     inset:    4px  4px  8px <sombra>, -4px -4px 8px <luz>
+
+   El acento es un terracota cálido y se usa en pocos lugares: la marca, el
+   eyebrow y el botón primario. Los cinco semáforos siguen existiendo porque
+   son información, no decoración.
+
+   CONTRASTE — la advertencia honesta de este estilo:
+   Al no haber cambio de plano, el texto compite contra el fondo y NO contra
+   una superficie. Por eso la tinta se baja a #2d3748 (9.47:1) en vez del
+   #0f2432 de la base, y --line-strong sube a 3.63:1: en un estilo sin bordes,
+   ese filete es la ÚNICA cosa que le dice al usuario dónde termina un
+   control. No es decoración, es la red de seguridad. Por eso el veredicto es
+   solo-museo y el contraste se declara AA*.
+
+   Este archivo solo redefine tokens dentro de [data-style="neumorphism"];
+   nunca edita ../components.css. Alcance: los 4 bloques del espécimen.
+   ========================================================================== */
+
+[data-style="neumorphism"] {
+  background-color: #e0e5ec;
+  color-scheme: light;
+
+  /* ---- Superficies: el punto de partida es que TODAS son #e0e5ec ---- */
+  --bg-page: #e0e5ec;
+  --bg-raised: #e0e5ec;
+  --bg-sunken: #e0e5ec;
+  --bg-nav: rgba(224, 229, 236, 0.85);
+
+  /* ---- Texto: se baja el nivel para ganar contraste contra el fondo ---- */
+  --text-strong: #2d3748;
+  --text-body: #3f4a5a;
+  --text-soft: #556070;
+  --text-faint: #6b7688;
+
+  /* ---- Líneas: en un estilo sin planos, el filete ES la frontera ---- */
+  --line-soft: #c3cbd8;
+  --line-strong: #6b7688;
+
+  /* ---- Tinta y acento ---- */
+  --brand-ink: #2d3748;
+  --brand-ink-deep: #232c39;
+  --brand-paper: #e0e5ec;
+  --accent-100: #f7e4d4;
+  --accent-500: #a8480f;
+  --accent-700: #8a3d0c;
+
+  /* ---- Apoyo y frío ---- */
+  --support-100: #d9e8df;
+  --support-500: #2f6b4f;
+  --support-700: #1e4a37;
+  --cool-100: #d6eaf7;
+  --cool-500: #0e7490;
+  --cool-700: #0b556b;
+
+  /* ---- Semánticos: fondos propios (el estilo no puede fundirlos con el
+         fondo, porque perderían su función), pero los sólidos se miden
+         contra blanco para que la barra lateral llegue a AA ---- */
+  --ok-bg: #d7f0e2;
+  --ok-fg: #0f5132;
+  --ok-solid: #047857;
+  --warn-bg: #fdeecd;
+  --warn-fg: #7a4a06;
+  --warn-solid: #b45309;
+  --ember-bg: #fbe3d2;
+  --ember-fg: #8a3a08;
+  --ember-solid: #c2410c;
+  --bad-bg: #fbdcdc;
+  --bad-fg: #8c1d1d;
+  --bad-solid: #dc2626;
+  --info-bg: #d6ecfa;
+  --info-fg: #0b4a6f;
+  --info-solid: #0369a1;
+
+  /* ---- Forma: el radio enorme es la mitad del estilo ---- */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+
+  /* ---- Profundidad: la firma. Dos sombras, una clara y una oscura ---- */
+  --shadow-1:
+    -6px -6px 12px rgba(255, 255, 255, 0.85),
+    6px 6px 12px rgba(163, 177, 198, 0.6);
+  --shadow-2:
+    -9px -9px 18px rgba(255, 255, 255, 0.9),
+    9px 9px 18px rgba(163, 177, 198, 0.65);
+  --shadow-3:
+    -12px -12px 26px rgba(255, 255, 255, 0.95),
+    12px 12px 26px rgba(163, 177, 198, 0.7);
+
+  /* ---- Movimiento: el relieve se hunde al presionar ---- */
+  --dur-1: 160ms;
+  --dur-2: 280ms;
+  --dur-3: 650ms;
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* ---- Puente documentado en _template/specimen.css ---- */
+  --skin-on-solid: #ffffff;
+  --skin-on-dark: #ffffff;
+  --skin-on-dark-soft: #d7dde7;
+  --skin-scrim: #2d3748cc;
+  --skin-tint: #2d37480f;
+  --skin-tint-strong: #2d37481a;
+  --skin-ring: #2d374800;
+  --skin-ring-dark: #ffffff00;
+  --skin-tray: #d5dbe4;
+  --skin-tray-radius: 16px;
+  --skin-light-bg: #e0e5ec;
+  --skin-light-fg: #2d3748;
+  --skin-light-bg-hover: #d5dbe4;
+  --skin-inverse: #2d3748;
+}
+
+/* Sombra HUNDIDA: el estado presionado. Es la segunda mitad de la receta y
+   ningún token de la base la trae, así que se declara por skin. */
+[data-style="neumorphism"] {
+  --shadow-inset:
+    inset 4px 4px 8px rgba(163, 177, 198, 0.6),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.85);
+}
+
+/* ==========================================================================
+   LA FIRMA: relieve y hundimiento
+   --------------------------------------------------------------------------
+   Tres estados, y solo tres:
+     raised  → sombra fuera (--shadow-*), la base
+     hover   → sombra un nivel más profunda
+     pressed → sombra DENTRO (--shadow-inset), el relieve se hunde
+   ========================================================================== */
+
+/* ---- 1. Superficies: el relieve sale de components.css, pero los
+      contenedores que no piden sombra la necesitan explícitamente. ---- */
+[data-style="neumorphism"] .navpill,
+[data-style="neumorphism"] .btn,
+[data-style="neumorphism"] .btn-cell,
+[data-style="neumorphism"] .token-pane,
+[data-style="neumorphism"] .kitcard,
+[data-style="neumorphism"] .swatch,
+[data-style="neumorphism"] .menu,
+[data-style="neumorphism"] .iconbtn,
+[data-style="neumorphism"] .menubtn,
+[data-style="neumorphism"] .ck button,
+[data-style="neumorphism"] .counter,
+[data-style="neumorphism"] .shape,
+[data-style="neumorphism"] .motion-chip {
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-1);
+  border: none;
+}
+/* EXCEPCIÓN a la regla de arriba: la celda de "contexto oscuro" es el único
+   elemento del espécimen que necesita un plano DISTINTO del entorno. Sin ella
+   el bloque no demuestra nada y, peor, el rótulo blanco de components.css
+   queda ilegible sobre la superficie clara. Va hundida, no en relieve: es un
+   hueco donde encaja un botón claro. */
+[data-style="neumorphism"] .btn-cell-dark {
+  background: var(--brand-ink-deep);
+  box-shadow: var(--shadow-inset);
+}
+/* El hero deja de ser una postal con marco: es la misma superficie. */
+[data-style="neumorphism"] .shell {
+  background: var(--bg-raised);
+  border: none;
+  box-shadow: var(--shadow-3);
+}
+[data-style="neumorphism"] .shell-core {
+  border: none;
+  box-shadow: var(--shadow-inset);
+}
+
+/* ---- 2. El relieve se hunde al presionar ----
+   components.css escala el botón a 0.98 en :active. Acá además se hunde:
+   la escala va en la base (transform sin transición) para que el hundimiento
+   sea lo que se percibe, no el tamaño. */
+[data-style="neumorphism"] .btn {
+  transition: box-shadow var(--dur-2) var(--ease-out);
+}
+[data-style="neumorphism"] .btn:hover {
+  box-shadow: var(--shadow-2);
+}
+[data-style="neumorphism"] .btn:active,
+[data-style="neumorphism"] .ck button:active {
+  box-shadow: var(--shadow-inset);
+  transform: none;
+}
+
+/* ---- 3. El primario es relieve macizo, no un bloque de color plano ----
+   El terracota va con relieve del mismo tono: si se deja plano, el botón
+   deja de pertenecer al material y parece un recorte pegado encima. */
+[data-style="neumorphism"] .btn-primary {
+  background: linear-gradient(145deg, #b8551a, #933f0d);
+  color: #ffffff;
+  box-shadow:
+    -5px -5px 10px rgba(255, 255, 255, 0.55),
+    5px 5px 10px rgba(163, 177, 198, 0.75);
+}
+[data-style="neumorphism"] .btn-primary:hover {
+  box-shadow:
+    -7px -7px 14px rgba(255, 255, 255, 0.6),
+    7px 7px 14px rgba(163, 177, 198, 0.8);
+}
+[data-style="neumorphism"] .btn-primary:active {
+  box-shadow:
+    inset 4px 4px 8px rgba(94, 34, 4, 0.55),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.25);
+}
+[data-style="neumorphism"] .btn-accent {
+  background: var(--bg-raised);
+  color: var(--accent-700);
+  box-shadow: var(--shadow-1);
+}
+[data-style="neumorphism"] .btn-secondary {
+  background: var(--bg-raised);
+  color: var(--text-strong);
+}
+/* El destructivo conserva su color porque "destructivo" es información.
+   El relieve va en terracota igual, para que no parezca otro material. */
+[data-style="neumorphism"] .btn-danger {
+  background: linear-gradient(145deg, #e34a4a, #b91c1c);
+  color: #ffffff;
+}
+[data-style="neumorphism"] .btn-ghost {
+  box-shadow: none;
+}
+[data-style="neumorphism"] .btn-ghost:hover {
+  box-shadow: var(--shadow-1);
+}
+
+/* ---- 4. Inhabilitado: hundido, y con color medido ----
+   Lo hundido comunica "no disponible" mejor que la opacidad, y el color
+   medido mantiene el texto en 5.04:1 y el filete en 3.63:1. */
+[data-style="neumorphism"] .btn:disabled,
+[data-style="neumorphism"] .btn:disabled:hover {
+  background: var(--bg-raised);
+  color: var(--text-soft);
+  box-shadow: var(--shadow-inset);
+  border: 1px solid var(--line-strong);
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+/* ---- 5. EL FILETE ES LA FRONTERA ----
+   En un estilo sin cambio de plano, `--line-strong` no decora: es lo único
+   que le dice al usuario dónde acaba el control. Por eso sube a 3.63:1 y se
+   aplica a todo lo accionable. Sin esto, el estilo no es accesible. */
+[data-style="neumorphism"] .btn-secondary,
+[data-style="neumorphism"] .iconbtn,
+[data-style="neumorphism"] .menubtn,
+[data-style="neumorphism"] .field input,
+[data-style="neumorphism"] .field select,
+[data-style="neumorphism"] .ck button {
+  border: 1px solid var(--line-strong);
+}
+/* El foco necesita doble señal: el relieve hundido lo dice, y el filete de
+   acento lo confirma. Un estilo sin bordes no puede depender del color solo. */
+[data-style="neumorphism"] .btn:focus-visible,
+[data-style="neumorphism"] .iconbtn:focus-visible,
+[data-style="neumorphism"] .menubtn:focus-visible,
+[data-style="neumorphism"] .field input:focus-visible,
+[data-style="neumorphism"] .field select:focus-visible,
+[data-style="neumorphism"] .ck button:focus-visible,
+[data-style="neumorphism"] .swatch:focus-visible {
+  outline: 2px solid var(--accent-500);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   MODO OSCURO — el relieve cambia de signo, no de técnica
+   --------------------------------------------------------------------------
+   El error clásico del neumorfismo en oscuro es usar la MISMA receta con
+   negro: la sombra se come el componente. Acá la sombra oscura se tiñe al
+   azul de la superficie y la luz se vuelve un gris apenas más claro que el
+   fondo, que es lo que mantiene legible el canto del control.
+   ========================================================================== */
+[data-theme="dark"][data-style="neumorphism"] {
+  background-color: #232a35;
+  color-scheme: dark;
+
+  --bg-page: #232a35;
+  --bg-raised: #232a35;
+  --bg-sunken: #232a35;
+  --bg-nav: rgba(35, 42, 53, 0.85);
+
+  --text-strong: #eef1f6;
+  --text-body: #c3cbd8;
+  --text-soft: #98a3b5;
+  --text-faint: #7a8698;
+
+  --line-soft: #333d4b;
+  --line-strong: #6b7688;
+
+  --brand-ink: #eef1f6;
+  --brand-ink-deep: #1b212b;
+  --brand-paper: #232a35;
+  --accent-100: #3a2415;
+  --accent-500: #d97a3c;
+  --accent-700: #f0a868;
+
+  --support-100: #1e3329;
+  --support-500: #4ea77c;
+  --support-700: #8fdcb6;
+  --cool-100: #16303c;
+  --cool-500: #38bdf8;
+  --cool-700: #7dd3fc;
+
+  --ok-bg: #12362a;
+  --ok-fg: #6ee7b7;
+  --ok-solid: #047857;
+  --warn-bg: #3a2a0d;
+  --warn-fg: #fcd34d;
+  --warn-solid: #b45309;
+  --ember-bg: #3a2011;
+  --ember-fg: #fdba74;
+  --ember-solid: #c2410c;
+  --bad-bg: #3d1818;
+  --bad-fg: #fca5a5;
+  --bad-solid: #dc2626;
+  --info-bg: #123044;
+  --info-fg: #7dd3fc;
+  --info-solid: #0369a1;
+
+  /* La misma receta, con la luz teñida: la sombra oscura es azul, no negra. */
+  --shadow-1:
+    -6px -6px 12px rgba(255, 255, 255, 0.05),
+    6px 6px 12px rgba(12, 16, 22, 0.6);
+  --shadow-2:
+    -9px -9px 18px rgba(255, 255, 255, 0.06),
+    9px 9px 18px rgba(12, 16, 22, 0.65);
+  --shadow-3:
+    -12px -12px 26px rgba(255, 255, 255, 0.07),
+    12px 12px 26px rgba(12, 16, 22, 0.7);
+  --shadow-inset:
+    inset 4px 4px 8px rgba(12, 16, 22, 0.6),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.05);
+
+  /* Los sólidos de esta familia son profundos también en oscuro, así que el
+     texto va blanco: con la tinta oscura eran 2.63:1 (Éxito) y 2.88:1 (Aviso). */
+  --skin-on-solid: #ffffff;
+  --skin-on-dark: #eef1f6;
+  --skin-on-dark-soft: #a8b2c2;
+  --skin-scrim: #12161dcc;
+  --skin-tint: #ffffff0f;
+  --skin-tint-strong: #ffffff1a;
+  --skin-ring: #d97a3c;
+  --skin-tray: #2c3441;
+  --skin-tray-radius: 16px;
+  --skin-light-bg: #2c3441;
+  --skin-light-fg: #eef1f6;
+  --skin-light-bg-hover: #353f4e;
+  --skin-inverse: #eef1f6;
+}
+/* En oscuro el primario necesita su propio relieve: el terracota de claro
+   con la sombra de claro encima se ensuciaba. Y ambos extremos del gradiente
+   están medidos contra blanco: el extremo claro de claro (#c2611f) daba
+   4.18:1 y no llegaba a AA, así que la serie oscura baja un punto.
+   El `:not(:disabled)` es obligatorio: sin él, esta regla (más específica que
+   la del estado inactivo) pinta el botón deshabilitado como un primario
+   pleno, que es justo lo contrario de "inhabilitado". */
+[data-theme="dark"][data-style="neumorphism"] .btn-primary:not(:disabled) {
+  background: linear-gradient(145deg, #ad5317, #8f400e);
+}
+[data-theme="dark"][data-style="neumorphism"] .btn-primary:not(:disabled):hover {
+  background: linear-gradient(145deg, #b85a1a, #994711);
+}
+[data-theme="dark"][data-style="neumorphism"] .eyebrow {
+  color: var(--accent-700);
+}
+/* En oscuro el "contexto oscuro" de la celda tiene que ser MÁS oscuro que la
+   superficie (#232a35), o la celda deja de leerse como un hueco. */
+[data-theme="dark"][data-style="neumorphism"] .btn-cell-dark {
+  background: #151a23;
+}
+
+/* ---- 6. El acento: terracota en tres lugares ---- */
+[data-style="neumorphism"] .eyebrow {
+  background: var(--bg-raised);
+  color: var(--accent-700);
+  box-shadow: var(--shadow-1);
+  border-radius: var(--radius-pill);
+}
+[data-style="neumorphism"] .menu a b { color: var(--accent-700); }
+[data-style="neumorphism"] .brand { color: var(--text-strong); }
+
+/* ---- 7. El chip activo se hunde: la selección es una presión sostenida ---- */
+[data-style="neumorphism"] .ck button.is-on {
+  box-shadow: var(--shadow-inset);
+}
+[data-style="neumorphism"] .menu a:hover,
+[data-style="neumorphism"] .iconbtn:hover,
+[data-style="neumorphism"] .iconbtn:active {
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-inset);
+}
+[data-style="neumorphism"] .type-mono {
+  background: var(--bg-raised);
+  border: none;
+  box-shadow: var(--shadow-inset);
+  color: var(--text-body);
+}
+[data-style="neumorphism"] .dbar {
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+}

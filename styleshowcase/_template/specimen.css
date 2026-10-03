@@ -1,0 +1,254 @@
+/* ==========================================================================
+   ESPÉCIMEN DEL MUESTRARIO — estructura del banco de pruebas
+   --------------------------------------------------------------------------
+   Este archivo NO tiene opinión estética: define la cinta de museo, las
+   etiquetas de bloque y el PUENTE hacia los valores que hoy están hardcodeados
+   en ../components.css. El aspecto lo pone un skin de styles/<num>-<id>/.
+   Reutiliza sin copiar: ../tokens.css, ../components.css y ../assets/.
+   ========================================================================== */
+
+/* ---- Lienzo: el skin pinta el fondo en el <html>; el body no estorba ---- */
+body.specimen { background: transparent; margin: 0; }
+[data-style] { color: var(--text-body); font-family: var(--font-sans); }
+
+/* ---- Cinta de museo (chrome del muestrario, no del ejemplo) ---- */
+.skin-tape {
+  position: relative;
+  z-index: 60;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  padding: 10px var(--space-6);
+  background: #0e1116f2;
+  color: #e8edf3;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.skin-tape a { color: #cfe3f7; text-decoration: none; border-bottom: 1px solid #ffffff33; }
+.skin-tape a:hover { color: #ffffff; border-bottom-color: #ffffff; }
+.skin-tape-id { margin: 0; font-size: 12px; font-weight: 700; }
+.skin-tape-id b { color: #ffd9a8; }
+.skin-tape-meta { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.skin-tag { border: 1px solid #ffffff2b; border-radius: var(--radius-pill); padding: 2px 8px; white-space: nowrap; }
+.skin-tag.is-a11y { border-color: #7dd3fc66; color: #bae6fd; }
+.skin-tape-nav { margin-left: auto; display: flex; align-items: center; gap: var(--space-3); }
+
+/* ---- Etiqueta de bloque: anota qué parte de la plantilla se está viendo ---- */
+.blocktag {
+  max-width: 1240px;
+  margin: var(--space-12) auto 0;
+  padding: 0 var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+.blocktag::after { content: ""; flex: 1; height: 1px; background: var(--line-soft); }
+.blocktag b { color: var(--text-strong); }
+[data-style] .section { padding-top: var(--space-8); }
+
+/* ---- Pie del espécimen ---- */
+.specimen-foot {
+  max-width: 1240px;
+  margin: var(--space-16) auto 0;
+  padding: var(--space-8) var(--space-6) var(--space-16);
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  justify-content: space-between;
+  align-items: baseline;
+  color: var(--text-soft);
+  font-size: var(--text-small);
+}
+.specimen-foot p { margin: 0; max-width: 60ch; }
+
+/* ---- Selector de estilo del pie -------------------------------------------
+   Chrome del museo, igual que la cinta de arriba: si el skin vistiera este
+   control, elegir un estilo dependería del estilo que estás eligiendo. Por
+   eso va con colores, radios y tiempos fijos: solo usa --space-* y
+   --font-mono, las dos familias de variables que ningún skin reescribe. */
+.foot-pick {
+  flex: 1 0 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding: 12px 14px;
+  background: #0e1116f2;
+  color: #e8edf3;
+  border-radius: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.pick-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9fb0c9;
+}
+.pick-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.pick-row select,
+.pick-btn {
+  font: inherit;
+  color: #e8edf3;
+  background: #171c25;
+  border: 1px solid #ffffff2b;
+  border-radius: 8px;
+  padding: 6px 10px;
+  min-height: 32px;
+  cursor: pointer;
+}
+.pick-row select { max-width: 22rem; }
+.pick-row select option { background: #171c25; color: #e8edf3; }
+.pick-row select option:disabled { color: #6b7a8f; }
+.pick-btn { display: inline-flex; align-items: center; gap: 4px; }
+.pick-btn .material-symbols-outlined { font-size: 18px; }
+.pick-btn:hover:not(:disabled) { background: #232a36; border-color: #ffffff4d; }
+.pick-row select:focus-visible,
+.pick-btn:focus-visible { outline: 2px solid #7dd3fc; outline-offset: 2px; border-color: #7dd3fc; }
+.pick-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.pick-step { padding: 6px 8px; }
+.pick-copy { margin-left: var(--space-2); }
+.pick-hint { flex: 1 0 100%; margin: 0; color: #9fb0c9; font-size: 10px; letter-spacing: 0.04em; }
+
+/* Micro-feedback del control: 120ms que confirman el hover sin decorar. */
+@media (prefers-reduced-motion: no-preference) {
+  .pick-btn,
+  .pick-row select { transition: background-color 120ms linear, border-color 120ms linear; }
+}
+
+/* ==========================================================================
+   PUENTE A LOS HARDCODES DE components.css
+   --------------------------------------------------------------------------
+   A la izquierda, un valor literal de components.css; a la derecha, la
+   variable que un skin puede escribir. Así un estilo no tiene que pelear
+   con 30 selectores: define --skin-* y listo. Los números remiten a las
+   líneas del components.css de hoy (auditoría, no parche).
+   ========================================================================== */
+[data-style] .shell { background: var(--skin-tray, rgba(127, 147, 167, 0.12)); border-radius: var(--skin-tray-radius, 2rem); } /* 244,246 */
+[data-style] .hero-chip { background: var(--skin-scrim, rgba(13, 22, 32, 0.72)); color: var(--skin-on-dark, #fff); } /* 265,266 */
+[data-theme="dark"][data-style] .eyebrow-light { color: var(--skin-on-solid, #fff); } /* 227 */
+[data-style] .btn-primary, [data-style] .btn-accent, [data-style] .btn-danger,
+[data-style] .avatar { color: var(--skin-on-solid, #fff); } /* 377,379,385,762 */
+[data-style] .btn-light { background: var(--skin-light-bg, #fff); color: var(--skin-light-fg, var(--brand-ink)); } /* 388 */
+[data-style] .btn-light:hover { background: var(--skin-light-bg-hover, rgba(255, 255, 255, 0.9)); } /* 389 */
+[data-style] .btn-light .btn-ring { background: var(--skin-ring-dark, rgba(0, 51, 78, 0.12)); } /* 390 */
+[data-style] .btn-primary .btn-ring { background: var(--skin-ring, rgba(255, 255, 255, 0.16)); } /* 394 */
+[data-style] .btn-secondary .btn-ring, [data-style] .btn-ghost .btn-ring { background: var(--skin-tint, rgba(100, 116, 139, 0.14)); } /* 398 */
+/* Sobre una superficie oscura (.btn-cell-dark). Es un token aparte de
+   --skin-on-dark-soft porque ese también se usa en el pie y en la cita, que
+   van sobre la página CLARA en los temas claros: un solo valor no puede
+   servir a los dos fondos. */
+[data-style] .btn-cell-dark > span:last-child { color: var(--skin-on-scrim-soft, var(--skin-on-dark-soft, rgba(255, 255, 255, 0.7))); } /* 410 */
+[data-style] .quote .shell-core { background: var(--skin-inverse, var(--brand-ink)); } /* 499 */
+[data-style] .quote p { color: var(--skin-on-dark, #fff); } /* 500 */
+[data-style] .quote cite { color: var(--skin-on-dark-soft, rgba(255, 255, 255, 0.7)); } /* 501 */
+[data-style] .field input:focus, [data-style] .field select:focus {
+  border-color: var(--brand-ink);
+  box-shadow: 0 0 0 3px var(--skin-tint, rgba(0, 51, 78, 0.12));
+} /* 517-521 */
+[data-style] .dbar { color: var(--skin-on-solid, #fff); } /* 580 */
+[data-style] .motion-chip:hover { color: var(--skin-on-solid, #fff); } /* 339 */
+[data-style] .footer { color: var(--skin-on-dark-soft, rgba(255, 255, 255, 0.75)); } /* 894 */
+[data-style] .footer .btn-ghost { color: var(--skin-on-dark, #fff); } /* 909 */
+[data-style] .footer .btn-ghost:hover { background: var(--skin-tint-strong, rgba(255, 255, 255, 0.1)); color: var(--skin-on-dark, #fff); } /* 910 */
+
+/* ==========================================================================
+   EFECTOS COMPARTIDOS (opt-in)
+   --------------------------------------------------------------------------
+   A diferencia de los tokens de arriba, estos no sustituyen un valor: el
+   efecto se ENCIENDE por defecto y un skin lo apaga escribiendo `none`.
+   Así ningún estilo existente cambia de aspecto al añadir esta capa.
+
+   --fx-scanline  : textura de líneas sobre superficies (CRT/HUD)
+   --fx-grid      : retícula de fondo
+   --fx-glow      : halo luminoso de acento
+   --fx-glow-soft : halo difuso en superficies, sin implicación de foco
+   --fx-cut       : esquinas recortadas (clip-path de las superficies)
+   --fx-glitch    : desplazamiento cromático del texto de display
+   ========================================================================== */
+
+/* Textura de scanlines: se pinta detrás del contenido, nunca encima del
+   texto, y `pointer-events: none` para no capturar la interacción. */
+[data-style] .shell,
+[data-style] .token-pane,
+[data-style] .hero-media {
+  background-image: var(--fx-scanline, none);
+  background-repeat: var(--fx-scanline-repeat, repeat);
+  background-size: var(--fx-scanline-size, auto);
+}
+
+/* Retícula de fondo del documento. */
+[data-style] .section {
+  background-image: var(--fx-grid, none);
+  background-size: var(--fx-grid-size, auto);
+}
+
+/* Halo: se compone con la sombra del componente, nunca la sustituye, para no
+   perder la elevación que la jerarquía base ya establece. */
+[data-style] .btn-primary,
+[data-style] .btn-accent,
+[data-style] .btn-light {
+  box-shadow: var(--shadow-1, none), var(--fx-glow, none);
+}
+[data-style] .btn-primary:hover,
+[data-style] .btn-accent:hover {
+  box-shadow: var(--shadow-2, none), var(--fx-glow, none);
+}
+[data-style] .hero-media,
+[data-style] .frame-screen {
+  box-shadow: var(--shadow-2, none), var(--fx-glow-soft, none);
+}
+
+/* Esquinas recortadas: clip-path recorta el fondo, pero también el foco y
+   cualquier sombra; por eso solo se aplica a superficies, no a controles. */
+[data-style] .shell,
+[data-style] .token-pane {
+  clip-path: var(--fx-cut, none);
+}
+
+/* Desplazamiento cromático. Se aplica como pseudoelemento para no alterar la
+   lectura del texto por lectores de pantalla (el original queda intacto). */
+[data-style] .type-display { position: relative; }
+[data-style] .type-display::before,
+[data-style] .type-display::after {
+  content: var(--fx-glitch-content, none);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  clip-path: inset(0 0 0 0);
+}
+[data-style] .type-display::before {
+  color: var(--fx-glitch-a, transparent);
+  transform: var(--fx-glitch-a-transform, none);
+  mix-blend-mode: screen;
+}
+[data-style] .type-display::after {
+  color: var(--fx-glitch-b, transparent);
+  transform: var(--fx-glitch-b-transform, none);
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-style] .type-display::before,
+  [data-style] .type-display::after { transform: none; }
+}
+
+/* Fuera del alcance de los 4 bloques de esta muestra (pendiente si el
+   muestrario crece): 520/661/704/759/760/791/930/931/967. */
+
+@media (max-width: 767px) {
+  .skin-tape-nav { margin-left: 0; width: 100%; }
+  .pick-row { width: 100%; }
+  .pick-row select { flex: 1 1 12rem; max-width: none; }
+  .pick-copy { margin-left: 0; }
+  .blocktag { margin-top: var(--space-8); }
+}

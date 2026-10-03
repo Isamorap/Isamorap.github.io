@@ -1,0 +1,386 @@
+/* ==========================================================================
+   ESTILO 08 · MAXIMALISM — variante "todo a la vez" de la plantilla Showcase
+   --------------------------------------------------------------------------
+   Modo nativo: claro. Modos implementados: light + dark (ambos en este archivo).
+   Qué cambia: tres tipografías a la vez (serif de titular, sans de cuerpo y
+   mono para lo etiquetado), color saturado en todos los sólidos, filetes de
+   dos tonos y sombras multiples desplazadas que se leen como capas apiladas.
+   Qué NO cambia: estructura, densidad, jerarquía de acciones ni el vocabulario
+   de estados (los cinco semáforos siguen existiendo, ahora en color pleno).
+   Este archivo solo redefine tokens dentro de [data-style="maximalism"];
+   nunca edita ../components.css.
+   Alcance de esta muestra: los 4 bloques del espécimen. Ver STYLE.md.
+
+   DECISIÓN DE CONTRASTE, calculada antes de escribir (no después de romper):
+   · Todos los sólidos saturados van con BLANCO encima, nunca con tinta oscura:
+     el magenta #d6006e con blanco da 5.05:1 y con tinta oscura solo 3.60:1.
+     Ningún sólido de este skin admite la tinta oscura, y --skin-on-solid es
+     blanco en los dos temas por eso.
+   · Los acentos se pueden usar como TEXTO solo si lo que hay debajo es papel
+     claro: magenta 4.80:1, violeta 8.77:1, cian 5.45:1, verde 6.15:1. El
+     naranja se oscureció a #c93a00 porque #d43f00 daba 4.35:1.
+   · --text-faint se usa a 11px, o sea como texto normal: se fijó en #846266
+     (5.00:1). El valor inicial #8a6a6d daba 4.49:1 y quedabashort del mínimo.
+   · --line-strong es el filete real del control, así que se mide a 3:1 y no a
+     4.5:1: #a87f4e sobre el papel da 3.37:1.
+   ========================================================================== */
+
+[data-style="maximalism"] {
+  /* Lienzo: papel crema con trama de puntos y un halo cálido arriba a la
+     izquierda. Las manchas NO van en --bg-page (components.css usa ese token
+     como color en `.toast`); el fondo va en background-image del body. */
+  background-color: #fff6e9;
+  background-image:
+    radial-gradient(60rem 40rem at 12% -8%, #ffd1663d, transparent 62%),
+    radial-gradient(48rem 34rem at 96% 4%, #d6006e1f, transparent 60%),
+    radial-gradient(#7a4a1c14 1px, transparent 1px);
+  background-size: auto, auto, 18px 18px;
+  color-scheme: light;
+
+  /* ---- Superficies y texto ---------------------------------------------
+     Tinta cálida casi negra en vez de gris frío: es lo que hace que un papel
+     crema se lea como papel y no como una pantalla apagada. */
+  --bg-page: #fff6e9;
+  --bg-raised: #fffdf7;
+  --bg-sunken: #f7e6cd;
+  --bg-nav: #fffdf7e6;
+  --text-strong: #1a1114;
+  --text-body: #3d2b33;
+  --text-soft: #6b4f52;
+  --text-faint: #846266;
+  --line-soft: #edd9b8;
+  --line-strong: #a87f4e;
+
+  /* ---- Marca: el magenta manda, el violeta sostiene --------------------- */
+  --brand-ink: #3b1039;
+  --brand-ink-deep: #24081f;
+  --brand-paper: #fffdf7;
+
+  --accent-100: #ffe3f1;
+  --accent-500: #d6006e;
+  --accent-700: #a80057;
+
+  --support-100: #dcf5e0;
+  --support-500: #1b6b2f;
+  --support-700: #134d22;
+
+  --cool-100: #d6f3f5;
+  --cool-500: #00707a;
+  --cool-700: #04525a;
+
+  /* ---- Semánticos en color pleno ---------------------------------------
+     Los sólidos van con BLANCO encima: ver la nota de la cabecera. */
+  --ok-bg: #dcf5e0;
+  --ok-fg: #0f5220;
+  --ok-solid: #0f7a2e;
+  --warn-bg: #fdefd0;
+  --warn-fg: #7a4a06;
+  --warn-solid: #b45309;
+  --ember-bg: #ffe0d1;
+  --ember-fg: #8a3208;
+  --ember-solid: #c2410c;
+  --bad-bg: #ffdede;
+  --bad-fg: #8f1116;
+  --bad-solid: #c81e2e;
+  --info-bg: #d6f3f5;
+  --info-fg: #064a52;
+  --info-solid: #0b6fa4;
+
+  /* ---- Tres tipografías a la vez ---------------------------------------
+     Este es el gesto central del estilo: la serif solo en el titular, la sans
+     en el cuerpo, y la mono en todo lo que lleva etiqueta o dato. No se
+     mezclan en un mismo bloque de texto, que es donde se vuelve ilegible.
+     --font-display no está en tokens.css: lo declara el skin. */
+  --font-display: "Georgia", "Times New Roman", "Times", serif;
+  --text-display: clamp(2.6rem, 1.3rem + 5.4vw, 5.4rem);
+  --text-h2: clamp(1.6rem, 1.15rem + 1.8vw, 2.5rem);
+  --leading-tight: 0.94;
+  --leading-body: 1.62;
+
+  /* ---- Forma: el radio es una capa más, no una concesión ---- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-xl: 22px;
+  --radius-pill: 999px;
+
+  /* ---- Sombras: dos desplazadas, como papel sobre papel -----------------
+     El desplazamiento es grande y el desenfoque casi nulo: no es una sombra
+     difusa, es otra lámina detrás. Por eso el color es puro y no teñido. */
+  --shadow-1: 3px 3px 0 #d6006e, 5px 5px 0 #24081f;
+  --shadow-2: 5px 5px 0 #b45309, 8px 8px 0 #24081f;
+  --shadow-3: 8px 8px 0 #d6006e, 13px 13px 0 #24081f;
+
+  /* ---- Movimiento: seco y elástico, sin esperas largas ------------------ */
+  --ease-out: cubic-bezier(0.2, 0.9, 0.25, 1.3);
+  --dur-1: 140ms;
+  --dur-2: 260ms;
+  --dur-3: 520ms;
+
+  color-scheme: light;
+
+  /* =======================================================================
+     PUENTE (--skin-*): lo que _template/specimen.css y components.css leen
+     del skin. Los 14 son obligatorios; si faltan, el espécimen se ve a medias.
+     ======================================================================= */
+  --skin-on-solid: #ffffff;        /* sobre cualquier sólido saturado */
+  --skin-on-accent: #ffffff;       /* magenta saturado: 5.05:1 con blanco */
+  --skin-brand-ink: #d6006e;       /* tinta del icono de marca */
+  --skin-on-dark: #fffdf7;         /* texto sobre superficie oscura */
+  --skin-on-dark-soft: #ddcdc0;    /* versión atenuada: 12.01:1 sobre #24081f */
+  --skin-scrim: #24081fe0;         /* velo del chip del hero */
+  --skin-tint: #d6006e1a;          /* relleno tenue de marca */
+  --skin-tint-strong: #d6006e33;   /* relleno fuerte de marca */
+  --skin-ring: #24081f00;          /* anillo: en maximalism lo lleva el filete */
+  --skin-ring-dark: #ffffff00;
+  --skin-tray: #fffdf7bf;          /* bandeja translúcida de los controles */
+  --skin-tray-radius: 22px;
+  --skin-light-bg: #fffdf7;
+  --skin-light-fg: #1a1114;
+  --skin-light-bg-hover: #f7e6cd;
+  --skin-inverse: #d6006e;
+}
+
+/* ==========================================================================
+   OVERRIDES DE COMPONENTE
+   --------------------------------------------------------------------------
+   Todo scoped a [data-style="maximalism"]. Aquí es donde el estilo se vuelve
+   maximalismo de verdad: la serif en los titulares, la mono en todo lo que
+   lleva etiqueta, y el filete de dos tonos en cada control.
+   ========================================================================== */
+
+/* ---- Tipografía: tres familias, tres usos, nunca en el mismo bloque --- */
+[data-style="maximalism"] .hero h1,
+[data-style="maximalism"] h2,
+[data-style="maximalism"] h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--brand-ink);
+  letter-spacing: -0.02em;
+}
+[data-style="maximalism"] h2 { font-style: italic; }
+
+/* Todo lo etiquetado o fechado va en mono: es la voz del dato dentro del
+   ruido, y es lo que separa este estilo de un simple tema con serif. */
+[data-style="maximalism"] .eyebrow,
+[data-style="maximalism"] .blocktag,
+[data-style="maximalism"] .kitcard-sub,
+[data-style="maximalism"] .spec,
+[data-style="maximalism"] .field span,
+[data-style="maximalism"] .btn .btn-ring,
+[data-style="maximalism"] .motion-chip,
+[data-style="maximalism"] .shape span {
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+[data-style="maximalism"] .lead {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* ---- Botones: filete de dos tonos y sombra magenta --------------------- */
+[data-style="maximalism"] .btn {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border: 2px solid var(--brand-ink-deep);
+}
+[data-style="maximalism"] .btn:hover { transform: translate(-2px, -2px); filter: none; }
+[data-style="maximalism"] .btn:active { transform: translate(1px, 1px); }
+[data-style="maximalism"] .btn-primary { background: var(--brand-ink); color: var(--skin-on-solid); }
+[data-style="maximalism"] .btn-accent {
+  background: var(--accent-500);
+  color: var(--skin-on-accent, #fff);
+  border-color: var(--brand-ink-deep);
+}
+[data-style="maximalism"] .btn-danger { background: var(--bad-solid); color: var(--skin-on-solid); }
+[data-style="maximalism"] .btn-secondary {
+  background: var(--bg-raised);
+  color: var(--brand-ink);
+  border-color: var(--accent-500);
+}
+[data-style="maximalism"] .btn-ghost {
+  background: transparent;
+  color: var(--brand-ink);
+  border-color: var(--line-strong);
+}
+[data-style="maximalism"] .btn-light { color: var(--skin-light-fg); }
+
+/* ---- Superficies: cada capa con su color y su sombra -------------------- */
+[data-style="maximalism"] .kitcard,
+[data-style="maximalism"] .token-pane,
+[data-style="maximalism"] .swatch,
+[data-style="maximalism"] .pill,
+[data-style="maximalism"] .shape {
+  border: 2px solid var(--brand-ink-deep);
+}
+[data-style="maximalism"] .kitcard { background: var(--bg-raised); }
+[data-style="maximalism"] .kitcard-title { font-family: var(--font-display); }
+[data-style="maximalism"] .token-pane { background: var(--bg-raised); }
+
+/* La barra de estado conserva el sólido saturado y su tinta: en claro es
+   blanco, en oscuro tinta oscura, según --skin-on-solid. */
+[data-style="maximalism"] .dbar { border-radius: 0; }
+[data-style="maximalism"] .dbar span {
+  font-family: var(--font-mono);
+  letter-spacing: 0.2em;
+}
+
+/* ---- Estados: color pleno, nunca pastel ------------------------------- */
+[data-style="maximalism"] .pill {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-color: var(--brand-ink-deep);
+}
+[data-style="maximalism"] .ck button {
+  background: var(--bg-raised);
+  color: var(--brand-ink);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  border: 2px solid var(--brand-ink-deep);
+}
+/* El chip con estado conserva su fondo semántico: una regla más específica
+   sin :not() lo pisaría y la tinta --ok-fg quedaría sobre el papel. */
+[data-style="maximalism"] .ck button:not(.is-ok):not(.is-warn):not(.is-bad):not(.is-info) {
+  background: var(--bg-raised);
+}
+[data-style="maximalism"] .btn-cell { background: var(--bg-raised); }
+[data-style="maximalism"] .btn-cell-dark {
+  /* Tinta fija, NO --brand-ink-deep: en oscuro ese token es rosa pálido y la
+     celda "oscura" salía clara con texto claro encima (1.48:1). */
+  background: #24081f;
+  border-color: #24081f;
+}
+
+/* ---- Campos y navegación ---------------------------------------------- */
+[data-style="maximalism"] .field input,
+[data-style="maximalism"] .field select {
+  border: 2px solid var(--brand-ink-deep);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  font-family: var(--font-mono);
+}
+[data-style="maximalism"] .navpill,
+[data-style="maximalism"] .menubtn {
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+[data-style="maximalism"] .brand strong {
+  font-family: var(--font-display);
+  font-style: italic;
+}
+[data-style="maximalism"] .brand strong,
+[data-style="maximalism"] .quote p {
+  font-family: var(--font-display);
+}
+[data-style="maximalism"] .footer { font-family: var(--font-mono); }
+
+/* ---- El hero: el titular va en serif y el marco se dobla --------------- */
+[data-style="maximalism"] .hero {
+  border-bottom: 4px double var(--accent-500);
+  padding-bottom: var(--space-6);
+}
+
+/* ==========================================================================
+   MODO OSCURO — el lienzo se invierte, pero los sólidos no
+   --------------------------------------------------------------------------
+   En claro todo sólido lleva BLANCO encima; en oscuro los sólidos se aclaran
+   hasta el punto en que la tinta correcta pasa a ser la oscura (el verde da
+   5.40:1 con tinta y solo 3.43:1 con blanco). Es el mismo motivo por el que
+   claymorphism necesitó dos tokens: un sólido de tono medio no admite las dos
+   tintas a la vez.
+
+   El botón de acento SÍ cambia de tinta: usa --accent-500, que en oscuro es el
+   rosa claro #ff4d9e, y ahí el blanco baja a 3.08:1. Por eso --skin-on-accent
+   pasa a tinta oscura en este tema, igual que --skin-on-solid.
+   ========================================================================== */
+[data-theme="dark"][data-style="maximalism"] {
+  background-color: #1c1016;
+  background-image:
+    radial-gradient(60rem 40rem at 12% -8%, #7a1f5c47, transparent 62%),
+    radial-gradient(48rem 34rem at 96% 4%, #123a4a3d, transparent 60%),
+    radial-gradient(#f5e6d414 1px, transparent 1px);
+  background-size: auto, auto, 18px 18px;
+  color-scheme: dark;
+
+  /* ---- Superficies y texto: marfil cálido sobre ciruela muy oscuro ---- */
+  --bg-page: #1c1016;
+  --bg-raised: #281821;
+  --bg-sunken: #130b10;
+  --bg-nav: #281821e6;
+  --text-strong: #fdf0e6;
+  --text-body: #e3cdd4;
+  --text-soft: #bfa0ab;
+  --text-faint: #a5868f;
+  --line-soft: #3d2634;
+  --line-strong: #8a6a58;
+
+  --brand-ink: #ff4d9e;
+  --brand-ink-deep: #ffc4e0;
+  --brand-paper: #281821;
+
+  /* Los acentos se ACLARAN: el magenta de claro no llega a 4.5:1 sobre
+     ciruela, el rosa de aquí llega a 6.00:1. */
+  --accent-100: #4a1738;
+  --accent-500: #ff4d9e;
+  --accent-700: #a80057;
+
+  --support-100: #14311c;
+  --support-500: #4ade80;
+  --support-700: #86efac;
+
+  --cool-100: #0e3438;
+  --cool-500: #3fd0da;
+  --cool-700: #a5f3fc;
+
+  /* ---- Semánticos: sólidos claros + tinta oscura (5.30–7.83:1) ---------- */
+  --ok-bg: #12301a;
+  --ok-fg: #4ade80;
+  --ok-solid: #2f9e4f;
+  --warn-bg: #3a2a0c;
+  --warn-fg: #fbbf24;
+  --warn-solid: #e09b2a;
+  --ember-bg: #3d1c0c;
+  --ember-fg: #fb923c;
+  --ember-solid: #e2622a;
+  --bad-bg: #3a1219;
+  --bad-fg: #fda4af;
+  --bad-solid: #e8434f;
+  --info-bg: #0e2f3c;
+  --info-fg: #7dd3fc;
+  --info-solid: #2a9fd6;
+
+  /* ---- Sombras: en oscuro la lámina de detrás tiene que ser más clara
+     que el fondo, o desaparece. El magenta se apaga un punto. */
+  --shadow-1: 3px 3px 0 #7a1f5c, 5px 5px 0 #000000;
+  --shadow-2: 5px 5px 0 #7a5a1f, 8px 8px 0 #000000;
+  --shadow-3: 8px 8px 0 #7a1f5c, 13px 13px 0 #000000;
+
+  /* ---- Puente, tema oscuro ---------------------------------------------
+     --skin-on-solid cambia a tinta oscura: es lo que permite que los sólidos
+     claros de arriba admitan AA. El magenta de marca se resuelve aparte con
+     --skin-on-accent, que en este tema también es tinta. */
+  --skin-on-solid: #1a1114;
+  --skin-on-accent: #1a1114;   /* --accent-500 es rosa claro aquí: necesita tinta */
+  --skin-brand-ink: #ff4d9e;
+  --skin-on-dark: #fdf0e6;
+  --skin-on-dark-soft: #c9a7b0;
+  --skin-scrim: #130b10e0;
+  --skin-tint: #ff4d9e1f;
+  --skin-tint-strong: #ff4d9e38;
+  --skin-ring: #fdf0e600;
+  --skin-ring-dark: #00000000;
+  --skin-tray: #281821bf;
+  --skin-tray-radius: 22px;
+  --skin-light-bg: #fdf0e6;
+  --skin-light-fg: #1c1016;
+  --skin-light-bg-hover: #e3cdd4;
+  --skin-inverse: #ff4d9e;
+}

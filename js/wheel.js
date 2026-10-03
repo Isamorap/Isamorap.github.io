@@ -1,41 +1,59 @@
-const logo = document.querySelector('.logo');
-const tryMeMessage = document.getElementById('try-me-message');
-const themes = ['cyan-theme', 'midnight-theme', 'nord-theme', 'emerald-theme', 'amethyst-theme', 'crimson-theme', 'sunset-theme', 'ghost-theme']; // Array de temas (en themes.css)
+const logo = document.querySelector(".logo");
+// NOTA: #theme-cycle (menú flotante) lo cablea room.js; no engancharlo
+// aquí o cada click ciclaría dos temas.
+const tryMeMessage = document.getElementById("try-me-message");
+const themes = [
+  "cyan-theme",
+  "midnight-theme",
+  "nord-theme",
+  "emerald-theme",
+  "amethyst-theme",
+  "crimson-theme",
+  "sunset-theme",
+  "ghost-theme",
+]; // Array de temas (en themes.css)
 let currentThemeIndex = 0; // Índice del tema actual
 
 // Función para cambiar el tema
 function changeTheme(themeName) {
-    document.body.classList.remove(...themes); // Elimina todas las clases de tema existentes
-    document.body.classList.add(themeName); // Añade la nueva clase de tema
+  document.body.classList.remove(...themes); // Elimina todas las clases de tema existentes
+  document.body.classList.add(themeName); // Añade la nueva clase de tema
 }
 
 function showTryMeMessage() {
-    tryMeMessage.style.display = 'inline';
-    localStorage.setItem('messageShown', 'true');
+  if (!tryMeMessage) return;
+  tryMeMessage.style.display = "inline";
+  localStorage.setItem("messageShown", "true");
 }
 
 function hideTryMeMessage() {
-    tryMeMessage.style.display = 'none';
+  if (!tryMeMessage) return;
+  tryMeMessage.style.display = "none";
 }
 
-// Evento click en el logo
-logo.addEventListener('click', () => {
-    // Avanzar al siguiente tema
-    currentThemeIndex = (currentThemeIndex + 1) % themes.length; // Usamos el operador % (módulo) para volver al inicio si llegamos al final del array
-    const nextTheme = themes[currentThemeIndex];
-    changeTheme(nextTheme);
+function cycleTheme() {
+  // Avanzar al siguiente tema
+  currentThemeIndex = (currentThemeIndex + 1) % themes.length; // Usamos el operador % (módulo) para volver al inicio si llegamos al final del array
+  const nextTheme = themes[currentThemeIndex];
+  changeTheme(nextTheme);
 
-    // Ocultar el mensaje después del primer click
-    hideTryMeMessage();
-});
+  // Ocultar el mensaje después del primer click
+  hideTryMeMessage();
+}
+
+// La habitación 3D lo usa desde su menú flotante (🎨)
+window.cycleTheme = cycleTheme;
+
+// Evento click en el logo (o en el botón 🎨 del menú flotante)
+logo?.addEventListener("click", cycleTheme);
 
 // Mostrar el mensaje "Intenta presionarme" si es la primera vez
-window.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('messageShown') === null) {
-        showTryMeMessage();
+window.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("messageShown") === null) {
+    showTryMeMessage();
 
-        // Ocultar el mensaje después de unos segundos (opcional)
-        setTimeout(hideTryMeMessage, 2000); // 5 segundos
-    }
-    document.body.classList.add(themes[0]); // Añade la clase del primer tema al body
+    // Ocultar el mensaje después de unos segundos (opcional)
+    setTimeout(hideTryMeMessage, 2000); // 5 segundos
+  }
+  document.body.classList.add(themes[0]); // Añade la clase del primer tema al body
 });

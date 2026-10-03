@@ -1,0 +1,306 @@
+/* ==========================================================================
+   ESTILO 03 · GLASSMORPHISM — variante "vidrio" de la plantilla Showcase
+   --------------------------------------------------------------------------
+   Modo nativo: oscuro. Modos implementados: dark + light (ambos en este archivo).
+   Qué cambia: superficies translúcidas con blur de fondo, filo de luz de 1px,
+   acento frío (cielo → violeta), radios grandes y sombras difusas.
+   Qué NO cambia: estructura, densidad, jerarquía ni el vocabulario de estados.
+   Este archivo solo redefine tokens dentro de [data-style="glassmorphism"];
+   nunca edita ../components.css.
+   Alcance de esta muestra: los 4 bloques del espécimen (encabezado, tokens,
+   botones, estados operativos). Contraste y límites en STYLE.md.
+   ========================================================================== */
+
+[data-style="glassmorphism"] {
+  /* Lienzo: tres halos fríos sobre cielo profundo. Sin background-attachment
+     para que el mismo bloque funcione dentro de una tarjeta de la galería. */
+  background:
+    radial-gradient(60% 45% at 8% 0%, #38bdf852, transparent 70%),
+    radial-gradient(50% 40% at 92% 6%, #a855f74d, transparent 68%),
+    radial-gradient(55% 45% at 70% 100%, #14b8a638, transparent 72%),
+    linear-gradient(165deg, #0b1220 0%, #0c1526 48%, #080d17 100%);
+  color-scheme: dark;
+
+  /* Superficies y texto */
+  --bg-page: #0b1220;
+  --bg-raised: #ffffff14;
+  --bg-sunken: #ffffff0a;
+  --bg-nav: #0c1422cc;
+  --text-strong: #f2f7ff;
+  --text-body: #c9d7ec;
+  --text-soft: #9db2cd;
+  --text-faint: #7a8fae;
+  --line-soft: #ffffff24;
+  --line-strong: #ffffff47;
+
+  /* Identidad y acento: en vidrio el acento se aclara, no se oscurece */
+  --brand-ink: #0b1220;
+  --brand-ink-deep: #070c16;
+  --brand-paper: #ffffff;
+  --accent-100: #38bdf829;
+  --accent-500: #38bdf8;
+  --accent-700: #7dd3fc;
+  --support-100: #14b8a629;
+  --support-500: #5eead4;
+  --support-700: #99f6e4;
+  --cool-100: #38bdf824;
+  --cool-500: #38bdf8;
+  --cool-700: #7dd3fc;
+
+  /* Semánticos: los mismos cinco del sistema, en versión translúcida */
+  --ok-bg: #10b9812e;
+  --ok-fg: #6ee7b7;
+  --ok-solid: #34d399;
+  --warn-bg: #f59e0b2e;
+  --warn-fg: #fcd34d;
+  --warn-solid: #fbbf24;
+  --ember-bg: #ea580c33;
+  --ember-fg: #fdba74;
+  --ember-solid: #fb923c;
+  --bad-bg: #ef444433;
+  --bad-fg: #fca5a5;
+  --bad-solid: #f87171;
+  --info-bg: #38bdf82e;
+  --info-fg: #7dd3fc;
+  --info-solid: #38bdf8;
+
+  /* Forma, profundidad y movimiento */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+  --shadow-1: 0 1px 0 #ffffff24 inset, 0 10px 30px #03071273;
+  --shadow-2: 0 1px 0 #ffffff29 inset, 0 24px 60px #0307128c;
+  --shadow-3: 0 2px 0 #ffffff2e inset, 0 30px 80px #03071299;
+  --dur-1: 200ms;
+  --dur-2: 320ms;
+  --dur-3: 750ms;
+
+  /* Puente documentado en _template/specimen.css (hardcodes de components.css) */
+  --skin-blur: blur(18px) saturate(150%);
+  --skin-surface: #ffffff1f;
+  --skin-on-solid: #06121f;
+  --skin-on-dark: #ffffff;
+  --skin-on-dark-soft: #ffffffb8;
+  --skin-scrim: #060c168c;
+  --skin-tint: #ffffff1f;
+  --skin-tint-strong: #ffffff2e;
+  --skin-ring: #ffffff29;
+  --skin-ring-dark: #ffffff29;
+  --skin-tray: #ffffff0d;
+  --skin-tray-radius: 26px;
+  --skin-light-bg: #ffffffe6;
+  --skin-light-fg: #0b1220;
+  --skin-light-bg-hover: #ffffff;
+  --skin-inverse: #060c1699;
+}
+/* ---- El vidrio vive en las superficies, no en los bordes ---- */
+[data-style="glassmorphism"] .navpill,
+[data-style="glassmorphism"] .menu,
+[data-style="glassmorphism"] .token-pane,
+[data-style="glassmorphism"] .swatch,
+[data-style="glassmorphism"] .kitcard,
+[data-style="glassmorphism"] .btn-cell,
+[data-style="glassmorphism"] .counter,
+[data-style="glassmorphism"] .shape,
+[data-style="glassmorphism"] .type-mono {
+  backdrop-filter: var(--skin-blur);
+  -webkit-backdrop-filter: var(--skin-blur);
+}
+[data-style="glassmorphism"] .navpill,
+[data-style="glassmorphism"] .token-pane,
+[data-style="glassmorphism"] .kitcard,
+[data-style="glassmorphism"] .btn-cell {
+  background: var(--skin-surface);
+  border-color: #ffffff29;
+  box-shadow: var(--shadow-1);
+}
+[data-style="glassmorphism"] .swatch { background: #ffffff14; border-color: #ffffff24; }
+[data-style="glassmorphism"] .swatch i { box-shadow: 0 1px 0 #ffffff40 inset; }
+[data-style="glassmorphism"] .swatch:hover { transform: translateY(-3px); box-shadow: 0 16px 40px #03071280; }
+[data-style="glassmorphism"] .section h3,
+[data-style="glassmorphism"] .swatch-groups h3 { color: var(--cool-500); }
+[data-style="glassmorphism"] .space-bar i { background: linear-gradient(180deg, #38bdf8, #8b5cf6); }
+
+/* ---- Encabezado: el titular respira, la foto se vuelve ventana ---- */
+[data-style="glassmorphism"] .hero h1 { letter-spacing: -0.03em; text-shadow: 0 2px 30px #38bdf852; }
+[data-style="glassmorphism"] .lead { color: #b3c6e0; }
+[data-style="glassmorphism"] .eyebrow {
+  background: #ffffff1f;
+  color: #f2f7ff;
+  border: 1px solid #ffffff3d;
+  backdrop-filter: var(--skin-blur);
+  -webkit-backdrop-filter: var(--skin-blur);
+}
+[data-style="glassmorphism"] .shell { border-color: #ffffff29; }
+[data-style="glassmorphism"] .shell-core { box-shadow: 0 2px 0 #ffffff2e inset, 0 30px 70px #0307128c; }
+[data-style="glassmorphism"] .hero-media img { filter: saturate(115%) contrast(104%); }
+[data-style="glassmorphism"] .hero-chip {
+  border: 1px solid #ffffff38;
+  backdrop-filter: var(--skin-blur);
+  -webkit-backdrop-filter: var(--skin-blur);
+}
+
+/* ---- Botones: cuatro materiales de vidrio, misma jerarquía ---- */
+[data-style="glassmorphism"] .btn {
+  border: 1px solid #ffffff3d;
+  backdrop-filter: var(--skin-blur);
+  -webkit-backdrop-filter: var(--skin-blur);
+}
+[data-style="glassmorphism"] .btn-primary {
+  background: linear-gradient(135deg, #38bdf8, #8b5cf6);
+  color: #06121f;
+  border-color: #ffffff59;
+  box-shadow: 0 10px 30px #38bdf847, 0 1px 0 #ffffff66 inset;
+}
+[data-style="glassmorphism"] .btn-primary:hover { filter: brightness(1.07); box-shadow: 0 16px 44px #38bdf85c, 0 1px 0 #ffffff80 inset; }
+[data-style="glassmorphism"] .btn-accent { background: #ffffff24; color: #f2f7ff; box-shadow: 0 1px 0 #ffffff47 inset; }
+[data-style="glassmorphism"] .btn-secondary { background: #ffffff1a; border-color: #ffffff42; color: #f2f7ff; }
+[data-style="glassmorphism"] .btn-secondary:hover { background: #ffffff2e; }
+[data-style="glassmorphism"] .btn-ghost { color: #c9d7ec; border-color: #ffffff24; }
+[data-style="glassmorphism"] .btn-ghost:hover { background: #ffffff1a; color: #ffffff; }
+/* El texto lo pone --skin-on-solid (#06121f), no blanco: sus sólidos de
+   alerta son claros y con #fff quedan a 2.77-3.76:1. */
+[data-style="glassmorphism"] .btn-danger { color: var(--skin-on-solid); }
+[data-style="glassmorphism"] .btn-primary .btn-ring { background: #06121f2e; }
+[data-style="glassmorphism"] .btn-cell-dark { background: #060c1680; border-color: #ffffff29; }
+[data-style="glassmorphism"] .motion-chip { background: #ffffff14; border-color: #ffffff29; }
+[data-style="glassmorphism"] .motion-chip:hover { background: #38bdf847; border-color: #38bdf87a; }
+
+/* ---- Estados operativos: semáforos translúcidos, misma semántica ----
+   Las tintas salen de --ok-fg / --warn-fg / --bad-fg, no de literales: así el
+   tema claro toma su propia tinta sin tener que repetir la regla. Estaba fijo
+   en el verde/ámbar/rojo claros del tema oscuro, que sobre el vidrio claro
+   quedaban a 1.4-1.9:1. */
+[data-style="glassmorphism"] .pill { border: 1px solid currentColor; background: #ffffff12; }
+[data-style="glassmorphism"] .pill-ok { background: var(--ok-bg); color: var(--ok-fg); }
+[data-style="glassmorphism"] .pill-warn { background: var(--warn-bg); color: var(--warn-fg); }
+[data-style="glassmorphism"] .pill-bad { background: var(--bad-bg); color: var(--bad-fg); }
+[data-style="glassmorphism"] .pill-neutral { background: #ffffff12; color: var(--text-body); }
+[data-style="glassmorphism"] .ck button { background: #ffffff0f; border-color: #ffffff38; }
+[data-style="glassmorphism"] .ck button.is-on { box-shadow: 0 1px 0 #ffffff40 inset; }
+[data-style="glassmorphism"] .kitcard-title { color: #ffffff; }
+[data-style="glassmorphism"] .kitcard-sub { color: #9db2cd; }
+[data-style="glassmorphism"] .dbar span { text-shadow: 0 1px 3px #00000059; }
+[data-style="glassmorphism"] .field input { background: #ffffff12; border-color: #ffffff38; color: #f2f7ff; }
+[data-style="glassmorphism"] .field input::placeholder { color: #7a8fae; }
+[data-style="glassmorphism"] .field span { color: #c9d7ec; }
+
+/* ---- Transparencia reducida: el vidrio se vuelve sólido, no ilegible ---- */
+@media (prefers-reduced-transparency: reduce) {
+  [data-style="glassmorphism"] .navpill,
+  [data-style="glassmorphism"] .menu,
+  [data-style="glassmorphism"] .token-pane,
+  [data-style="glassmorphism"] .swatch,
+  [data-style="glassmorphism"] .kitcard,
+  [data-style="glassmorphism"] .btn-cell,
+  [data-style="glassmorphism"] .hero-chip,
+  [data-style="glassmorphism"] .btn,
+  [data-style="glassmorphism"] .field input,
+  [data-style="glassmorphism"] .ck button,
+  [data-style="glassmorphism"] .eyebrow {
+    background: #101a2a;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* ==========================================================================
+   MODO CLARO · el vidrio sobre cielo diurno
+   Mismo sistema, otras superficies: el vidrio pasa a blanco translúcido y la
+   tinta a azul profundo. El acento se OSCURECE para no perder AA (el cielo
+   claro no llega a 4.5:1 sobre blanco).
+   ========================================================================== */
+[data-theme="light"][data-style="glassmorphism"] {
+  background:
+    radial-gradient(60% 45% at 8% 0%, #38bdf83d, transparent 70%),
+    radial-gradient(50% 40% at 92% 6%, #a855f733, transparent 68%),
+    linear-gradient(165deg, #eef4ff 0%, #e8eefc 50%, #e0e8fa 100%);
+  color-scheme: light;
+  --bg-page: #eef4ff;
+  --bg-raised: #ffffff9e;
+  --bg-sunken: #ffffff73;
+  --bg-nav: #ffffffb3;
+  --text-strong: #0d2236;
+  --text-body: #33507a;
+  --text-soft: #4f6b95;
+  --text-faint: #6d86ad;
+  --line-soft: #0d22361f;
+  --line-strong: #0d223638;
+  --brand-ink: #0d2236;
+  --brand-ink-deep: #071624;
+  --accent-100: #0284c71f;
+  --accent-500: #0284c7;
+  --accent-700: #0369a1;
+  --cool-100: #0284c71f;
+  --cool-500: #0284c7;
+  --cool-700: #075985;
+  --support-100: #0f766e1f;
+  --support-500: #0f766e;
+  --support-700: #115e59;
+  --ok-bg: #10b98129;
+  --ok-fg: #047857;
+  --ok-solid: #10b981;
+  --warn-bg: #f59e0b2e;
+  --warn-fg: #92400e;
+  --warn-solid: #f59e0b;
+  --ember-bg: #ea580c29;
+  --ember-fg: #9a3412;
+  --ember-solid: #ea580c;
+  --bad-bg: #ef444429;
+  --bad-fg: #b91c1c;
+  --bad-solid: #ef4444;
+  --info-bg: #0284c71f;
+  --info-fg: #075985;
+  --info-solid: #0284c7;
+  --shadow-1: 0 1px 0 #ffffffcc inset, 0 10px 30px #0d22361f;
+  --shadow-2: 0 1px 0 #ffffffd9 inset, 0 24px 60px #0d223629;
+  --shadow-3: 0 2px 0 #ffffffd9 inset, 0 30px 80px #0d223638;
+  --skin-surface: #ffffffa6;
+  --skin-tint: #0d22361f;
+  --skin-tint-strong: #0d22361f;
+  --skin-ring: #ffffffd9;
+  --skin-ring-dark: #0d223621;
+  --skin-tray: #ffffff73;
+  --skin-inverse: #0d2236;
+}
+[data-theme="light"][data-style="glassmorphism"] .swatch,
+[data-theme="light"][data-style="glassmorphism"] .motion-chip { background: #ffffffb8; border-color: #0d22361f; }
+[data-theme="light"][data-style="glassmorphism"] .navpill,
+[data-theme="light"][data-style="glassmorphism"] .token-pane,
+[data-theme="light"][data-style="glassmorphism"] .kitcard,
+[data-theme="light"][data-style="glassmorphism"] .btn-cell { border-color: #ffffffcc; }
+[data-theme="light"][data-style="glassmorphism"] .eyebrow { background: #ffffffb8; color: #0369a1; border-color: #0d22361f; }
+[data-theme="light"][data-style="glassmorphism"] .lead { color: #4f6b95; }
+[data-theme="light"][data-style="glassmorphism"] .btn { border-color: #ffffffcc; }
+[data-theme="light"][data-style="glassmorphism"] .btn-accent { background: #ffffffcc; color: #0d2236; box-shadow: 0 1px 0 #ffffff inset; }
+[data-theme="light"][data-style="glassmorphism"] .btn-secondary { background: #ffffff9e; color: #0d2236; }
+[data-theme="light"][data-style="glassmorphism"] .btn-secondary:hover { background: #ffffff; }
+[data-theme="light"][data-style="glassmorphism"] .btn-ghost { color: #33507a; }
+[data-theme="light"][data-style="glassmorphism"] .btn-ghost:hover { background: #ffffffb8; color: #0d2236; }
+[data-theme="light"][data-style="glassmorphism"] .btn-cell-dark { background: #0d2236; border-color: #0d2236; }
+[data-theme="light"][data-style="glassmorphism"] .kitcard-title { color: #0d2236; }
+[data-theme="light"][data-style="glassmorphism"] .kitcard-sub { color: #4f6b95; }
+[data-theme="light"][data-style="glassmorphism"] .ck button { background: #ffffff9e; border-color: #0d223638; }
+[data-theme="light"][data-style="glassmorphism"] .field input { background: #ffffffcc; border-color: #0d223638; color: #0d2236; }
+[data-theme="light"][data-style="glassmorphism"] .field input::placeholder { color: #6d86ad; }
+[data-theme="light"][data-style="glassmorphism"] .field span { color: #33507a; }
+[data-theme="light"][data-style="glassmorphism"] .pill { background: #ffffff9e; }
+[data-theme="light"][data-style="glassmorphism"] .pill-neutral { color: #33507a; }
+[data-theme="light"][data-style="glassmorphism"] .dbar span { text-shadow: none; }
+
+/* El respaldo de transparencia reducida, en clave clara. */
+@media (prefers-reduced-transparency: reduce) {
+  [data-theme="light"][data-style="glassmorphism"] .navpill,
+  [data-theme="light"][data-style="glassmorphism"] .menu,
+  [data-theme="light"][data-style="glassmorphism"] .token-pane,
+  [data-theme="light"][data-style="glassmorphism"] .swatch,
+  [data-theme="light"][data-style="glassmorphism"] .kitcard,
+  [data-theme="light"][data-style="glassmorphism"] .btn-cell,
+  [data-theme="light"][data-style="glassmorphism"] .hero-chip,
+  [data-theme="light"][data-style="glassmorphism"] .btn,
+  [data-theme="light"][data-style="glassmorphism"] .field input,
+  [data-theme="light"][data-style="glassmorphism"] .ck button,
+  [data-theme="light"][data-style="glassmorphism"] .eyebrow { background: #f6faff; }
+}

@@ -1,0 +1,157 @@
+/* ==========================================================================
+   DESIGN TOKENS — Style Showcase (laboratorio agnóstico)
+   --------------------------------------------------------------------------
+   Único punto de verdad para color, tipografía, espaciado, radios, sombras
+   y movimiento del laboratorio. Las demos copian de aquí.
+   Tema: [data-theme="light"] (defecto) | [data-theme="dark"] en <html>.
+   ========================================================================== */
+
+:root {
+  /* ---- Marca (ancla existente, no se toca) ---- */
+  --brand-ink: #00334e;
+  --brand-ink-deep: #06283a;
+  --brand-paper: #ffffff;
+
+  /* ---- Grises fríos (una sola familia, tinte azul) ---- */
+  --slate-50: #f6f8fa;
+  --slate-100: #eef2f6;
+  --slate-150: #f4f6f8; /* gris de secciones (email) */
+  --slate-200: #d3dde6;
+  --slate-300: #a9bac9;
+  --slate-400: #7d93a7;
+  --slate-500: #64748b; /* texto secundario */
+  --slate-600: #4c6172;
+  --slate-700: #3a4c5b;
+  --slate-800: #26333e;
+  --slate-900: #16212a;
+
+  /* ---- Acento único: el único color cálido de la base ---- */
+  --accent-100: #fbeedd;
+  --accent-500: #c96f2e;
+  --accent-700: #96521f;
+
+  /* ---- Soporte (verde apagado, superficies e ilustración) ---- */
+  --support-100: #e3efe7;
+  --support-500: #2f6b4f;
+  --support-700: #1e4a37;
+
+  /* ---- Frío (información) ---- */
+  --cool-100: #e0f2fe;
+  --cool-500: #0ea5e9;
+  --cool-700: #075985;
+
+  /* ---- Semánticos (familias universales: el proyecto pone la palabra,
+         el token pone el color) ---- */
+  --ok-bg: #d1fae5;
+  --ok-fg: #065f46;
+  --ok-solid: #10b981;
+  --warn-bg: #fef3c7;
+  --warn-fg: #92400e;
+  --warn-solid: #f59e0b;
+  --ember-bg: #ffedd5;
+  --ember-fg: #9a3412;
+  --ember-solid: #ea580c;
+  --bad-bg: #fee2e2;
+  --bad-fg: #991b1b;
+  --bad-solid: #ef4444;
+  --info-bg: #e0f2fe;
+  --info-fg: #075985;
+  --info-solid: #0ea5e9;
+
+  /* ---- Superficies y texto (tema claro) ---- */
+  --bg-page: var(--slate-50);
+  --bg-raised: var(--brand-paper);
+  --bg-sunken: var(--slate-150);
+  --bg-nav: rgba(255, 255, 255, 0.82);
+  --text-strong: #0f2432;
+  --text-body: var(--slate-700);
+  --text-soft: var(--slate-500);
+  --text-faint: var(--slate-400);
+  --line-soft: #e3e9ef;
+  --line-strong: #c9d4de;
+
+  /* ---- Tipografía ---- */
+  --font-sans: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas,
+    monospace;
+  --text-display: clamp(2.4rem, 1.4rem + 4vw, 4.2rem);
+  --text-h2: clamp(1.5rem, 1.2rem + 1.4vw, 2.1rem);
+  --text-h3: 1.15rem;
+  --text-lead: 1.05rem;
+  --text-body-size: 0.95rem;
+  --text-small: 0.82rem;
+  --text-micro: 0.72rem;
+  --leading-tight: 1.05;
+  --leading-body: 1.55;
+  --tracking-wide: 0.14em;
+
+  /* ---- Espaciado / radios ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* ---- Sombras (teñidas al fondo, nunca negro puro) ---- */
+  --shadow-1:
+    0 1px 2px rgba(22, 33, 42, 0.05),
+    0 4px 14px rgba(22, 33, 42, 0.07);
+  --shadow-2:
+    0 2px 4px rgba(22, 33, 42, 0.05),
+    0 14px 34px rgba(22, 33, 42, 0.12);
+  --shadow-3:
+    0 4px 10px rgba(6, 40, 58, 0.18),
+    0 24px 60px rgba(6, 40, 58, 0.28);
+
+  /* ---- Movimiento ---- */
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-1: 160ms;
+  --dur-2: 280ms;
+  --dur-3: 650ms;
+
+  color-scheme: light;
+}
+
+/* ---- Tema oscuro: misma jerarquía, misma identidad ---- */
+[data-theme="dark"] {
+  --bg-page: #0d1620;
+  --bg-raised: #13202c;
+  --bg-sunken: #0a1219;
+  --bg-nav: rgba(13, 22, 32, 0.82);
+  --text-strong: #eef3f7;
+  --text-body: #b9c6d2;
+  --text-soft: #8398ab;
+  --text-faint: #5b7185;
+  --line-soft: #1d2c3a;
+  --line-strong: #2c4256;
+  --shadow-1:
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 4px 14px rgba(0, 0, 0, 0.35);
+  --shadow-2:
+    0 2px 6px rgba(0, 0, 0, 0.45),
+    0 16px 40px rgba(0, 0, 0, 0.5);
+  --accent-100: #3a2415;
+  --support-100: #152b22;
+  --cool-100: #0f2c3d;
+  --ok-bg: #0c2e24;
+  --ok-fg: #6ee7b7;
+  --warn-bg: #33230c;
+  --warn-fg: #fcd34d;
+  --ember-bg: #2e1a0e;
+  --ember-fg: #fdba74;
+  --bad-bg: #3a1414;
+  --bad-fg: #fca5a5;
+  --info-bg: #0f2c3d;
+  --info-fg: #7dd3fc;
+
+  color-scheme: dark;
+}

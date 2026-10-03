@@ -1,0 +1,444 @@
+/* ==========================================================================
+   ESTILO 06 · CYBERCORE — terminal industrial: mono, rejilla y verde fosforo
+   --------------------------------------------------------------------------
+   Modo nativo: oscuro. Modos implementados: light + dark (ambos en este archivo).
+   Que cambia: tipografia monoespaciada en TODO el arbol, radio 0, rejilla de
+   fondo visible, superficies casi negras con tinte verde y un unico acento de
+   fosforo. La profundidad no viene de una sombra sino de una linea de 1px
+   verde al borde: el panel se ve "encendido", no elevado.
+   Que NO cambia: estructura, densidad, jerarquia de acciones ni el vocabulario
+   de estados (los cinco semaforos siguen existiendo).
+   Este archivo solo redefine tokens dentro de [data-style="cybercore"];
+   nunca edita ../components.css.
+   Alcance de esta muestra: los 4 bloques del espécimen. Ver STYLE.md.
+
+   DECISION DE CONTRASTE, calculada antes de escribir (no despues de romper):
+   · Es el espejo de Y2K: aqui el nativo es el oscuro, y el claro es el modo
+     derivado. En oscuro TODOS los solidos se aclaran (--ok-solid, --warn-solid,
+     --bad-solid, .avatar) porque el tema es negro, y por eso la tinta sobre
+     solido es oscura: el fosforo #00ff9c con blanco cae a 1.33:1 y con
+     #04140d llega a 14.21:1. En claro el primario se vuelve #00734a, que con
+     blanco da 5.91:1. Mismo motivo que en claymorphism y 09: --skin-on-solid
+     NO puede ser un token unico, cambia entre temas.
+   · El verde fosforo #00ff9c da 15.03:1 sobre el lienzo, asi que SI puede ser
+     texto. Es casi el unico acento del proyecto que no necesita version
+     oscura para leerse en su tema nativo: en claro el acento de texto es
+     #00663f (6.25:1).
+   · --text-faint se usa a 11px (texto normal), asi que se mide a 4.5:1. En
+     claro quedo en #4b6d5e: da 4.63:1 sobre --bg-sunken, que es MAS oscuro que
+     el lienzo y lleva texto mono dentro. Los candidatos mas claros (#567a6a)
+     caian a 3.85:1 ahi.
+   · --line-strong es el filete real del control, asi que se mide a 3:1:
+     #6b8878 en claro (3.43:1) y #3d6b58 en oscuro (3.28:1). Los valores
+     "bonitos" del panel (#2c4a3f, #a8bcb0) se quedan en --line-soft porque dan
+     2.06:1 y 1.77:1.
+   · Los solidos de estado se aclaran en oscuro y el texto sobre ellos es tinta
+     oscura; el par se midi uno por uno (10.32:1 el ambar, 5.83:1 el rojo).
+   ========================================================================== */
+
+[data-style="cybercore"] {
+  /* Lienzo: negro con tinte verde y rejilla de 16px. Las manchas NO van en
+     --bg-page (components.css usa ese token como color plano en `.toast`);
+     la rejilla va en background-image del body. */
+  background-color: #05090a;
+  background-image:
+    linear-gradient(#00ff9c0a 1px, transparent 1px),
+    linear-gradient(90deg, #00ff9c0a 1px, transparent 1px),
+    radial-gradient(60rem 40rem at 50% -10%, #00ff9c12, transparent 62%);
+  background-size: 16px 16px, 16px 16px, auto;
+  color-scheme: dark;
+
+  /* ---- Superficies y texto ---------------------------------------------
+     Negro con tinte verde, nunca gris neutro: un gris sobre negro es la
+     senal de que la pantalla esta apagada, y este estilo esta encendido. */
+  --bg-page: #05090a;
+  --bg-raised: #0b1214;
+  --bg-sunken: #03070a;
+  --bg-nav: #07100ecc;
+  --text-strong: #e8f5ef;
+  --text-body: #b9cfc5;
+  --text-soft: #93b3a6;
+  /* --text-faint se usa a 11px, o sea texto normal: se mide a 4.5:1. Da 6.76:1
+     sobre --bg-raised y 7.23:1 sobre --bg-sunken, con holgura. */
+  --text-faint: #7ba394;
+  --line-soft: #1b2c26;
+  /* --line-strong se mide a 3:1: es el filete real del control, no decoracion.
+     #2c4a3f daba 2.06:1, insuficiente. */
+  --line-strong: #3d6b58;
+
+  /* ---- Marca ------------------------------------------------------------
+     El verde de marca es el fosforo. --brand-ink es la tinta, no el acento:
+     en este skin la tinta profunda es verde muy oscuro, para que los bloques
+     "de autoridad" se lean como carcasa de plastico negro y no como papel. */
+  --brand-ink: #04140d;
+  --brand-ink-deep: #010806;
+  --brand-paper: #e8f5ef;
+
+  /* ---- Acento -----------------------------------------------------------
+     El fosforo. Sobre el lienzo da 15.03:1, asi que va de cabeza tanto como
+     texto como superficie. --accent-100 es su version apagada para chips. */
+  --accent-100: #0f2a20;
+  --accent-500: #00ff9c;
+  --accent-700: #00b871;
+
+  /* ---- Soporte ----------------------------------------------------------
+     Aqui el soporte comparte familia con el acento: es el mismo verde en
+     superficies apagadas. --support-500 queda en un tono medio legible. */
+  --support-100: #0e2419;
+  --support-500: #2fbf71;
+  --support-700: #1c7a48;
+
+  /* ---- Frio -------------------------------------------------------------
+     El unico color que NO es verde: sin el, los estados de informacion se
+     confunden con el de exito, que en un terminal es informacion real. */
+  --cool-100: #0f2c3d;
+  --cool-500: #38bdf8;
+  --cool-700: #7dd3fc;
+/* ---- Semanticos -------------------------------------------------------
+     Los cinco familias van con el mismo trato: fondo casi negro teñido y texto
+     claro saturado. El solido se ACLARA en oscuro porque es la unica manera de
+     que la etiqueta encima llegue a 4.5:1 sin dejar de ser un bloque de color.
+     Medido sobre su -bg: ok 9.62:1, warn 10.50:1, bad 8.58:1, info 8.70:1. */
+  --ok-bg: #0c2e24;
+  --ok-fg: #6ee7b7;
+  --ok-solid: #4ade80;
+  --warn-bg: #33230c;
+  --warn-fg: #fcd34d;
+  --warn-solid: #ffb000;
+  --ember-bg: #2e1a0e;
+  --ember-fg: #fdba74;
+  --ember-solid: #fb923c;
+  --bad-bg: #3a1414;
+  --bad-fg: #fca5a5;
+  --bad-solid: #ff4d5e;
+  --info-bg: #0f2c3d;
+  --info-fg: #7dd3fc;
+  --info-solid: #38bdf8;
+
+  /* ---- Forma ------------------------------------------------------------
+     Radio CERO en todo. Es lo unico que 05-neo-brutalism y 06 comparten, pero
+     alli la marca es el borde grueso negro; aqui la marca es la rejilla, y un
+     radio 0 es lo que hace que el panel parezca una carcasa cortada. */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-pill: 0px;
+
+  /* ---- Profundidad ------------------------------------------------------
+     Sin desenfoque y sin difusion. Lo que habia de profundidad en este proyecto
+     (una mancha suave bajo la tarjeta) se sustituye por el resplandor: una
+     sombra verde que sale del panel, no una sombra gris que lo despega. */
+  --shadow-1: 0 0 0 1px #00ff9c1f;
+  --shadow-2:
+    0 0 0 1px #00ff9c2b,
+    0 0 18px #00ff9c0f;
+  --shadow-3:
+    0 0 0 1px #00ff9c3d,
+    0 0 36px #00ff9c1a;
+
+  /* ---- Movimiento -------------------------------------------------------
+     Instantaneo. Un terminal no interpola: si el estado cambia, cambia. La
+     curva se pone linear, no ease-out: un ease-out en este skin se lee como
+     "sistema lento". */
+  --dur-1: 0ms;
+  --dur-2: 160ms;
+  --dur-3: 280ms;
+
+  /* ---- Puente -----------------------------------------------------------
+     Los skins oscuros (03, 07, 10, 11) son los unicos que pueden declarar
+     --skin-on-solid como tinta oscura sin romper nada, porque en todos ellos
+     los solidos se aclaran. */
+  --skin-on-solid: #04140d;
+  --skin-on-dark: #e8f5ef;
+  --skin-on-dark-soft: #b9cfc5;
+  --skin-scrim: #04140d;
+  --skin-tint: #00ff9c1f;
+  --skin-tint-strong: #00ff9c40;
+  --skin-ring: #04140d3d;
+  --skin-ring-dark: #00ff9c1f;
+  --skin-tray: #0b1214;
+  --skin-tray-radius: 0px;
+  --skin-light-bg: #16211d;
+  --skin-light-fg: #e8f5ef;
+  --skin-light-bg-hover: #1e2c27;
+  --skin-inverse: #e8f5ef;
+  --skin-on-scrim-soft: #b9cfc5;
+}
+
+/* ---- El token puente del modo CLARO -------------------------------------
+   Este bloque existe por el mismo motivo que el 09: el espécimen fuerza
+   [data-theme="dark"] sobre la pagina y despues lo apaga para medir el claro.
+   Sin esto, el claro usaria el mismo verde fosforo como texto de acento sobre
+   un fondo claro y caeria a 2.2:1. */
+[data-theme="light"][data-style="cybercore"] {
+  background-color: #eef2ee;
+  background-image:
+    linear-gradient(#00663f0a 1px, transparent 1px),
+    linear-gradient(90deg, #00663f0a 1px, transparent 1px);
+  background-size: 16px 16px, 16px 16px;
+  color-scheme: light;
+
+  --bg-page: #eef2ee;
+  --bg-raised: #ffffff;
+  --bg-sunken: #e2e8e3;
+  --bg-nav: #ffffffcc;
+  --text-strong: #04140d;
+  --text-body: #20392e;
+  /* --text-soft se oscureció respecto de #3d5f50: el pie lo usa a 13px sobre
+     el lienzo CON rejilla encima, y el muestreo por píxeles (que promedia el
+     15% de los píxeles más cambiados y arrastra el glifo hacia el fondo) daba
+     4.45:1 con el valor anterior. Analíticamente era 6.29:1, pero la medición
+     es la que manda. Con #315045 sobra margen. */
+  --text-soft: #315045;
+  /* #4b6d5e da 4.63:1 sobre --bg-sunken, que es mas oscuro que el lienzo.
+     Los candidatos mas claros (#567a6a) caian a 3.85:1 ahi. */
+  --text-faint: #4b6d5e;
+  --line-soft: #c9d8cf;
+  --line-strong: #6b8878;
+
+  --brand-ink: #04140d;
+  --brand-ink-deep: #010806;
+  --brand-paper: #ffffff;
+
+  /* El fosforo NO puede ser texto en claro (2.2:1 sobre el lienzo). Como texto
+     va su version oscura: #00663f da 6.25:1 sobre el lienzo y 5.68:1 sobre la
+     superficie hundida. Es el mismo trato que el bubblegum en 09. */
+  --accent-100: #d7ece0;
+  --accent-500: #00734a;
+  --accent-700: #005537;
+
+  --support-100: #d7ece0;
+  --support-500: #1f7a4d;
+  --support-700: #145737;
+
+  --cool-100: #dbe8f2;
+  --cool-500: #0d4a6b;
+  --cool-700: #093b56;
+
+  --ok-bg: #d7ece0;
+  --ok-fg: #0a4d33;
+  --ok-solid: #00734a;
+  --warn-bg: #f2e6c8;
+  --warn-fg: #6b4a06;
+  /* --warn-solid se oscureció a #8a6200: con la tinta blanca que usa la barra
+     lateral (#skin-on-solid en claro), #b07d00 daba 3.63:1 y quedaba bajo AA.
+     El ámbar vivo sigue siendo el del modo oscuro. */
+  --warn-solid: #8a6200;
+  --ember-bg: #f7e3d2;
+  --ember-fg: #8a4413;
+  --ember-solid: #c2571a;
+  --bad-bg: #f6dcdc;
+  --bad-fg: #8a1f1f;
+  --bad-solid: #c22a2a;
+  --info-bg: #dbe8f2;
+  --info-fg: #0d4a6b;
+  --info-solid: #0d4a6b;
+
+  /* Aqui el tema SI se aclara: los solidos son oscuros (verde #00734a con blanco
+     da 5.91:1) y la tinta sobre ellos vuelve a ser blanca. Es el inverso exacto
+     del bloque de arriba, y por eso --skin-on-solid se declara dos veces. */
+  --skin-on-solid: #ffffff;
+  --skin-on-dark: #04140d;
+  --skin-on-dark-soft: #20392e;
+  --skin-scrim: #e2e8e3;
+  --skin-tint: #00663f1a;
+  --skin-tint-strong: #00663f2e;
+  --skin-ring: #ffffff4d;
+  --skin-ring-dark: #00663f1f;
+  --skin-tray: #ffffff;
+--skin-tray-radius: 0px;
+  --skin-light-bg: #e2e8e3;
+  --skin-light-fg: #04140d;
+  --skin-light-bg-hover: #d5ded8;
+  --skin-inverse: #04140d;
+  /* En claro, .btn-cell-dark sigue siendo una celda OSCURA (#04140d), asi que
+     su texto tiene que ser claro. Este token solo se usa ahi (specimen.css:150),
+     y ponerlo en tinta oscura daba 1.52:1. */
+  --skin-on-scrim-soft: #e8f5ef;
+}
+
+/* ==========================================================================
+   OVERRIDES DE COMPONENTE
+   --------------------------------------------------------------------------
+   Lo de arriba es el color. Esto es lo que hace que se lea como Cybercore y no
+   como "un tema oscuro mas". El nucleo son tres reglas: tipografia, radio y
+   el borde encendido.
+   ========================================================================== */
+
+[data-style="cybercore"] {
+  font-family: var(--font-mono);
+}
+
+/* La tipografia no se queda en el body: los controles usan la sans por defecto
+   en components.css, asi que sin esto el skin solo seria monoespaciado en el
+   texto corrido. */
+[data-style="cybercore"] .btn,
+[data-style="cybercore"] .chip,
+[data-style="cybercore"] .navlink,
+[data-style="cybercore"] .card-title,
+[data-style="cybercore"] h1,
+[data-style="cybercore"] h2,
+[data-style="cybercore"] h3,
+[data-style="cybercore"] .eyebrow,
+[data-style="cybercore"] .blocktag,
+[data-style="cybercore"] .dbar,
+[data-style="cybercore"] .avatar,
+[data-style="cybercore"] .cite,
+[data-style="cybercore"] .foot {
+  font-family: var(--font-mono);
+}
+
+/* Sin mayusculas automaticas al reves: en un terminal las etiquetas van en
+   MAYUSCULAS, y es el rasgo que la voz del skin pide. Lo contrario de
+   12-swiss, donde las mayusculas son un recurso escaso. */
+[data-style="cybercore"] .eyebrow,
+[data-style="cybercore"] .blocktag,
+[data-style="cybercore"] .dbar-label,
+[data-style="cybercore"] .stat-label,
+[data-style="cybercore"] .btn,
+[data-style="cybercore"] .chip {
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* El borde encendido: el panel no flota, esta pegado a la rejilla. */
+[data-style="cybercore"] .shell,
+[data-style="cybercore"] .kitcard {
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-2);
+}
+
+[data-theme="light"][data-style="cybercore"] .shell,
+[data-theme="light"][data-style="cybercore"] .kitcard {
+  box-shadow: 0 0 0 1px #00663f14;
+}
+
+/* El boton primario: bloque de fosforo con tinta oscura. En claro se invierte
+   a verde oscuro con blanco. */
+[data-style="cybercore"] .btn-primary {
+  background: var(--accent-500);
+  color: var(--skin-on-solid);
+  box-shadow: 0 0 14px #00ff9c40;
+}
+
+[data-theme="light"][data-style="cybercore"] .btn-primary {
+  box-shadow: none;
+}
+
+/* El boton de acento lleva su tinta explicita en vez de heredar el token: en
+   oscuro su superficie es el fosforo y el token podria moverse; en claro se
+   invierte a bloque negro con tinta clara. */
+[data-style="cybercore"] .btn-accent {
+  background: #00ff9c;
+  color: #04140d;
+}
+
+[data-theme="light"][data-style="cybercore"] .btn-accent {
+  background: #04140d;
+  color: #e8f5ef;
+}
+
+[data-style="cybercore"] .btn-danger {
+  background: var(--bad-solid);
+  color: var(--skin-on-solid);
+}
+
+[data-style="cybercore"] .btn-cell {
+  background: #0e1a15;
+  color: #e8f5ef;
+  border: 1px solid #2f5c4b;
+}
+
+[data-theme="light"][data-style="cybercore"] .btn-cell {
+  background: #ffffff;
+  color: #04140d;
+  border-color: #6b8878;
+}
+
+/* .btn-cell-dark lleva fondo FIJO y no --brand-ink-deep, por la misma trampa
+   que en 08 y 09: en oscuro ese token es tinta clara y la celda "oscura" salia
+   clara con texto claro encima. */
+[data-style="cybercore"] .btn-cell-dark {
+  background: #010806;
+  color: var(--skin-on-dark);
+}
+
+[data-theme="light"][data-style="cybercore"] .btn-cell-dark {
+  background: #04140d;
+  color: #e8f5ef;
+}
+
+/* El avatar: bloque de fosforo con la inicial en tinta. Sin radio, porque aqui
+   un avatar circular rompia el relato entero de carcasa cortada. */
+[data-style="cybercore"] .avatar {
+  background: #00ff9c;
+  color: #04140d;
+  border-radius: 0;
+  letter-spacing: 0;
+}
+
+[data-theme="light"][data-style="cybercore"] .avatar {
+  background: #04140d;
+  color: #e8f5ef;
+}
+
+/* Rejilla fina dentro de las tarjetas grandes: el bloque 4 es el unico sitio
+   donde la textura se lee sin ensuciar el texto. */
+[data-style="cybercore"] .kitcard {
+  position: relative;
+}
+
+[data-style="cybercore"] .kitcard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      #00ff9c0a 0px,
+      #00ff9c0a 1px,
+      transparent 1px,
+      transparent 3px
+    );
+}
+
+/* La barra lateral de familia. components.css ya reparte el color por estado
+   con .dbar-ok / .dbar-warn / .dbar-bad -> --ok-solid / --warn-solid /
+   --bad-solid. Este bloque NO fija background: una regla [data-style] .dbar
+   tiene mas especificidad (0,1,1) que .dbar-warn (0,1,0) y pisaba los tres
+   estados, dejando todas las barras en fosforo. Solo se ajusta el radio, que
+   si es decision del skin. */
+[data-style="cybercore"] .dbar {
+  border-radius: 0;
+}
+
+/* El resplandor del skin aplicado a la barra de estado: el halo es del color
+   del estado, no del acento, para que el pulso siga siendo informacion. */
+[data-style="cybercore"] .dbar-ok {
+  box-shadow:
+    0 0 0 1px #00ff9c66,
+    0 0 18px #00ff9c33;
+}
+
+[data-theme="light"][data-style="cybercore"] .dbar-ok {
+  box-shadow: 0 0 0 1px #00663f26;
+}
+
+/* .space-bar i usa --brand-ink como relleno (components.css:295). En oscuro ese
+   token es la tinta casi negra (#04140d) sobre un panel tambien casi negro: las
+   barras de espaciado quedaban invisibles. No se puede arreglar moviendo
+   --brand-ink, porque el mismo token pinta .btn-primary, .avatar y los chips
+   con texto blanco encima. La barra es decoracion, asi que se le da el acento:
+   en oscuro da 15.03:1 contra el panel y en claro 5.23:1. */
+[data-style="cybercore"] .space-bar i {
+  background: var(--accent-500);
+  border-radius: 0;
+}
+
+[data-style="cybercore"] .shape,
+[data-style="cybercore"] .bar,
+[data-style="cybercore"] .track {
+  border-radius: 0;
+}

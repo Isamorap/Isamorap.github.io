@@ -1,0 +1,103 @@
+{
+  "$meta": {
+    "id": "cyberpunk",
+    "num": "07",
+    "nombre": "Cyberpunk",
+    "familia": "ruido-brutal",
+    "status": "ready",
+    "archivos": { "skin": "style.css", "brief": "STYLE.md" },
+    "source_of_truth": "style.css",
+    "nota_hex": "Los colores de 8 dígitos son RGBA (#RRGGBBAA). Los de 6 son opacos.",
+    "nota": "Primer skin que enciende los efectos compartidos --fx-*. Esas bases viven en _template/specimen.css e inertes por defecto; este skin las activa escribiendo valores. No modifica components.css."
+  },
+  "aplicacion": {
+    "atributo": "[data-style=\"cyberpunk\"]",
+    "modo_nativo": "dark",
+    "modos": ["dark", "light"],
+    "capa_de_modo": "[data-theme=\"light\"][data-style=\"cyberpunk\"]",
+    "alcance_de_esta_muestra": ["encabezado", "tokens", "botones", "estados-operativos"]
+  },
+  "veredicto": "solo-museo",
+  "robar": [
+    "Filete que emite luz en vez de separar: un borde de color a baja opacidad hace de contorno sin peso visual.",
+    "Esquinas cortadas y asimétricas en superficies: 12px solo arriba-izquierda y abajo-derecha, como un panel de HUD. Es geometría, no decoración.",
+    "Retícula de fondo de 32px en dos ejes al 6%: da profundidad sin añadir ni un borde.",
+    "Movimiento seco (90/180/300ms) sin rebote: la interfaz responde como un sistema, no como un objeto físico.",
+    "Modo claro que APAGA el neón en vez de invertirlo a la fuerza: es la decisión que hace que el estilo sobreviva fuera de su contexto."
+  ],
+  "no_robar": [
+    "Scanlines sobre texto: la textura va en la superficie, nunca encima del contenido, o la lectura se degrada.",
+    "Neón como único indicador de estado: el color solo no basta, cada estado mantiene su etiqueta y su forma.",
+    "Glitch en bucle cerrado sobre texto que hay leer: aquí va en pasos sueltos y el 92% del tiempo está quieto.",
+    "clip-path en controles interactivos: el recorte se come el anillo de foco y hace el control irreconocible.",
+    "Más de dos colores de neón compitiendo en la misma vista: magenta y cian ya son la firma; un tercero la destruye."
+  ],
+  "a11y": {
+    "contraste": "AA",
+    "peor_caso": "Faint #7b8aa3 sobre fondo #05060a: 5.79:1 · Magenta #ff2e97 sobre fondo: 5.87:1 · Lila #c451ff: 5.76:1 · Deshabilitado #7b8aa3 sobre #131a2b: 4.2:1",
+    "reglas": [
+      "El lila se aclara a #c451ff porque el lila neón habitual (#b026ff) da 4.40:1 sobre el fondo y queda por debajo de AA.",
+      "El magenta #ff2e97 se usa como superficie de botón con tinta #05060a encima (5.87:1), nunca como texto pequeño sobre negro.",
+      "El modo oscuro NO invierte el neón: lo apaga (--fx-glow: none, --fx-scanline: none). Un halo luminoso sobre fondo claro es ilegible por definición.",
+      "En claro el acento se oscurece: #a80050 (6.67:1) y #00637a (6.05:1) para conservar el carácter sin perder AA.",
+      "El glitch es decorativo y va en pseudoelemento: el texto real no se mueve, así que no afecta a la lectura ni al lector de pantalla.",
+      "prefers-reduced-motion desactiva la animación del glitch; la composición estática cian/magenta se conserva."
+    ]
+  },
+  "tipografia": { "familia": "Montserrat (la de la base, sin cambios)", "display": "1.15–4.2rem / 800 · mayúsculas · line-height 0.95", "tracking_display": "-0.02em", "nota": "No se cambia la familia. El carácter sale de tres decisiones: peso 800, mayúsculas y line-height comprimido. El interletrado amplio (0.22em) queda reservado a etiquetas, donde funciona como marca de sistema." },
+  "forma": { "radius_sm": "0", "radius_md": "0", "radius_lg": "2px", "radius_xl": "2px", "radius_pill": "0", "borde": "filete de 1px #00e5ff40 (cian al 25%); en claro, 1px #cdd5e2" },
+  "profundidad": { "receta": "el halo hace de elevación: la sombra difusa se tiñe del acento en vez de ser gris", "shadow_1": "0 0 0 1px #1f2b45", "shadow_2": "0 0 24px #00e5ff26, 0 0 2px #00e5ff4d", "shadow_3": "0 0 48px #ff2e9733, 0 0 4px #00e5ff66" },
+  "textura": { "receta": "scanlines de 2px cada 3px (#0000005c) sobre superficies, más retícula de 32px al 6% en el fondo de sección", "nota": "Ambas texturas viven en superficies. El texto nunca queda debajo de la trama." },
+  "movimiento": { "dur_1": "90ms", "dur_2": "180ms", "dur_3": "300ms", "ease": "cubic-bezier(.16,1,.3,1)", "nota": "Seco y sin rebote. El glitch del display va en pasos sueltos (steps(1,end) cada 3.6s) y el 92% del tiempo no se mueve." },
+  "efectos": {
+    "nota": "Bases compartidas definidas en _template/specimen.css, inertes por defecto: un skin las enciende escribiendo valores. Cyberpunk es el primero en usarlas.",
+    "--fx-scanline": "repeating-linear-gradient(180deg, #ffffff00 0 2px, #0000005c 2px 3px)",
+    "--fx-grid": "retícula de 32px en dos ejes, cian al 6%",
+    "--fx-grid-size": "32px 32px",
+    "--fx-glow": "0 0 8px #00e5ff80, 0 0 20px #00e5ff40",
+    "--fx-glow-soft": "0 0 40px #00e5ff1f",
+    "--fx-cut": "polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)",
+    "--fx-glitch-content": "attr(data-text), inyectado por specimen.js",
+    "en_claro": "glow, glow-soft, scanline, cut y glitch pasan a none; la retícula baja a #00637a12"
+  },
+  "tokens": {
+    "--bg-page": "#05060a", "--bg-raised": "#0b0e1a", "--bg-sunken": "#030409",
+    "--bg-nav": "rgba(5, 6, 10, 0.86)",
+    "--text-strong": "#f2f6ff", "--text-body": "#c3cfe0", "--text-soft": "#93a3bb", "--text-faint": "#7b8aa3",
+    "--line-soft": "#1a2338", "--line-strong": "#2f3d5c",
+    "--brand-ink": "#00e5ff", "--brand-ink-deep": "#00a8bd", "--brand-paper": "#05060a",
+    "--accent-100": "#3a0a2a", "--accent-500": "#ff2e97", "--accent-700": "#c451ff",
+    "--support-100": "#022b1d", "--support-500": "#5cffc4", "--support-700": "#046c4a",
+    "--cool-100": "#04222b", "--cool-500": "#00e5ff", "--cool-700": "#00637a",
+    "--ok-bg": "#022b1d", "--ok-fg": "#5cffc4", "--ok-solid": "#2bff9e",
+    "--warn-bg": "#2e2205", "--warn-fg": "#ffd166", "--warn-solid": "#ffb020",
+    "--bad-bg": "#2b0713", "--bad-fg": "#ff5c7a", "--bad-solid": "#ff2e6b",
+    "--info-bg": "#04222b", "--info-fg": "#00e5ff", "--info-solid": "#00c8e0",
+    "--radius-sm": "0px", "--radius-md": "0px", "--radius-lg": "2px", "--radius-xl": "2px", "--radius-pill": "0px",
+    "--ease-out": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "--dur-1": "90ms", "--dur-2": "180ms", "--dur-3": "300ms",
+    "--tracking-wide": "0.22em"
+  },
+  "puente": {
+    "--skin-on-solid": "#05060a", "--skin-on-dark": "#f2f6ff", "--skin-on-dark-soft": "#93a3bb",
+    "--skin-scrim": "#05060af2", "--skin-tint": "#00e5ff1f", "--skin-tint-strong": "#ff2e9726",
+    "--skin-ring": "#05060a4d", "--skin-ring-dark": "#f2f6ff26",
+    "--skin-tray": "#0b0e1a", "--skin-tray-radius": "2px",
+    "--skin-light-bg": "#ff2e97", "--skin-light-fg": "#05060a", "--skin-light-bg-hover": "#c451ff",
+    "--skin-inverse": "#f2f6ff"
+  },
+  "modo_dark": {
+    "cambia": [
+      "Fondo claro #eef1f7 → negro #05060a con tinte violeta",
+      "Acento #a80050 → #ff2e97 (el color se enciende en vez de apagarse)",
+      "Cian #00637a → #00e5ff (13.17:1, el valor más alto de la paleta)",
+      "Se encienden scanlines, retícula, halo, esquinas cortadas y glitch"
+    ],
+    "nota": "Es el modo de diseño, no una adaptación. En la dirección contraria (claro) el estilo no invierte el neón: lo apaga, porque un halo luminoso sobre fondo claro no se lee. Esa asimetría es deliberada y es la razón de que el veredicto sea solo-museo."
+  },
+  "palette": {
+    "Superficies": { "Vacío": "#05060a", "Panel": "#0b0e1a", "Hondo": "#030409", "Filete": "#00e5ff40" },
+    "Tinta y acento": { "Blanco azulado": "#f2f6ff", "Secundaria": "#93a3bb", "Magenta": "#ff2e97", "Cian": "#00e5ff" },
+    "Semánticos": { "Éxito": "#5cffc4", "Aviso": "#ffd166", "Crítico": "#ff5c7a", "Neutro": "#7b8aa3" }
+  }
+}

@@ -1,0 +1,971 @@
+/* ── Habitación / modo silla ──────────────────────────────────────────
+   La habitación ES el portfolio: app fullscreen sin scroll. Con .room-look
+   el canvas captura el gesto (siempre activo salvo fallback). */
+
+html,
+body {
+    height: 100%;
+}
+
+body:not(.room-dead) {
+    overflow: hidden;
+    padding-bottom: 0;
+}
+
+.hero {
+    height: 100vh;
+    height: 100dvh;
+}
+
+.hero #hero-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+#room-ui {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+#room-ui .room-reticle,
+#room-ui .room-tip,
+#room-ui .room-hint {
+    pointer-events: none;
+}
+
+#room-ui .room-exit {
+    pointer-events: auto;
+}
+
+/* Retícula central: solo visible en modo look */
+.room-reticle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    margin: -5px 0 0 -5px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.15s ease, background 0.15s ease;
+}
+
+.hero.room-look .room-reticle {
+    opacity: 0.9;
+}
+
+.room-reticle.is-hot {
+    transform: scale(1.6);
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Tooltip del objeto apuntado */
+.room-tip {
+    position: absolute;
+    left: 50%;
+    top: calc(50% + 26px);
+    transform: translateX(-50%);
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    color: var(--text-color);
+    background: var(--secondary-color);
+    border: 1px solid var(--glass-border);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.room-tip.is-on {
+    opacity: 1;
+}
+
+/* Joystick táctil (mitad izquierda): solo lo muestra el JS al tocar */
+#room-stick {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid var(--glass-border);
+    background: color-mix(in srgb, var(--secondary-color) 60%, transparent);
+    display: none;
+    pointer-events: none;
+}
+
+#room-knob {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 52px;
+    height: 52px;
+    margin: -26px 0 0 -26px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    opacity: 0.85;
+}
+
+/* Ayuda inferior */
+.room-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    color: var(--text-color);
+    background: color-mix(in srgb, var(--secondary-color) 82%, transparent);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    padding: 0.45rem 1rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    white-space: nowrap;
+    max-width: 92%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hero.room-look .room-hint {
+    opacity: 0.95;
+}
+
+/* Botón ⌂: devuelve la cámara al asiento */
+.room-exit {
+    position: absolute;
+    right: 14px;
+    bottom: 18px;
+    pointer-events: auto;
+    display: none;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--text-color);
+    background: var(--secondary-color);
+    border: 1px solid var(--glass-border);
+}
+
+@media (max-width: 768px) {
+    .room-exit {
+        bottom: auto;
+        top: 64px;
+        right: 8px;
+    }
+}
+
+.hero.room-look .room-exit {
+    display: inline-flex;
+}
+
+/* Con foco en un objeto, retícula y tip se atenúan (el panel manda) */
+.hero.is-focused .room-reticle {
+    opacity: 0.2;
+}
+
+.hero.is-focused .room-tip {
+    opacity: 0;
+}
+
+.room-exit:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* Barra superior de marca (la habitación es el portfolio, sin intro antigua) */
+.room-topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    padding: 16px 20px;
+    pointer-events: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+}
+
+.room-brand {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-color);
+    background: color-mix(in srgb, var(--secondary-color) 82%, transparent);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    padding: 0.4rem 1rem;
+}
+
+/* Menú flotante de secciones: enfoca el objeto 3D + ajustes */
+#room-menu {
+    position: fixed;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.6rem;
+    border-radius: 18px;
+    color: var(--text-color);
+    background: color-mix(in srgb, var(--secondary-color) 82%, transparent);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--glass-border);
+}
+
+#room-menu .room-mbrand {
+    align-self: center;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--btn-text);
+    background: var(--primary-color);
+    margin-bottom: 0.2rem;
+}
+
+#room-menu button {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.5rem 0.8rem;
+    border-radius: 12px;
+    color: var(--text-color);
+    background: transparent;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+#room-menu button:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+#room-menu button i {
+    font-size: 1rem;
+}
+
+#room-menu .room-msep {
+    height: 1px;
+    background: var(--glass-border);
+    margin: 0.25rem 0.3rem;
+}
+
+#room-menu #theme-cycle,
+#room-menu #freelook-toggle,
+#room-menu #language-toggle {
+    justify-content: center;
+    font-size: 1rem;
+}
+
+#room-menu #freelook-toggle.is-on {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+@media (pointer: coarse) {
+    #room-menu #freelook-toggle {
+        display: none;
+    }
+}
+
+body.room-dead #room-menu {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #room-menu {
+        left: 8px;
+        right: 8px;
+        top: auto;
+        bottom: 8px;
+        transform: none;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 0.45rem;
+        gap: 0.15rem;
+    }
+
+    #room-menu .room-mbrand,
+    #room-menu .room-msep {
+        display: none;
+    }
+
+    #room-menu button span {
+        display: none;
+    }
+
+    #room-menu button {
+        padding: 0.55rem 0.65rem;
+    }
+
+    #room-menu button i {
+        font-size: 1.15rem;
+    }
+}
+
+/* Fallback esencial: solo si el 3D no arranca (mini-portfolio) */
+#room-fallback {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 90px 20px 60px;
+    overflow-y: auto;
+}
+
+body.room-dead #room-fallback {
+    display: flex;
+}
+
+body.room-dead #room-ui,
+body.room-dead .room-topbar {
+    display: none;
+}
+
+body.room-dead .hero {
+    height: auto;
+    min-height: 100dvh;
+}
+
+body.room-dead #room-fallback {
+    position: static;
+}
+
+#room-fallback h1 {
+    margin-bottom: 1rem;
+}
+
+#room-fallback .fb-bio {
+    max-width: 640px;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+.fb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    max-width: 860px;
+    width: 100%;
+    margin-top: 1.5rem;
+    text-align: left;
+}
+
+.fb-grid h2 {
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    margin: 0 0 0.5rem;
+}
+
+.fb-grid ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.fb-grid a {
+    color: var(--text-color);
+}
+
+.fb-grid a:hover {
+    color: var(--primary-color);
+}
+
+.fb-social i {
+    margin-right: 0.4rem;
+}
+
+.fb-foot {
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+.room-diag {
+    margin-top: 1.5rem;
+    max-width: 640px;
+    font-size: 0.85rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: var(--card-bg);
+}
+
+/* El canvas solo captura gesto en modo look; antes deja pasar todo */
+.hero #hero-canvas canvas {
+    display: block;
+}
+
+.hero:not(.room-look) #hero-canvas {
+    pointer-events: none;
+}
+
+.hero.room-look #hero-canvas {
+    opacity: 1;
+}
+
+/* Viñeta + grano indie sobrio sobre el canvas */
+.hero #hero-canvas::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.38) 100%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.hero.room-look #hero-canvas::after {
+    opacity: 1;
+}
+
+/* Sin scroll en la app (el fallback muerto sí scrollea) */
+
+/* ── Panel lateral (posters) ─────────────────────────────────────────── */
+.room-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: min(360px, 88%);
+    z-index: 4;
+    padding: 1.4rem 1.3rem 1.2rem;
+    color: var(--text-color);
+    background: var(--secondary-color);
+    backdrop-filter: blur(14px);
+    border-left: 1px solid var(--glass-border);
+    transform: translateX(105%);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow-y: auto;
+}
+
+.room-panel.is-open {
+    transform: none;
+}
+
+.room-panel h3 {
+    margin: 0 0 0.4rem;
+    font-size: 1.3rem;
+}
+
+.room-panel h3 .kicker {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    margin-bottom: 0.3rem;
+}
+
+.room-panel p {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    opacity: 0.9;
+}
+
+.room-panel .room-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1rem;
+}
+
+.room-stations-h {
+    width: 100%;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    margin: 0.5rem 0 -0.2rem;
+}
+
+.room-panel .room-close {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.8rem;
+    background: transparent;
+    border: 0;
+    color: var(--text-color);
+    font-size: 1.3rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.3rem;
+}
+
+.room-panel .room-close:hover {
+    color: var(--primary-color);
+}
+
+/* ── Overlay del monitor (zoom casi completo) ────────────────────────── */
+.room-screen {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+}
+
+.room-screen.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.room-screen-card {
+    width: min(680px, 100%);
+    max-height: 100%;
+    overflow-y: auto;
+    border-radius: 14px;
+    padding: 1.4rem;
+    color: var(--text-color);
+    background: var(--secondary-color);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+    transform: scale(0.94) translateY(10px);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.room-screen.is-open .room-screen-card {
+    transform: none;
+}
+
+.room-screen-card h3 {
+    margin: 0 0 0.3rem;
+    font-size: 1.25rem;
+}
+
+.room-screen-card h3 .kicker {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    margin-bottom: 0.3rem;
+}
+
+.room-screen-card p {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    opacity: 0.9;
+}
+
+/* Mini preview vivo con skins del showcase */
+.room-skinstage {
+    margin: 1rem 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+}
+
+.room-skinstage .ss-demo {
+    padding: 1rem;
+}
+
+.room-skinstage .ss-demo h4 {
+    margin: 0 0 0.2rem;
+    font-size: 1.05rem;
+}
+
+/* El skin pinta las superficies pero no nuestros textos: tinta del skin
+   (o fallback legible) según el modo nativo de cada estilo. */
+.room-skinstage .ss-demo[data-theme="light"] h4,
+.room-skinstage .ss-demo[data-theme="light"] p,
+.room-skinstage .ss-demo[data-theme="light"] .ss-meta {
+    color: var(--skin-light-fg, #23201a);
+}
+
+.room-skinstage .ss-demo[data-theme="dark"] h4,
+.room-skinstage .ss-demo[data-theme="dark"] p,
+.room-skinstage .ss-demo[data-theme="dark"] .ss-meta {
+    color: var(--skin-on-dark, #eef4ff);
+}
+
+.room-skinstage .ss-demo p {
+    margin: 0 0 0.8rem;
+    font-size: 0.85rem;
+}
+
+.room-skinstage .ss-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.8rem;
+}
+
+.room-skinstage .ss-meta {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    font-size: 0.75rem;
+    opacity: 0.85;
+}
+
+.room-skinstage .ss-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    display: inline-block;
+}
+
+.room-skinbar {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.7rem;
+}
+
+.room-skinbar button {
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    color: var(--text-color);
+    background: transparent;
+    border: 1px solid var(--glass-border);
+}
+
+.room-skinbar button.is-on,
+.room-skinbar button:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* Cargador perezoso de skins del monitor */
+.room-skinstage .ss-loading {
+    padding: 1rem;
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .room-hint {
+        font-size: 0.7rem;
+        bottom: 78px;
+    }
+
+    /* En móvil el panel es hoja inferior: el 3D sigue visible arriba */
+    .room-panel {
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: auto;
+        height: auto;
+        max-height: 44%;
+        border-left: 0;
+        border-top: 1px solid var(--glass-border);
+        border-radius: 18px 18px 0 0;
+        transform: translateY(105%);
+    }
+
+    .room-panel.is-open {
+        transform: none;
+    }
+}
+
+/* ── HUD brutalista suave ───────────────────────────────────────────────
+   Bordes duros y radios contenidos. El color sigue siendo del tema. */
+body #room-menu,
+body .room-panel,
+body .room-screen-card,
+body .room-brand,
+body .room-clock,
+body .room-tip,
+body .room-hint,
+body .room-exit,
+body .room-skinstage {
+    border-radius: 6px;
+}
+
+body #room-menu button,
+body #room-menu .room-mbrand {
+    border-radius: 5px;
+}
+
+body #room-menu button i {
+    display: inline-flex;
+    width: 26px;
+    height: 26px;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 5px;
+}
+
+body .room-panel,
+body .room-screen-card {
+    border-width: 1.5px;
+}
+
+body .room-panel .btn,
+body .room-screen-card .btn {
+    border-radius: 5px;
+    border-width: 1.5px;
+}
+
+body .room-panel .btn.primary,
+body .room-screen-card .btn.primary {
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45);
+}
+
+body .room-skinbar {
+    border-radius: 8px;
+}
+
+body .room-panel {
+    border-left-width: 1.5px;
+}
+
+/* ── Mono en todas partes ────────────────────────────────────────────── */
+body .room-panel h3,
+body .room-screen-card h3 {
+    font-family: var(--hud-mono);
+    font-weight: 400;
+    font-size: 1.25rem;
+    letter-spacing: 0.02em;
+}
+
+body .room-panel p,
+body .room-screen-card p,
+body .room-panel .btn,
+body .room-screen-card .btn,
+body .room-skinstage .ss-meta {
+    font-family: var(--hud-mono);
+}
+
+body .room-panel p,
+body .room-screen-card p {
+    font-size: 0.85rem;
+    line-height: 1.65;
+}
+
+body .room-panel .btn,
+body .room-screen-card .btn {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+}
+
+body #room-fallback p,
+body #room-fallback li,
+body #room-fallback h2 {
+    font-family: var(--hud-mono);
+}
+#room-ui,
+#room-menu,
+.room-panel,
+.room-screen,
+.room-topbar {
+    --hud-mono: 'Share Tech Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+.room-brand {
+    font-family: var(--hud-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    padding: 0.45rem 0.95rem;
+}
+
+.room-clock {
+    font-family: var(--hud-mono);
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+    color: var(--text-color);
+    background: color-mix(in srgb, var(--secondary-color) 82%, transparent);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    padding: 0.4rem 0.95rem;
+    font-variant-numeric: tabular-nums;
+}
+
+body.room-dead .room-clock {
+    display: none;
+}
+
+/* Menú: más angosto, etiquetas mono en versales */
+#room-menu {
+    padding: 0.5rem;
+    border-radius: 14px;
+    gap: 0.15rem;
+}
+
+#room-menu .room-mbrand {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+    font-family: var(--hud-mono);
+}
+
+#room-menu button {
+    padding: 0.45rem 0.7rem;
+    border-radius: 9px;
+    gap: 0.5rem;
+}
+
+#room-menu button span {
+    font-family: var(--hud-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 400;
+}
+
+/* Píldoras de ayuda: mono tenue */
+.room-tip,
+.room-hint {
+    font-family: var(--hud-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.room-exit {
+    font-family: var(--hud-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* Retícula fina */
+.room-reticle {
+    width: 8px;
+    height: 8px;
+    margin: -4px 0 0 -4px;
+    border-width: 1.5px;
+}
+
+/* Paneles: aire, kickers mono, botones de radio suave */
+.room-panel {
+    padding: 2rem 1.8rem 1.6rem;
+}
+
+.room-panel h3 {
+    font-size: 1.45rem;
+    margin-bottom: 0.6rem;
+}
+
+.room-panel h3 .kicker,
+.room-screen-card h3 .kicker,
+.room-stations-h {
+    font-family: var(--hud-mono);
+    font-weight: 400;
+    font-size: 0.68rem;
+    letter-spacing: 0.24em;
+}
+
+.room-panel p,
+.room-screen-card p {
+    opacity: 0.85;
+}
+
+.room-panel .room-close,
+.room-screen-card .room-close {
+    opacity: 0.55;
+    font-size: 1.1rem;
+}
+
+.room-panel .room-close:hover,
+.room-screen-card .room-close:hover {
+    opacity: 1;
+}
+
+.room-panel .btn,
+.room-screen-card .btn {
+    border-radius: 10px;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    padding: 0.55rem 1.1rem;
+}
+
+/* Monitor: tarjeta contenida + stage enmarcado */
+.room-screen-card {
+    border-radius: 18px;
+    padding: 2rem 1.8rem 1.7rem;
+}
+
+.room-screen-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.room-skinstage {
+    border-radius: 12px;
+    margin: 1.2rem 0 1rem;
+}
+
+/* Selector de skins como control segmentado */
+.room-skinbar {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 0;
+}
+
+.room-skinbar button {
+    flex: 1;
+    cursor: pointer;
+    font-family: var(--hud-mono);
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.65rem 0.2rem;
+    border: 0;
+    border-radius: 0;
+    border-right: 1px solid var(--glass-border);
+    color: var(--text-color);
+    background: transparent;
+}
+
+.room-skinbar button:last-child {
+    border-right: 0;
+}
+
+.room-skinbar button.is-on {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--btn-text);
+}
+
+.room-skinbar button:not(.is-on):hover {
+    border-color: var(--glass-border);
+    color: var(--primary-color);
+}

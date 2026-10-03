@@ -1,0 +1,119 @@
+{
+  "$meta": {
+    "id": "glassmorphism",
+    "num": "03",
+    "nombre": "Glassmorphism",
+    "familia": "materiales-blandos",
+    "status": "ready",
+    "archivos": { "skin": "style.css", "brief": "STYLE.md" },
+    "source_of_truth": "style.css",
+    "nota_hex": "Los colores de 8 dígitos son RGBA (#RRGGBBAA). Los de 6 son opacos.",
+    "nota": "Skin de la plantilla Showcase. Solo redefine tokens y overrides dentro de [data-style=\"glassmorphism\"]; no modifica components.css."
+  },
+  "aplicacion": {
+    "atributo": "[data-style=\"glassmorphism\"]",
+    "modo_nativo": "dark",
+    "modos": ["dark", "light"],
+    "capa_de_modo": "[data-theme=\"light\"][data-style=\"glassmorphism\"]",
+    "alcance_de_esta_muestra": ["encabezado", "tokens", "botones", "estados-operativos"]
+  },
+  "veredicto": "experimental",
+  "robar": [
+    "Filo de luz superior (inset 0 1px 0 rgba(255,255,255,.24)) para separar superficies sin bordes duros.",
+    "Scrim translúcido + blur sobre foto para que el texto sobre imagen no necesite caja.",
+    "Acento frío con escala invertida: en oscuro el acento se aclara en vez de oscurecerse."
+  ],
+  "no_robar": [
+    "Vidrio sobre vidrio en más de dos niveles: la jerarquía se pierde.",
+    "Blur de fondo en tablas densas: el scroll se ensucia."
+  ],
+  "a11y": {
+    "contraste": "AA",
+    "peor_caso": "Texto secundario (#c9d7ec) sobre superficie de vidrio sobre el halo cielo: 6.1:1",
+    "reglas": [
+      "El texto nunca vive sobre vidrio sin un halo o scrim debajo.",
+      "Los semáforos usan tinte translúcido + borde currentColor (no fondo sólido) para mantener el color como indicador.",
+      "El foco de teclado mantiene el outline estándar del sistema (--info-solid)."
+    ],
+    "fallbacks": ["prefers-reduced-transparency: reduce → superficies sólidas #101a2a (oscuro) / #f6faff (claro)", "prefers-reduced-motion: heredado de components.css"]
+  },
+  "tipografia": { "familia": "Montserrat (Google Fonts, ver <link> en el espécimen)", "display": "1.15–4.2rem / 800", "tracking_display": "-0.03em", "nota": "No se cambia la familia: el estilo vive en la superficie, no en la letra." },
+  "forma": { "radius_sm": "10px", "radius_md": "16px", "radius_lg": "20px", "radius_xl": "28px", "radius_pill": "999px", "borde": "1px translúcido (#ffffff24–#ffffff59)" },
+  "profundidad": { "receta": "filo de luz interior + sombra difusa de baja opacidad", "shadow_1": "0 1px 0 #ffffff24 inset, 0 10px 30px #03071273", "shadow_2": "0 1px 0 #ffffff29 inset, 0 24px 60px #0307128c", "shadow_3": "0 2px 0 #ffffff2e inset, 0 30px 80px #03071299" },
+  "textura": { "receta": "3 halos radiales fríos (cielo 32%, violeta 30%, teal 22%) sobre linear-gradient 165deg de 3 paradas" },
+  "movimiento": { "dur_1": "200ms", "dur_2": "320ms", "dur_3": "750ms", "ease": "cubic-bezier(.32,.72,0,1)" },
+  "tokens": {
+    "--bg-page": "#0b1220",
+    "--bg-raised": "#ffffff14",
+    "--bg-sunken": "#ffffff0a",
+    "--bg-nav": "#0c1422cc",
+    "--text-strong": "#f2f7ff",
+    "--text-body": "#c9d7ec",
+    "--text-soft": "#9db2cd",
+    "--text-faint": "#7a8fae",
+    "--line-soft": "#ffffff24",
+    "--line-strong": "#ffffff47",
+    "--brand-ink": "#0b1220",
+    "--brand-ink-deep": "#070c16",
+    "--brand-paper": "#ffffff",
+    "--accent-100": "#38bdf829",
+    "--accent-500": "#38bdf8",
+    "--accent-700": "#7dd3fc",
+    "--support-100": "#14b8a629",
+    "--support-500": "#5eead4",
+    "--support-700": "#99f6e4",
+    "--cool-100": "#38bdf824",
+    "--cool-500": "#38bdf8",
+    "--cool-700": "#7dd3fc",
+    "--ok-bg": "#10b9812e",
+    "--ok-fg": "#6ee7b7",
+    "--ok-solid": "#34d399",
+    "--warn-bg": "#f59e0b2e",
+    "--warn-fg": "#fcd34d",
+    "--warn-solid": "#fbbf24",
+    "--ember-bg": "#ea580c33",
+    "--ember-fg": "#fdba74",
+    "--ember-solid": "#fb923c",
+    "--bad-bg": "#ef444433",
+    "--bad-fg": "#fca5a5",
+    "--bad-solid": "#f87171",
+    "--info-bg": "#38bdf82e",
+    "--info-fg": "#7dd3fc",
+    "--info-solid": "#38bdf8",
+    "--radius-sm": "10px",
+    "--radius-md": "16px",
+    "--radius-lg": "20px",
+    "--radius-xl": "28px",
+    "--radius-pill": "999px",
+    "--dur-1": "200ms",
+    "--dur-2": "320ms",
+    "--dur-3": "750ms"
+  },
+  "puente": {
+    "--skin-blur": "blur(18px) saturate(150%)",
+    "--skin-surface": "#ffffff1f",
+    "--skin-on-solid": "#06121f",
+    "--skin-on-dark": "#ffffff",
+    "--skin-on-dark-soft": "#ffffffb8",
+    "--skin-scrim": "#060c168c",
+    "--skin-tint": "#ffffff1f",
+    "--skin-tint-strong": "#ffffff2e",
+    "--skin-ring": "#ffffff29",
+    "--skin-ring-dark": "#ffffff29",
+    "--skin-tray": "#ffffff0d",
+    "--skin-tray-radius": "26px",
+    "--skin-light-bg": "#ffffffe6",
+    "--skin-light-fg": "#0b1220",
+    "--skin-light-bg-hover": "#ffffff",
+    "--skin-inverse": "#060c1699"
+  },
+  "modo_light": {
+    "cambia": ["Vidrio claro (#ffffffa6) sobre cielo diurno", "Acento oscurecido a #0284c7 para AA sobre blanco", "Tinta azul profundo #0d2236"],
+    "nota": "El scrim del hero-chip NO cambia: sigue siendo oscuro porque va sobre la foto."
+  },
+  "palette": {
+    "Superficies": { "Cielo profundo": "#0b1220", "Vidrio": "#ffffff1f", "Vidrio 2": "#ffffff2e", "Filo de luz": "#ffffff38" },
+    "Tinta y acento": { "Tinta": "#f2f7ff", "Secundaria": "#c9d7ec", "Cielo": "#38bdf8", "Violeta": "#a855f7" },
+    "Semánticos": { "Éxito": "#6ee7b7", "Aviso": "#fcd34d", "Crítico": "#fca5a5", "Neutro": "#9fb0c9" }
+  }
+}

@@ -1,0 +1,387 @@
+/* ==========================================================================
+   ESTILO 05 · NEO-BRUTALISM — variante "bloque impreso" de la plantilla Showcase
+   --------------------------------------------------------------------------
+   Modo nativo: claro. Modos implementados: light + dark (ambos en este archivo).
+   Qué cambia: todo borde es negro y de 3px, radio 0 en todo el sistema, sombra
+   dura desplazada (sin blur), un único acento eléctrico (amarillo) y jerarquía
+   tipográfica en mayúsculas.
+   Qué NO cambia: estructura, densidad, jerarquía de acciones ni el vocabulario
+   de estados (los cinco semáforos siguen existiendo, ahora en sólido).
+   Este archivo solo redefine tokens dentro de [data-style="neo-brutalism"];
+   nunca edita ../components.css.
+   Alcance de esta muestra: los 4 bloques del espécimen. Ver STYLE.md.
+   ========================================================================== */
+
+[data-style="neo-brutalism"] {
+  /* Lienzo: papel con rejilla milimetrada muy tenue. */
+  background-color: #f4f1e8;
+  background-image:
+    linear-gradient(#1111110f 1px, transparent 1px),
+    linear-gradient(90deg, #1111110f 1px, transparent 1px);
+  background-size: 26px 26px;
+  color-scheme: light;
+
+  /* Superficies y texto */
+  --bg-page: #f4f1e8;
+  --bg-raised: #ffffff;
+  --bg-sunken: #e8e2d4;
+  --bg-nav: #ffffff;
+  --text-strong: #111111;
+  --text-body: #1f1f1f;
+  --text-soft: #454545;
+  --text-faint: #6b6b6b;
+  /* En este estilo la línea NO es un detalle: es la firma. */
+  --line-soft: #111111;
+  --line-strong: #111111;
+
+  /* Identidad y acento: el único acento es eléctrico y el texto sobre él es negro */
+  --brand-ink: #111111;
+  --brand-ink-deep: #000000;
+  --brand-paper: #ffffff;
+  --accent-100: #ffe500;
+  /* Tinta del icono de marca: el amarillo es la firma del skin pero sobre su
+     página clara se leía a 1.13:1. En oscuro el mismo negro da 4.9:1. */
+  --skin-brand-ink: #111111;
+  --accent-500: #ffe500;
+  --accent-700: #111111;
+  --support-100: #2fbf71;
+  --support-500: #111111;
+  --support-700: #05301c;
+  --cool-100: #7c3aed;
+  --cool-500: #111111;
+  --cool-700: #ffffff;
+
+  /* Semánticos en sólido: el color reemplaza al texto, tinta oscura encima */
+  --ok-bg: #2fbf71;
+  --ok-fg: #04240f;
+  --ok-solid: #2fbf71;
+  --warn-bg: #ffb800;
+  --warn-fg: #2b1c00;
+  --warn-solid: #ffb800;
+  --ember-bg: #ff8a3d;
+  --ember-fg: #2b1300;
+  --ember-solid: #ff8a3d;
+  --bad-bg: #ff4d4d;
+  --bad-fg: #2e0000;
+  --bad-solid: #ff4d4d;
+  --info-bg: #7c3aed;
+  --info-fg: #ffffff;
+  --info-solid: #7c3aed;
+
+  /* Forma: radio 0 en los cinco niveles, incluida la pill */
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-pill: 0;
+
+  /* Profundidad: sombra dura, sin difuminado, desplazada a la derecha-abajo */
+  --shadow-1: 4px 4px 0 #111111;
+  --shadow-2: 8px 8px 0 #111111;
+  --shadow-3: 12px 12px 0 #111111;
+
+  /* Movimiento: corto y seco, el press se siente mecánico */
+  --dur-1: 120ms;
+  --dur-2: 180ms;
+  --dur-3: 420ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Puente documentado en _template/specimen.css (hardcodes de components.css) */
+  --skin-on-solid: #111111;
+  --skin-on-dark: #ffffff;
+  --skin-on-dark-soft: #ffffffcc;
+  --skin-scrim: #111111cc;
+  --skin-tint: #1111111a;
+  --skin-tint-strong: #ffffff26;
+  --skin-ring: #11111124;
+  --skin-ring-dark: #11111124;
+  --skin-tray: #111111;
+  --skin-tray-radius: 0;
+  --skin-light-bg: #ffe500;
+  --skin-light-fg: #111111;
+  --skin-light-bg-hover: #ffffff;
+  --skin-inverse: #111111;
+}
+/* ---- La firma del estilo: todo borde es negro y de 3px ---- */
+[data-style="neo-brutalism"] .navpill,
+[data-style="neo-brutalism"] .menu,
+[data-style="neo-brutalism"] .iconbtn,
+[data-style="neo-brutalism"] .btn,
+[data-style="neo-brutalism"] .btn-cell,
+[data-style="neo-brutalism"] .pill,
+[data-style="neo-brutalism"] .swatch,
+[data-style="neo-brutalism"] .token-pane,
+[data-style="neo-brutalism"] .kitcard,
+[data-style="neo-brutalism"] .counter,
+[data-style="neo-brutalism"] .shape,
+[data-style="neo-brutalism"] .type-mono,
+[data-style="neo-brutalism"] .hero-chip,
+[data-style="neo-brutalism"] .shell,
+[data-style="neo-brutalism"] .shell-core,
+[data-style="neo-brutalism"] .ck button,
+[data-style="neo-brutalism"] .field input {
+  border: 3px solid #111111;
+  border-radius: 0;
+}
+[data-style="neo-brutalism"] .shell-core { border-radius: 0; }
+[data-style="neo-brutalism"] .kitcard,
+[data-style="neo-brutalism"] .swatch,
+[data-style="neo-brutalism"] .btn-cell,
+[data-style="neo-brutalism"] .counter,
+[data-style="neo-brutalism"] .shape {
+  transition: transform var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out);
+}
+
+/* ---- Tipografía: mayúsculas como sistema, no como adorno ---- */
+[data-style="neo-brutalism"] .hero h1 {
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+}
+[data-style="neo-brutalism"] .lead { font-weight: 600; }
+[data-style="neo-brutalism"] .section > h2 { text-transform: uppercase; letter-spacing: -0.02em; }
+[data-style="neo-brutalism"] .section h3,
+[data-style="neo-brutalism"] .swatch-groups h3,
+[data-style="neo-brutalism"] .token-pane h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #111111;
+}
+[data-style="neo-brutalism"] .eyebrow {
+  border: 3px solid #111111;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  padding: 4px 10px;
+}
+[data-style="neo-brutalism"] .spec { color: #454545; }
+[data-style="neo-brutalism"] .spec strong { color: #111111; }
+[data-style="neo-brutalism"] .type-mono {
+  background: #111111;
+  color: #ffe500;
+  font-size: var(--text-small);
+}
+[data-style="neo-brutalism"] .space-bar i { background: #111111; border-radius: 0; }
+[data-style="neo-brutalism"] .motion-chip { background: #ffffff; font-weight: 800; }
+[data-style="neo-brutalism"] .motion-chip:hover {
+  background: #ffe500;
+  border-color: #111111;
+  color: #111111;
+  transform: translateX(10px);
+}
+
+/* ---- Encabezado ---- */
+[data-style="neo-brutalism"] .navpill { box-shadow: 6px 6px 0 #111111; }
+[data-style="neo-brutalism"] .menubtn {
+  border-radius: 0;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+[data-style="neo-brutalism"] .menubtn:hover { background: #ffe500; color: #111111; border-radius: 0; }
+[data-style="neo-brutalism"] .iconbtn { background: #ffffff; }
+[data-style="neo-brutalism"] .iconbtn:hover { background: #ffe500; }
+[data-style="neo-brutalism"] .menu { box-shadow: 8px 8px 0 #111111; }
+[data-style="neo-brutalism"] .menu a { border-radius: 0; font-weight: 700; }
+[data-style="neo-brutalism"] .menu a:hover { background: #ffe500; color: #111111; }
+[data-style="neo-brutalism"] .hero-media .shell-core { box-shadow: 8px 8px 0 #111111; }
+[data-style="neo-brutalism"] .hero-media img { filter: contrast(112%) saturate(108%); }
+[data-style="neo-brutalism"] .hero-chip { font-weight: 800; letter-spacing: 0.06em; }
+/* ---- Botones: cuatro sólidos, cero transparencia ---- */
+[data-style="neo-brutalism"] .btn {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 800;
+  box-shadow: 4px 4px 0 #111111;
+}
+[data-style="neo-brutalism"] .btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #111111; }
+[data-style="neo-brutalism"] .btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #111111; }
+[data-style="neo-brutalism"] .btn:disabled { opacity: 1; background: #e8e2d4; color: #6b6b6b; box-shadow: 4px 4px 0 #6b6b6b; }
+[data-style="neo-brutalism"] .btn-primary { background: #ffe500; color: #111111; }
+[data-style="neo-brutalism"] .btn-primary:hover { background: #ffef7a; }
+[data-style="neo-brutalism"] .btn-accent { background: #7c3aed; color: #ffffff; }
+[data-style="neo-brutalism"] .btn-accent:hover { filter: none; background: #6d28d9; }
+[data-style="neo-brutalism"] .btn-secondary { background: #ffffff; color: #111111; }
+[data-style="neo-brutalism"] .btn-secondary:hover { background: #ffe500; }
+[data-style="neo-brutalism"] .btn-ghost { background: transparent; color: #111111; }
+[data-style="neo-brutalism"] .btn-ghost:hover { background: #111111; color: #ffe500; }
+[data-style="neo-brutalism"] .btn-danger { background: #ff4d4d; color: #111111; }
+[data-style="neo-brutalism"] .btn-danger:hover { filter: none; background: #ff6b6b; }
+[data-style="neo-brutalism"] .btn-ring,
+[data-style="neo-brutalism"] .btn-primary .btn-ring,
+[data-style="neo-brutalism"] .btn-accent .btn-ring,
+[data-style="neo-brutalism"] .btn-secondary .btn-ring,
+[data-style="neo-brutalism"] .btn-ghost .btn-ring,
+[data-style="neo-brutalism"] .btn-danger .btn-ring {
+  background: #111111;
+  color: #ffe500;
+  border-radius: 0;
+}
+[data-style="neo-brutalism"] .btn:hover .btn-ring { transform: translate(2px, -2px) scale(1); }
+/* El fondo de la celda va por token: con #ffffff fijo se quedaba BLANCA en
+   el tema oscuro (aquí solo se redefinía el borde), y el botón fantasma
+   —texto claro #f5f5f5— quedaba a 1.09:1, ilegible. */
+[data-style="neo-brutalism"] .btn-cell { background: var(--bg-raised); box-shadow: 4px 4px 0 #111111; }
+[data-style="neo-brutalism"] .btn-cell > span:last-child {
+  color: #454545;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+[data-style="neo-brutalism"] .btn-cell-dark { background: #111111; border-color: #111111; box-shadow: 4px 4px 0 #111111; }
+
+/* ---- Tokens: cada espécimen es una pieza impresa ---- */
+[data-style="neo-brutalism"] .token-pane { box-shadow: 8px 8px 0 #111111; }
+[data-style="neo-brutalism"] .swatch { box-shadow: 4px 4px 0 #111111; }
+[data-style="neo-brutalism"] .swatch:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #111111; }
+[data-style="neo-brutalism"] .swatch span { color: #111111; font-weight: 700; }
+[data-style="neo-brutalism"] .shape { background: #ffffff; }
+[data-style="neo-brutalism"] .shape-row { gap: var(--space-4); }
+[data-style="neo-brutalism"] .type-display { text-transform: uppercase; letter-spacing: -0.02em; }
+[data-style="neo-brutalism"] .type-h2 { font-weight: 800; }
+
+/* ---- Estados operativos: el color es un bloque macizo ---- */
+[data-style="neo-brutalism"] .pill {
+  border: 2px solid #111111;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+}
+[data-style="neo-brutalism"] .counter { background: #ffffff; box-shadow: 4px 4px 0 #111111; }
+[data-style="neo-brutalism"] .dot { border-radius: 0; width: 10px; height: 10px; background: #111111; }
+[data-style="neo-brutalism"] .dot-ok { background: #2fbf71; }
+[data-style="neo-brutalism"] .kitcard { background: #ffffff; box-shadow: 4px 4px 0 #111111; }
+[data-style="neo-brutalism"] .kitcard:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 #111111; }
+[data-style="neo-brutalism"] .kitcard-title { text-transform: uppercase; letter-spacing: -0.01em; }
+[data-style="neo-brutalism"] .kitcard-sub { color: #454545; font-weight: 600; }
+[data-style="neo-brutalism"] .dbar span { letter-spacing: 0.14em; }
+/* El fondo va por token y NO en una regla aparte: antes era #ffffff fijo con
+   la misma especificidad que `.ck button.is-on.is-ok`, así que ganaba y el
+   chip activo se quedaba en oscuro — con la tinta --ok-fg casi negra encima,
+   a 1.03:1, invisible. */
+[data-style="neo-brutalism"] .ck button:not(.is-ok):not(.is-warn):not(.is-bad):not(.is-info) {
+  background: var(--bg-raised);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+[data-theme="light"][data-style="neo-brutalism"] .ck button:not(.is-ok):not(.is-warn):not(.is-bad):not(.is-info) { background: #ffffff; }
+[data-style="neo-brutalism"] .ck button:hover { background: #ffe500; }
+[data-style="neo-brutalism"] .ck button.is-on { box-shadow: inset 3px 3px 0 #111111; }
+[data-style="neo-brutalism"] .field span {
+  font-weight: 800;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+[data-style="neo-brutalism"] .field input { background: #ffffff; color: #111111; }
+[data-style="neo-brutalism"] .field input::placeholder { color: #6b6b6b; }
+[data-style="neo-brutalism"] .field input:focus { box-shadow: 4px 4px 0 #111111; }
+/* ==========================================================================
+   MODO OSCURO · la misma imprenta, tinta invertida
+   La firma del estilo (borde grueso, sombra dura, radio 0, acento eléctrico)
+   no depende del color: el modo oscuro es una inversión, no un rediseño.
+   ========================================================================== */
+[data-theme="dark"][data-style="neo-brutalism"] {
+  background-color: #111111;
+  background-image:
+    linear-gradient(#ffffff0f 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff0f 1px, transparent 1px);
+  background-size: 26px 26px;
+  color-scheme: dark;
+  --bg-page: #111111;
+  --bg-raised: #1c1c1c;
+  --bg-sunken: #000000;
+  --bg-nav: #111111;
+  --text-strong: #f5f5f5;
+  --text-body: #e4e4e4;
+  --text-soft: #b9b9b9;
+  --text-faint: #8a8a8a;
+  --line-soft: #f5f5f5;
+  --line-strong: #f5f5f5;
+  --brand-ink: #ffe500;
+  --brand-ink-deep: #000000;
+  --support-700: #c9f7df;
+  --cool-700: #d9c9ff;
+  --shadow-1: 4px 4px 0 #f5f5f5;
+  --shadow-2: 8px 8px 0 #f5f5f5;
+  --shadow-3: 12px 12px 0 #f5f5f5;
+  --skin-inverse: #ffe500;
+  /* En oscuro el icono necesita tinta clara: el negro sobre #111111 es 1.00:1. */
+  --skin-brand-ink: #ffe500;
+}
+[data-theme="dark"][data-style="neo-brutalism"] .navpill,
+[data-theme="dark"][data-style="neo-brutalism"] .menu,
+[data-theme="dark"][data-style="neo-brutalism"] .iconbtn,
+[data-theme="dark"][data-style="neo-brutalism"] .btn,
+[data-theme="dark"][data-style="neo-brutalism"] .btn-cell,
+[data-theme="dark"][data-style="neo-brutalism"] .pill,
+[data-theme="dark"][data-style="neo-brutalism"] .swatch,
+[data-theme="dark"][data-style="neo-brutalism"] .token-pane,
+[data-theme="dark"][data-style="neo-brutalism"] .kitcard,
+[data-theme="dark"][data-style="neo-brutalism"] .counter,
+[data-theme="dark"][data-style="neo-brutalism"] .shape,
+[data-theme="dark"][data-style="neo-brutalism"] .type-mono,
+[data-theme="dark"][data-style="neo-brutalism"] .hero-chip,
+[data-theme="dark"][data-style="neo-brutalism"] .shell,
+[data-theme="dark"][data-style="neo-brutalism"] .shell-core,
+[data-theme="dark"][data-style="neo-brutalism"] .ck button,
+[data-theme="dark"][data-style="neo-brutalism"] .field input { border-color: #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn-cell { box-shadow: 4px 4px 0 #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn-cell-dark { box-shadow: 4px 4px 0 #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn { box-shadow: 4px 4px 0 #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn:hover { box-shadow: 6px 6px 0 #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn:active { box-shadow: 1px 1px 0 #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn:disabled { background: #2a2a2a; color: #8a8a8a; box-shadow: 4px 4px 0 #8a8a8a; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn-primary { background: #ffe500; color: #111111; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn-primary:hover { background: #ffef7a; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn-accent { background: #7c3aed; color: #ffffff; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn-secondary { background: #1c1c1c; color: #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn-secondary:hover { background: #ffe500; color: #111111; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn-ghost { color: #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn-ghost:hover { background: #f5f5f5; color: #111111; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn-danger { background: #ff4d4d; color: #111111; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn-ring { background: #f5f5f5; color: #111111; }
+[data-theme="dark"][data-style="neo-brutalism"] .navpill { box-shadow: 6px 6px 0 #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .menubtn { color: #b9b9b9; }
+[data-theme="dark"][data-style="neo-brutalism"] .menubtn:hover { background: #ffe500; color: #111111; }
+[data-theme="dark"][data-style="neo-brutalism"] .iconbtn { background: #1c1c1c; }
+[data-theme="dark"][data-style="neo-brutalism"] .iconbtn:hover { background: #ffe500; color: #111111; }
+[data-theme="dark"][data-style="neo-brutalism"] .menu { box-shadow: 8px 8px 0 #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .menu a { color: #e4e4e4; }
+[data-theme="dark"][data-style="neo-brutalism"] .menu a:hover { background: #ffe500; color: #111111; }
+[data-theme="dark"][data-style="neo-brutalism"] .hero-media .shell-core { box-shadow: 8px 8px 0 #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .token-pane { box-shadow: 8px 8px 0 #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .swatch { background: #1c1c1c; box-shadow: 4px 4px 0 #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .swatch:hover { box-shadow: 6px 6px 0 #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .swatch span { color: #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .section h3,
+[data-theme="dark"][data-style="neo-brutalism"] .swatch-groups h3,
+[data-theme="dark"][data-style="neo-brutalism"] .token-pane h3 { color: #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .spec { color: #b9b9b9; }
+[data-theme="dark"][data-style="neo-brutalism"] .spec strong { color: #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .type-mono { background: #f5f5f5; color: #111111; }
+[data-theme="dark"][data-style="neo-brutalism"] .space-bar i { background: #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .motion-chip { background: #1c1c1c; color: #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .motion-chip:hover { background: #ffe500; border-color: #111111; color: #111111; }
+[data-theme="dark"][data-style="neo-brutalism"] .shape { background: #1c1c1c; }
+[data-theme="dark"][data-style="neo-brutalism"] .counter { background: #1c1c1c; box-shadow: 4px 4px 0 #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .dot { background: #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .dot-ok { background: #2fbf71; }
+[data-theme="dark"][data-style="neo-brutalism"] .kitcard { background: #1c1c1c; box-shadow: 4px 4px 0 #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .kitcard:hover { box-shadow: 8px 8px 0 #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .kitcard-title { color: #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .kitcard-sub { color: #b9b9b9; }
+/* Igual que en claro: el chip con estado (is-ok, is-warn…) conserva su fondo
+   semántico. Esta regla sin :not() le pisaba el color y dejaba la tinta
+   --ok-fg casi negra sobre el propio oscuro de la tarjeta. */
+[data-theme="dark"][data-style="neo-brutalism"] .ck button:not(.is-ok):not(.is-warn):not(.is-bad):not(.is-info) { background: #1c1c1c; }
+[data-theme="dark"][data-style="neo-brutalism"] .ck button:hover { background: #ffe500; }
+[data-theme="dark"][data-style="neo-brutalism"] .field span { color: #e4e4e4; }
+[data-theme="dark"][data-style="neo-brutalism"] .field input { background: #1c1c1c; color: #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .field input:focus { box-shadow: 4px 4px 0 #f5f5f5; }
+/* Esta celda es oscura en los DOS temas, así que su rótulo va claro siempre.
+   En claro heredaba #454545 (1.97:1 sobre el #111111). La celda normal sí
+   cambia de fondo con el tema, y en oscuro su rótulo necesita tono claro. */
+[data-style="neo-brutalism"] .btn-cell-dark > span:last-child { color: #f5f5f5; }
+[data-theme="dark"][data-style="neo-brutalism"] .btn-cell > span:last-child { color: #b9b9b9; }

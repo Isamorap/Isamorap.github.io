@@ -1,0 +1,119 @@
+{
+  "$meta": {
+    "id": "neo-brutalism",
+    "num": "05",
+    "nombre": "Neo-Brutalism",
+    "familia": "ruido-brutal",
+    "status": "ready",
+    "archivos": { "skin": "style.css", "brief": "STYLE.md" },
+    "source_of_truth": "style.css",
+    "nota_hex": "Los colores de 8 dígitos son RGBA (#RRGGBBAA). Los de 6 son opacos.",
+    "nota": "Skin de la plantilla Showcase. Solo redefine tokens y overrides dentro de [data-style=\"neo-brutalism\"]; no modifica components.css."
+  },
+  "aplicacion": {
+    "atributo": "[data-style=\"neo-brutalism\"]",
+    "modo_nativo": "light",
+    "modos": ["light", "dark"],
+    "capa_de_modo": "[data-theme=\"dark\"][data-style=\"neo-brutalism\"]",
+    "alcance_de_esta_muestra": ["encabezado", "tokens", "botones", "estados-operativos"]
+  },
+  "veredicto": "adoptable",
+  "robar": [
+    "Sombra dura desplazada sin blur: comunica elevación sin depender del color.",
+    "Borde de 3px como único recurso de separación: sobrevive a cualquier fondo.",
+    "Press mecánico (translate + sombra 1px): el estado :active se siente físico.",
+    "Un solo acento (amarillo) y tinta negra encima: contraste trivial de verificar."
+  ],
+  "no_robar": [
+    "Radio 0 en TODA la interfaz de una app corporativa: pierde calidez de marca.",
+    "Ocho bloques amarillos en una misma pantalla: el acento deja de ser acento.",
+    "Rejilla de fondo en tablas densas: compite con las cifras."
+  ],
+  "a11y": {
+    "contraste": "AA",
+    "peor_caso": "Tinta #111111 sobre acento #ffe500: 16.1:1 · Tinta sobre rojo #ff4d4d: 6.8:1",
+    "reglas": [
+      "El texto sobre color sólido siempre es tinta negra (#111111), nunca blanca.",
+      "El amarillo nunca lleva texto blanco ni se usa para texto sobre blanco.",
+      "Disabled es un sólido gris con sombra gris: se ve deshabilitado sin bajar la opacidad."
+    ],
+    "fallbacks": ["prefers-reduced-motion: heredado de components.css (translate desactivado)", "Sin transparencias ni blur: no requiere prefers-reduced-transparency"]
+  },
+  "tipografia": { "familia": "Montserrat (Google Fonts, ver <link> en el espécimen)", "display": "1.15–4.2rem / 800 mayúsculas", "tracking_display": "-0.03em", "nota": "No se cambia la familia: la fuerza viene del peso, la caja alta y el interletrado." },
+  "forma": { "radius_sm": "0", "radius_md": "0", "radius_lg": "0", "radius_xl": "0", "radius_pill": "0", "borde": "3px sólido #111111 (2px en pills)" },
+  "profundidad": { "receta": "sombra dura offset sin blur; el hover aleja 2px más y el press la reduce a 1px", "shadow_1": "4px 4px 0 #111111", "shadow_2": "8px 8px 0 #111111", "shadow_3": "12px 12px 0 #111111" },
+  "textura": { "receta": "rejilla milimetrada de 26px con líneas rgba(17,17,17,.06) sobre papel #f4f1e8" },
+  "movimiento": { "dur_1": "120ms", "dur_2": "180ms", "dur_3": "420ms", "ease": "cubic-bezier(.2,.8,.2,1)", "nota": "Corto y seco: la interfaz se siente mecánica, no fluida." },
+  "tokens": {
+    "--bg-page": "#f4f1e8",
+    "--bg-raised": "#ffffff",
+    "--bg-sunken": "#e8e2d4",
+    "--bg-nav": "#ffffff",
+    "--text-strong": "#111111",
+    "--text-body": "#1f1f1f",
+    "--text-soft": "#454545",
+    "--text-faint": "#6b6b6b",
+    "--line-soft": "#111111",
+    "--line-strong": "#111111",
+    "--brand-ink": "#111111",
+    "--brand-ink-deep": "#000000",
+    "--brand-paper": "#ffffff",
+    "--accent-100": "#ffe500",
+    "--accent-500": "#ffe500",
+    "--accent-700": "#111111",
+    "--support-100": "#2fbf71",
+    "--support-500": "#111111",
+    "--support-700": "#05301c",
+    "--cool-100": "#7c3aed",
+    "--cool-500": "#111111",
+    "--cool-700": "#ffffff",
+    "--ok-bg": "#2fbf71",
+    "--ok-fg": "#04240f",
+    "--ok-solid": "#2fbf71",
+    "--warn-bg": "#ffb800",
+    "--warn-fg": "#2b1c00",
+    "--warn-solid": "#ffb800",
+    "--ember-bg": "#ff8a3d",
+    "--ember-fg": "#2b1300",
+    "--ember-solid": "#ff8a3d",
+    "--bad-bg": "#ff4d4d",
+    "--bad-fg": "#2e0000",
+    "--bad-solid": "#ff4d4d",
+    "--info-bg": "#7c3aed",
+    "--info-fg": "#ffffff",
+    "--info-solid": "#7c3aed",
+    "--radius-sm": "0",
+    "--radius-md": "0",
+    "--radius-lg": "0",
+    "--radius-xl": "0",
+    "--radius-pill": "0",
+    "--dur-1": "120ms",
+    "--dur-2": "180ms",
+    "--dur-3": "420ms"
+  },
+  "puente": {
+    "--skin-on-solid": "#111111",
+    "--skin-on-dark": "#ffffff",
+    "--skin-on-dark-soft": "#ffffffcc",
+    "--skin-scrim": "#111111cc",
+    "--skin-tint": "#1111111a",
+    "--skin-tint-strong": "#ffffff26",
+    "--skin-ring": "#11111124",
+    "--skin-ring-dark": "#11111124",
+    "--skin-tray": "#111111",
+    "--skin-tray-radius": "0",
+    "--skin-light-bg": "#ffe500",
+    "--skin-light-fg": "#111111",
+    "--skin-light-bg-hover": "#ffffff",
+    "--skin-inverse": "#111111"
+  },
+  "modo_dark": {
+    "cambia": ["Papel → negro #111111 con rejilla blanca al 6%", "Bordes y sombras pasan a blanco #f5f5f5", "El acento eléctrico se mantiene: el amarillo funciona sobre negro"],
+    "nota": "La firma (borde grueso + sombra dura + radio 0) no depende del color, así que el modo oscuro es una inversión, no un rediseño."
+  },
+  "palette": {
+    "Superficies": { "Papel": "#f4f1e8", "Nieve": "#ffffff", "Hueso": "#e8e2d4", "Negro": "#111111" },
+    "Tinta y acento": { "Tinta": "#111111", "Secundaria": "#444444", "Eléctrico": "#ffe500", "Violeta": "#7c3aed" },
+    "Semánticos": { "Éxito": "#2fbf71", "Aviso": "#ffb800", "Crítico": "#ff4d4d", "Neutro": "#c9c4b8" }
+  }
+}

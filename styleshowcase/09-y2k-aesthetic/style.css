@@ -1,0 +1,380 @@
+/* ==========================================================================
+   ESTILO 09 · Y2K AESTHETIC — cromo, burbujas y biseles de fin de milenio
+   --------------------------------------------------------------------------
+   Modo nativo: claro. Modos implementados: light + dark (ambos en este archivo).
+   Qué cambia: superficies con degradado metálico (cromo), radios enormes,
+   brillos internos y externos en dos tonos, y una paleta de bubblegum/lima
+   sobre un azul tinta frío. La profundidad no viene de una sombra difusa sino
+   de un bisel: luz arriba, sombra abajo, y un filo claro en el borde.
+   Qué NO cambia: estructura, densidad, jerarquía de acciones ni el vocabulario
+   de estados (los cinco semáforos siguen existiendo).
+   Este archivo solo redefine tokens dentro de [data-style="y2k-aesthetic"];
+   nunca edita ../components.css.
+   Alcance de esta muestra: los 4 bloques del espécimen. Ver STYLE.md.
+
+   DECISIÓN DE CONTRASTE, calculada antes de escribir (no después de romper):
+   · Los sólidos van con BLANCO encima en claro y con TINTA OSCURA en oscuro.
+     Es el mismo motivo por el que claymorphism separó sus tokens: un sólido de
+     tono medio no admite las dos tintas. En claro #0d803d con blanco da 5.03:1
+     y con tinta solo 4.17:1; en oscuro los sólidos se aclaran (#4ade80) y el
+     blanco cae a 1.74:1 mientras la tinta #06122b llega a 10.67:1.
+     Por eso --skin-on-solid NO es un token único: cambia entre temas.
+   · El bubblegum #ff4fa3 es el color de identidad del skin pero NO puede ser
+     texto: da 3.04:1 sobre blanco. Como texto se usa #c9176f (5.48:1). El valor
+     vivo queda para superficies, degradados y filetes.
+   · La lima #7cb518 tampoco sirve como texto (2.48:1); como texto va #4f7f00
+     (4.81:1). Mismo trato que el bubblegum.
+   · --text-faint se usa a 11px, o sea texto normal: se mide a 4.5:1 y se fijó en
+     #5a6c90 (4.63:1 sobre el lienzo, la superficie más dura). El valor inicial
+     #6d7f9e daba 3.56:1 ahí.
+   · --line-strong es el filete real del control, así que se mide a 3:1:
+     #7288ad en claro (3.16:1) y #4d6a9c en oscuro (3.23:1).
+   · El cromo nunca lleva texto de contenido: solo texto de sistema con
+     --skin-on-dark o --skin-on-dark-soft, medidos contra el azul tinta.
+   ========================================================================== */
+
+[data-style="y2k-aesthetic"] {
+  /* Lienzo: azul muy claro con dos burbujas radiales muy tenues. Las manchas
+     NO van en --bg-page (components.css usa ese token como color en `.toast`);
+     el fondo va en background-image del body. */
+  background-color: #eaf1f9;
+  background-image:
+    radial-gradient(42rem 34rem at 14% -6%, #bfe0ff3d, transparent 60%),
+    radial-gradient(36rem 30rem at 92% 2%, #ffb8d92e, transparent 58%),
+    radial-gradient(#5a7ba81a 1px, transparent 1px);
+  background-size: auto, auto, 22px 22px;
+  color-scheme: light;
+
+  /* ---- Superficies y texto ---------------------------------------------
+     Tinta azul casi negra: el cromo y el bubblegum solo funcionan con una
+     tinta fría encima, un gris cálido los ensuciaría. */
+  --bg-page: #eaf1f9;
+  --bg-raised: #ffffff;
+  --bg-sunken: #dde8f4;
+  --bg-nav: #ffffffd9;
+  --text-strong: #0b1a3d;
+  --text-body: #35486a;
+  --text-soft: #4c5e84;
+  /* --text-faint se usa a 11px (texto normal), así que se mide a 4.5:1. Se
+     oscureció a #4c5e84 porque #5a6c90 daba 4.25:1 sobre --bg-sunken (más
+     oscuro que el lienzo, y hay texto mono dentro) y las burbujas del fondo
+     reelevan un poco la superficie donde va el texto tumbado. */
+  --text-faint: #4c5e84;
+  --line-soft: #dbe6f4;
+  --line-strong: #7288ad;
+
+  /* ---- Marca: el azul tinta manda, el bubblegum identifica -------------- */
+  --brand-ink: #0b1a3d;
+  --brand-ink-deep: #06122b;
+  --brand-paper: #ffffff;
+
+  --accent-100: #dbe8ff;
+  --accent-500: #1f5fd8;
+  --accent-700: #14459c;
+
+  --support-100: #e2f6d8;
+  --support-500: #4f7f00;
+  --support-700: #3d6600;
+
+  --cool-100: #d3f2fb;
+  --cool-500: #0369a1;
+  --cool-700: #075985;
+
+  /* ---- Semánticos en tono Bubble-era, pero medidos ---------------------- */
+  --ok-bg: #d7f7e0;
+  --ok-fg: #0a5c2a;
+  --ok-solid: #0d803d;
+  --warn-bg: #ffeec4;
+  --warn-fg: #7a4a06;
+  --warn-solid: #b45309;
+  --ember-bg: #ffe2d2;
+  --ember-fg: #8a3208;
+  --ember-solid: #c2410c;
+  --bad-bg: #ffdede;
+  --bad-fg: #8f1116;
+  --bad-solid: #c81e2e;
+  --info-bg: #d3f2fb;
+  --info-fg: #0a4a8c;
+  --info-solid: #1f5fd8;
+  /* ---- Tipografía: sans geométrica con versalitas -----------------------
+     El Y2K no usa serifas ni mono para el cuerpo: usa una sans de palo
+     estrecho y mayúsculas con tracking amplio para las etiquetas. */
+  --font-display: "Trebuchet MS", "Segoe UI", Tahoma, Verdana, sans-serif;
+  --text-display: clamp(2.5rem, 1.3rem + 5vw, 5.2rem);
+  --text-h2: clamp(1.6rem, 1.15rem + 1.8vw, 2.4rem);
+  --leading-tight: 1.02;
+  --leading-body: 1.6;
+
+  /* ---- Forma: radios casi circulares, el hallmark del estilo ----------- */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 34px;
+  --radius-pill: 999px;
+
+  /* ---- Sombras: el bisel, no la mancha ---------------------------------
+     Una sombra difusa grande es "neumorphism", no Y2K. Aquí la profundidad la
+     hace el par luz-arriba/sombra-abajo, y la sombra dura queda Chinesca:
+     desplazada, coloreada, sin apenas desenfoque. */
+  --shadow-1: 0 1px 0 #ffffffb3, 0 2px 6px #2a4a7a1f;
+  --shadow-2: 0 2px 0 #ffffffb8, 0 5px 12px #2a4a7a2b;
+  --shadow-3: 0 3px 0 #ffffffc4, 0 10px 22px #2a4a7a38;
+
+  /* ---- Movimiento:gooey y rápido, con leve rebote ---------------------- */
+  --ease-out: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-1: 150ms;
+  --dur-2: 300ms;
+  --dur-3: 600ms;
+
+  color-scheme: light;
+
+  /* ---- Puente de 14 tokens (los lee _template/specimen.css) -------------
+     --skin-on-solid va con BLANCO aquí porque los sólidos son oscuros; en
+     oscuro el mismo token pasa a tinta oscura. */
+  --skin-on-solid: #ffffff;
+  --skin-brand-ink: #1f5fd8;
+  --skin-on-dark: #ffffff;
+  --skin-on-dark-soft: #c9d6ef;
+  --skin-scrim: #0b1a3de0;
+  --skin-tint: #1f5fd81a;
+  --skin-tint-strong: #1f5fd833;
+  --skin-ring: #ffffff00;
+  --skin-ring-dark: #0b1a3d14;
+  --skin-tray: #ffffffb8;
+  --skin-tray-radius: 34px;
+  --skin-light-bg: #ffffff;
+  --skin-light-fg: #0b1a3d;
+  --skin-light-bg-hover: #eaf1f9;
+  --skin-inverse: #0b1a3d;
+}
+
+/* ==========================================================================
+   MODO OSCURO — el mismo cromo sobre un azul profundo en vez de gris.
+   Los sólidos se ACLARAN, así que --skin-on-solid pasa a tinta oscura: es la
+   otra mitad de la trampa del cromo, y por eso el token se declara dos veces.
+   ========================================================================== */
+
+[data-theme="dark"][data-style="y2k-aesthetic"] {
+  background-color: #060d20;
+  background-image:
+    radial-gradient(44rem 36rem at 16% -8%, #1a3a7a5c, transparent 62%),
+    radial-gradient(38rem 32rem at 90% 0%, #7a1a5c47, transparent 60%),
+    radial-gradient(#93b4ff1f 1px, transparent 1px);
+  background-size: auto, auto, 22px 22px;
+  color-scheme: dark;
+
+  --bg-page: #060d20;
+  --bg-raised: #0d1832;
+  --bg-sunken: #04091a;
+  --bg-nav: #0d1832d9;
+
+  --text-strong: #eef4ff;
+  --text-body: #b9c8e4;
+  --text-soft: #8b9dc0;
+  --text-faint: #7488ab;
+  --line-soft: #16233d;
+  --line-strong: #4d6a9c;
+
+  --brand-ink: #b9c8e4;
+  --brand-ink-deep: #04091a;
+  --brand-paper: #0d1832;
+
+  --accent-100: #14264d;
+  --accent-500: #6aa8ff;
+  --accent-700: #a8ccff;
+
+  --support-100: #1c2f10;
+  --support-500: #9ee04a;
+  --support-700: #bdf26b;
+
+  --cool-100: #0f2c3d;
+  --cool-500: #7dd3fc;
+  --cool-700: #bae6fd;
+
+  /* Los sólidos se aclaran para seguir siendo luminosos sobre el azul
+     profundo; por eso ahora necesitan TINTA OSCURA encima, no blanco. */
+  --ok-bg: #0c2e1c;
+  --ok-fg: #6ee7a8;
+  --ok-solid: #4ade80;
+  --warn-bg: #33230c;
+  --warn-fg: #fcd34d;
+  --warn-solid: #fbbf24;
+  --ember-bg: #2e1a0e;
+  --ember-fg: #fdba74;
+  --ember-solid: #fb923c;
+  --bad-bg: #3a1414;
+  --bad-fg: #fca5a5;
+  --bad-solid: #f87171;
+  --info-bg: #0f2c3d;
+  --info-fg: #7dd3fc;
+  --info-solid: #6aa8ff;
+
+  /* La sombra dura coloreada ya no funciona sobre azul profundo: se atenúa y
+     la luz del bisel pasa a ser el filo claro que define la superficie. */
+  --shadow-1: 0 1px 0 #93b4ff1f, 0 2px 6px #00000059;
+  --shadow-2: 0 2px 0 #93b4ff29, 0 5px 12px #00000073;
+  --shadow-3: 0 3px 0 #93b4ff33, 0 10px 22px #0000008c;
+
+  /* --- Puente en oscuro: el cromo se invierte y la tinta cambia de lado --- */
+  --skin-on-solid: #06122b;
+  --skin-brand-ink: #6aa8ff;
+  --skin-on-dark: #ffffff;
+  --skin-on-dark-soft: #c3d2ee;
+  --skin-scrim: #04091ae0;
+  --skin-tint: #6aa8ff24;
+  --skin-tint-strong: #6aa8ff40;
+  --skin-ring: #00000000;
+  --skin-ring-dark: #93b4ff1f;
+  --skin-tray: #16233db8;
+  --skin-tray-radius: 34px;
+  --skin-light-bg: #16233d;
+  --skin-light-fg: #eef4ff;
+  --skin-light-bg-hover: #1e2f52;
+  --skin-inverse: #0d1832;
+}
+/* ==========================================================================
+   OVERRIDES DE COMPONENTE
+   --------------------------------------------------------------------------
+   Lo que hace que esto sea Y2K y no "otro tema con radios grandes": el bisel
+   de dos tonos (luz arriba, sombra abajo) y el degradado de cromo. Ninguna de
+   las dos cosas se puede expresar con tokens sueltos: viven aquí.
+   ========================================================================== */
+
+[data-style="y2k-aesthetic"] .btn {
+  /* Bisel: el filo claro arriba y la sombra abajo definen el volumen. El
+     inset blanco es la "luz" y el inset oscuro es el "sombreado". */
+  box-shadow:
+    inset 0 1px 0 #ffffffb3,
+    inset 0 -2px 0 #2a4a7a26,
+    0 1px 2px #2a4a7a1f;
+}
+
+[data-style="y2k-aesthetic"] .btn-primary {
+  /* Cromo: el degradado metálico es el gesto central del skin. Las tres
+     paradas van con BLANCO encima y todas pasan 4.5:1 (la más clara, #2f6ad8,
+     da 5.03:1). */
+  background-image: linear-gradient(
+    180deg,
+    #2f6ad8 0%,
+    #245cc0 48%,
+    #1a4fa8 100%
+  );
+  background-color: #1f5fd8;
+}
+
+/* El cromo de arriba es de tema claro. En oscuro el botón se ACLARA en vez de
+   oscurecerse, y esa es la decisión que hace coherente todo el tema: la tinta
+   de --skin-on-solid es oscura porque en oscuro TODOS los sólidos se aclaran
+   (--ok-solid, --bad-solid, .avatar, .dbar). Un botón azul medio con la misma
+   tinta sería el único sólido oscuro del tema y quedaría a 2.3:1.
+   El cromo brillante es, además, lo que el estilo pide: en oscuro sigue siendo
+   metal. Ink #06122b sobre estas paradas: 14.34:1 la más clara. */
+[data-theme="dark"][data-style="y2k-aesthetic"] .btn-primary {
+  background-image: linear-gradient(
+    180deg,
+    #dcecff 0%,
+    #bcd8fb 48%,
+    #8ab8ef 100%
+  );
+  background-color: #bcd8fb;
+}
+
+[data-style="y2k-aesthetic"] .btn-accent {
+  /* El bubblegum como superficie, con la tinta oscura que necesita: el vivo
+     #ff4fa3 con blanco solo daría 3.04:1, pero con tinta #1a0b2e aguanta. */
+  background-image: linear-gradient(
+    180deg,
+    #ff77b8 0%,
+    #ff4fa3 52%,
+    #e8358f 100%
+  );
+  background-color: #ff4fa3;
+  color: #1a0b2e;
+}
+
+/* El brillo interior: la "burbuja" de luz que comparten los controles
+   redondeados del skin. */
+[data-style="y2k-aesthetic"] .btn-lg,
+[data-style="y2k-aesthetic"] .btn-cell {
+  box-shadow:
+    inset 0 2px 0 #ffffff8c,
+    inset 0 -3px 0 #2a4a7a1f,
+    0 2px 5px #2a4a7a24;
+}
+
+[data-style="y2k-aesthetic"] .btn-cell-dark {
+  /* Fondo FIJO y no --brand-ink-deep: en oscuro ese token es tinta clara y la
+     celda "oscura" salía clara con texto claro encima. Es la misma trampa que
+     en maximalism, y por eso aquí tampoco se usa. */
+  background: #06122b;
+  color: var(--skin-on-dark, #ffffff);
+}
+
+[data-theme="dark"][data-style="y2k-aesthetic"] .btn-cell-dark {
+  background: #01050f;
+}
+
+[data-style="y2k-aesthetic"] .shell,
+[data-style="y2k-aesthetic"] .kitcard {
+  border: 1px solid #ffffff8f;
+  box-shadow:
+    inset 0 1px 0 #ffffffb3,
+    0 2px 0 #2a4a7a1f,
+    0 6px 16px #2a4a7a1f;
+}
+
+[data-theme="dark"][data-style="y2k-aesthetic"] .shell,
+[data-theme="dark"][data-style="y2k-aesthetic"] .kitcard {
+  border-color: #93b4ff2e;
+  box-shadow:
+    inset 0 1px 0 #93b4ff1f,
+    0 2px 0 #0000004d,
+    0 6px 16px #00000066;
+}
+
+/* Burbuja: el reflejo especular del lump. Se aplica a las tarjetas, que son
+   superficies grandes; en los controles controlaría demasiado. */
+[data-style="y2k-aesthetic"] .kitcard {
+  position: relative;
+  overflow: hidden;
+}
+
+[data-style="y2k-aesthetic"] .kitcard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(
+      120% 70% at 28% -8%,
+      #ffffffbf 0%,
+      #ffffff33 34%,
+      transparent 62%
+    );
+  pointer-events: none;
+}
+
+[data-theme="dark"][data-style="y2k-aesthetic"] .kitcard::before {
+  background:
+    radial-gradient(
+      120% 70% at 28% -8%,
+      #93b4ff26 0%,
+      #93b4ff0d 34%,
+      transparent 62%
+    );
+}
+
+[data-style="y2k-aesthetic"] .dbar,
+[data-style="y2k-aesthetic"] .shape {
+  border-radius: var(--radius-pill);
+}
+
+/* Etiquetas en versalitas con tracking amplio: la voz del skin. */
+[data-style="y2k-aesthetic"] .eyebrow,
+[data-style="y2k-aesthetic"] .blocktag {
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  font-weight: 700;
+}
+
+

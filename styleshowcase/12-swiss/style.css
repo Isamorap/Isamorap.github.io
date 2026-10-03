@@ -1,0 +1,380 @@
+/* ==========================================================================
+   ESTILO 12 · SWISS DESIGN — variante "rejilla y filete" de la plantilla Showcase
+   --------------------------------------------------------------------------
+   Modo nativo: claro. Modos implementados: light + dark (ambos en este archivo).
+   Qué cambia: TODO borde pasa a ser un filete de 1px; las sombras se anulan por
+   completo y la elevación se comunica con PESO DE FILETE, nunca con difuminado.
+   Un único acento (rojo) y una única familia tipográfica, ya existente.
+   Qué NO cambia: estructura, densidad, jerarquía de acciones ni el vocabulario
+   de estados (los cinco semáforos siguen existiendo, ahora en plano y contados).
+   Este archivo solo redefine tokens dentro de [data-style="swiss"];
+   nunca edita ../components.css.
+   Alcance de esta muestra: los 4 bloques del espécimen. Ver STYLE.md.
+   ========================================================================== */
+
+[data-style="swiss"] {
+  /* Lienzo: papel puro. El blanco no se tinta: el rojo es el único color. */
+  background-color: #ffffff;
+  color-scheme: light;
+
+  /* Superficies y texto */
+  --bg-page: #ffffff;
+  --bg-raised: #ffffff;
+  --bg-sunken: #f2f2f2;
+  --bg-nav: #ffffff;
+  --text-strong: #0f0f0f;
+  --text-body: #1a1a1a;
+  --text-soft: #525252;
+  --text-faint: #737373;
+  /* En este estilo la línea NO es un detalle: es la firma (ver bloque de filetes). */
+  --line-soft: #d8d8d8;
+  --line-strong: #0f0f0f;
+
+  /* Identidad y acento: la tinta es el negro y el rojo es el único color */
+  --brand-ink: #0f0f0f;
+  --brand-ink-deep: #000000;
+  --brand-paper: #ffffff;
+  --accent-100: #fde8e9;
+  --accent-500: #e1121c;
+  --accent-700: #a30d15;
+  --support-100: #e6f0e9;
+  --support-500: #14804a;
+  --support-700: #0d5c33;
+  --cool-100: #e8eef4;
+  --cool-500: #2a6d9e;
+  --cool-700: #1c4a6e;
+
+  /* Semánticos en plano: el estado se marca con tinta fuerte sobre fondo pálido,
+     nunca con un sólido que compita con el rojo de acento. */
+  --ok-bg: #e6f0e9;
+  --ok-fg: #0d5c33;
+  --ok-solid: #14804a;
+  --warn-bg: #fdf3dd;
+  --warn-fg: #7a5300;
+  --warn-solid: #9b6c16;
+  --ember-bg: #fdeee2;
+  --ember-fg: #8a4416;
+  --ember-solid: #b65c1d;
+  --bad-bg: #fbe9e9;
+  --bad-fg: #8f1116;
+  --bad-solid: #c0272d;
+  --info-bg: #e8eef4;
+  --info-fg: #1c4a6e;
+  --info-solid: #2a6d9e;
+
+  /* Forma: el registro incorpora el redondeo por completo, sin excepción */
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-pill: 0;
+
+  /* Profundidad: aquí NO hay profundidad. La elevación la cuenta el filete.
+     Poner un `none` explícito (y no solo borrar) para que cualquier
+     `box-shadow: var(--shadow-*)` de components.css caiga en vacío. */
+  --shadow-1: none;
+  --shadow-2: none;
+  --shadow-3: none;
+
+  /* Movimiento: casi nulo. El cambio de estado es un cambio de tinta. */
+  --dur-1: 90ms;
+  --dur-2: 120ms;
+  --dur-3: 120ms;
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Puente documentado en _template/specimen.css (hardcodes de components.css) */
+  --skin-on-solid: #ffffff;
+  --skin-on-dark: #ffffff;
+  --skin-on-dark-soft: #e5e5e5;
+  --skin-scrim: #0f0f0fe6;
+  --skin-tint: #0f0f0f0f;
+  --skin-tint-strong: #0f0f0f1a;
+  --skin-ring: #0f0f0f00;
+  --skin-ring-dark: #0f0f0f00;
+  --skin-tray: #f2f2f2;
+  --skin-tray-radius: 0;
+  --skin-light-bg: #0f0f0f;
+  --skin-light-fg: #ffffff;
+  --skin-light-bg-hover: #a30d15;
+  --skin-inverse: #0f0f0f;
+}
+
+/* ==========================================================================
+   LA FIRMA: el filete
+   --------------------------------------------------------------------------
+   Todo borde es de 1px y nunca hay sombra. La jerarquía se construye con el
+   PESO del filete, no con el difuminado:
+     1px  = separación normal
+     2px  = elemento con acción (campo, botón secundario, control)
+     4px  = acento: la barra de estado y el botón primario
+   ========================================================================== */
+
+/* ---- 1. Superficies: filete de 1px, sin radio y sin sombra ---- */
+[data-style="swiss"] .navpill,
+[data-style="swiss"] .menu,
+[data-style="swiss"] .btn,
+[data-style="swiss"] .btn-cell,
+[data-style="swiss"] .pill,
+[data-style="swiss"] .swatch,
+[data-style="swiss"] .token-pane,
+[data-style="swiss"] .kitcard,
+[data-style="swiss"] .dcard,
+[data-style="swiss"] .counter,
+[data-style="swiss"] .shape,
+[data-style="swiss"] .type-mono,
+[data-style="swiss"] .seg,
+[data-style="swiss"] .shell,
+[data-style="swiss"] .shell-core,
+[data-style="swiss"] .motion-chip {
+  border-radius: 0;
+  box-shadow: none;
+}
+/* La barra flotante deja de flotar: pasa a ser una caja con filete, pegada
+   arriba, y el blur del vidrio se desactiva (aquí no hay translucidez). */
+[data-style="swiss"] .navwrap { top: 0; padding: 0; }
+[data-style="swiss"] .navpill {
+  width: 100%;
+  max-width: none;
+  justify-content: space-between;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong);
+  border-radius: 0;
+  padding: 14px var(--space-6);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+/* ---- 2. Elementos con acción: filete de 2px ---- */
+[data-style="swiss"] .iconbtn,
+[data-style="swiss"] .field input,
+[data-style="swiss"] .field select,
+[data-style="swiss"] .ck button {
+  border: 2px solid var(--line-strong);
+  border-radius: 0;
+  box-shadow: none;
+}
+[data-style="swiss"] .iconbtn:hover,
+[data-style="swiss"] .iconbtn:active {
+  background: var(--text-strong);
+  color: #ffffff;
+  border-color: var(--text-strong);
+  transform: none;
+}
+[data-style="swiss"] .field input:focus,
+[data-style="swiss"] .field select:focus {
+  /* El foco Swiss es un filete, no un halo difuminado. */
+  outline: 2px solid var(--accent-500);
+  outline-offset: 0;
+  border-color: var(--text-strong);
+  box-shadow: none;
+}
+[data-style="swiss"] .menubtn { border-radius: 0; }
+[data-style="swiss"] .menubtn:hover,
+[data-style="swiss"] .menubtn[aria-expanded="true"] {
+  background: var(--text-strong);
+  color: #ffffff;
+}
+[data-style="swiss"] .brand { color: var(--text-strong); }
+
+/* ---- 3. El acento: 4px de filete, y es rojo ---- */
+/* El botón primario es un filete de 4px, no un bloque relleno: es la forma
+   suiza de marcar la acción principal sin gastar una superficie de color. */
+[data-style="swiss"] .btn-primary {
+  background: #ffffff;
+  color: var(--text-strong);
+  border: 4px solid var(--text-strong);
+  box-shadow: none;
+}
+[data-style="swiss"] .btn-primary:hover {
+  background: var(--text-strong);
+  color: #ffffff;
+}
+[data-style="swiss"] .btn-accent {
+  background: #ffffff;
+  color: var(--accent-700);
+  border: 4px solid var(--accent-500);
+  box-shadow: none;
+}
+[data-style="swiss"] .btn-accent:hover {
+  background: var(--accent-500);
+  color: #ffffff;
+  filter: none;
+}
+/* La barra de estado lateral: la única barra con color sólido. */
+[data-theme="dark"][data-style="swiss"] .dbar {
+  /* En oscuro los sólidos son de tono medio (#3fbb7f, #d9a327, #ce444b) y el
+     blanco encima baja a 2.3-3.9:1. El acento, en cambio, sigue siendo un
+     rojo profundo que sí admite blanco: por eso aquí se fija la tinta y no en
+     --skin-on-solid, que manda en el acento. */
+  color: #0b0b0c;
+}
+[data-theme="dark"][data-style="swiss"] .dbar span { color: #0b0b0c; }
+
+[data-style="swiss"] .dbar { border-radius: 0; }
+/* Deshabilitado: el TEXTO mantiene AA (5.1:1) y el filete llega al 3:1 que pide
+   WCAG 1.4.11 para límites de componente. Un gris "apagado" al 45% fallaba
+   ambas cosas: por eso no se usa opacidad, sino color medido. */
+[data-style="swiss"] .btn:disabled,
+[data-style="swiss"] .btn:disabled:hover {
+  background: #ffffff;
+  color: #6e6e6e;
+  border-color: #949494;
+  opacity: 1;
+  cursor: not-allowed;
+  transform: none;
+}
+[data-style="swiss"] .btn-secondary {
+  background: #ffffff;
+  border: 2px solid var(--line-strong);
+  color: var(--text-strong);
+}
+[data-style="swiss"] .btn-secondary:hover { background: var(--bg-sunken); }
+[data-style="swiss"] .btn-ghost { color: var(--text-strong); }
+[data-style="swiss"] .btn-ghost:hover { background: var(--bg-sunken); }
+
+/* ---- 4. Tipografía: la misma familia, otra presión ----
+   No se cambia la fuente (regla del contrato). El carácter viene de tres
+   decisiones: peso alto, interletrado cerrado en display, y mayúsculas usadas
+   como recurso escaso (solo etiquetas), no como en Neo-Brutalism. */
+[data-style="swiss"] h1,
+[data-style="swiss"] .hero h1,
+[data-style="swiss"] .type-display {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  text-align: left;
+}
+[data-style="swiss"] .section > h2 { font-weight: 800; letter-spacing: -0.025em; }
+/* La etiqueta suiza: versalita menuda, muy espaciada, sin fondo ni píldora. */
+[data-style="swiss"] .eyebrow {
+  background: transparent;
+  color: var(--accent-700);
+  border-radius: 0;
+  padding: 0 0 3px;
+  margin: 0 0 var(--space-4);
+  border-bottom: 1px solid currentColor;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+[data-style="swiss"] .lead {
+  color: var(--text-body);
+  max-width: 52ch;
+  font-weight: 400;
+}
+[data-style="swiss"] .menu a { border-radius: 0; }
+[data-style="swiss"] .menu a:hover { background: var(--bg-sunken); }
+[data-style="swiss"] .menu a b { color: var(--accent-700); font-weight: 700; }
+
+/* ---- 5. Superficies de color: solo el rojo y los semáforos ---- */
+/* El chip activo se invierte a tinta: la selección es un hecho, no un matiz. */
+[data-style="swiss"] .ck button.is-on,
+[data-style="swiss"] .ck button.is-on.is-ok,
+[data-style="swiss"] .ck button.is-on.is-warn,
+[data-style="swiss"] .ck button.is-on.is-bad,
+[data-style="swiss"] .ck button.is-on.is-info {
+  background: var(--text-strong);
+  border-color: var(--text-strong);
+  color: #ffffff;
+}
+/* El punto de estado conserva su color: es la única señal cromática de la tarjeta. */
+[data-style="swiss"] .ck button.is-on .ckstate { color: var(--accent-500); }
+[data-style="swiss"] .swatch:hover,
+[data-style="swiss"] .dcard:hover {
+  transform: none;
+  box-shadow: none;
+}
+[data-style="swiss"] .swatch:hover { border-color: var(--text-strong); }
+/* El hero deja de ser una postal: es un bloque con filete. */
+[data-style="swiss"] .shell { background: #ffffff; border: 0; border-radius: 0; padding: 0; }
+[data-style="swiss"] .shell-core { border: 1px solid var(--line-strong); border-radius: 0; box-shadow: none; }
+/* Sobre la imagen: el chip es un bloque de TINTA con texto del color del papel.
+   No puede usar `--text-strong` como fondo: en modo oscuro ese token es blanco y
+   el texto (también blanco) desaparecería sobre el fondo blanco. */
+[data-style="swiss"] .hero-chip {
+  background: var(--text-strong);
+  color: var(--bg-page);
+  border: 1px solid var(--text-strong);
+  border-radius: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  font-weight: 600;
+}
+[data-style="swiss"] .type-mono {
+  background: var(--bg-sunken);
+  border: 1px solid var(--line-soft);
+  border-radius: 0;
+  color: var(--text-body);
+}
+[data-style="swiss"] .token-pane { border: 1px solid var(--line-strong); }
+[data-style="swiss"] .blocktag { letter-spacing: 0.18em; color: var(--text-body); }
+
+/* ==========================================================================
+   MODO OSCURO — inversión, no rediseño
+   --------------------------------------------------------------------------
+   Igual que en Neo-Brutalism: la firma (filete de 1px, cero sombra, un solo
+   acento) NO depende del color, así que el modo oscuro es solo papel negro y
+   tinta blanca. El rojo se aclara un punto porque #e1121c sobre negro no alcanza
+   AA para texto de etiqueta.
+   ========================================================================== */
+[data-theme="dark"][data-style="swiss"] {
+  background-color: #0f0f0f;
+  color-scheme: dark;
+  --bg-page: #0f0f0f;
+  --bg-raised: #0f0f0f;
+  --bg-sunken: #1c1c1c;
+  --bg-nav: #0f0f0f;
+  --text-strong: #ffffff;
+  --text-body: #ededed;
+  --text-soft: #a8a8a8;
+  --text-faint: #8a8a8a;
+  --line-soft: #3a3a3a;
+  --line-strong: #ffffff;
+  --brand-ink: #ffffff;
+  --brand-ink-deep: #000000;
+  --accent-100: #3a1114;
+  --accent-500: #ff4a52;
+  --accent-700: #ff8f95;
+  --support-100: #0f2b1e;
+  --support-500: #3fbb7f;
+  --support-700: #8fdcb6;
+  --cool-100: #10222e;
+  --cool-500: #5aa8d8;
+  --cool-700: #9ed0ee;
+  --ok-bg: #0f2b1e;  --ok-fg: #8fdcb6;  --ok-solid: #3fbb7f;
+  --warn-bg: #2e2308; --warn-fg: #f0c85e; --warn-solid: #d9a327;
+  --ember-bg: #2e1a0c; --ember-fg: #f0a878; --ember-solid: #d97a3c;
+  --bad-bg: #2e1012;  --bad-fg: #f08a8f;  --bad-solid: #ce444b;
+  --info-bg: #10222e; --info-fg: #9ed0ee; --info-solid: #5aa8d8;
+  --skin-tint: #ffffff0f;
+  --skin-tint-strong: #ffffff1a;
+  --skin-tray: #1c1c1c;
+  --skin-light-bg: #ffffff;
+  --skin-light-fg: #0f0f0f;
+  --skin-light-bg-hover: #e1121c;
+  --skin-inverse: #ffffff;
+}
+/* Los botones que son "tinta invertida" al hover deben invertirse también aquí. */
+[data-theme="dark"][data-style="swiss"] .btn-primary,
+[data-theme="dark"][data-style="swiss"] .menubtn:hover,
+[data-theme="dark"][data-style="swiss"] .menubtn[aria-expanded="true"],
+[data-theme="dark"][data-style="swiss"] .iconbtn:hover,
+[data-theme="dark"][data-style="swiss"] .iconbtn:active,
+[data-theme="dark"][data-style="swiss"] .ck button.is-on {
+  background: #ffffff;
+  color: #0f0f0f;
+  border-color: #ffffff;
+}
+[data-theme="dark"][data-style="swiss"] .btn-secondary,
+[data-theme="dark"][data-style="swiss"] .btn-accent {
+  background: #0f0f0f;
+  color: #ffffff;
+}
+[data-theme="dark"][data-style="swiss"] .btn-primary:hover {
+  background: var(--accent-500);
+  color: #0f0f0f;
+  border-color: var(--accent-500);
+}
+[data-theme="dark"][data-style="swiss"] .eyebrow { color: var(--accent-700); }
+[data-theme="dark"][data-style="swiss"] .blocktag { color: var(--text-body); }
+

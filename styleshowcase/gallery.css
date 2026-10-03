@@ -1,0 +1,147 @@
+/* ==========================================================================
+   GALERÍA DEL MUESTRARIO — chrome neutro del índice
+   --------------------------------------------------------------------------
+   Esto NO es un estilo: es el aparato que los muestra. Por eso no lleva
+   [data-style] y usa los tokens de tokens.css (misma carpeta).
+   Los previews de cada tarjeta SÍ llevan [data-style]: cada skin pinta lo suyo
+   dentro de su propio div (sin iframes ni 22 páginas cargadas).
+   ========================================================================== */
+
+body.gallery { background: var(--bg-page); }
+.g-wrap { max-width: 1240px; margin: 0 auto; padding: var(--space-12) var(--space-6) var(--space-16); }
+
+/* ---- Cabecera ---- */
+.g-back { font-family: var(--font-mono); font-size: 11px; color: var(--text-soft); text-decoration: none; }
+.g-back:hover { color: var(--text-strong); }
+.g-head h1 { font-size: var(--text-h2); margin: var(--space-4) 0 var(--space-2); }
+.g-head > p { color: var(--text-soft); max-width: 76ch; margin: 0 0 var(--space-6); }
+.g-meta { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-bottom: var(--space-8); }
+.g-meta div {
+  background: var(--bg-raised);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  font-size: var(--text-small);
+  color: var(--text-soft);
+}
+.g-meta b { display: block; color: var(--text-strong); font-size: 1.15rem; }
+
+/* ---- Filtros ---- */
+.g-filtros { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-bottom: var(--space-6); }
+.g-filtros > span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-right: var(--space-2);
+}
+.g-fbtn {
+  font: inherit;
+  font-size: var(--text-small);
+  font-weight: 700;
+  color: var(--text-soft);
+  background: var(--bg-raised);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out);
+}
+.g-fbtn:hover { color: var(--text-strong); }
+.g-fbtn.is-on { background: var(--brand-ink); border-color: var(--brand-ink); color: #ffffff; }
+
+/* Volver al portfolio: el showcase vive dentro de Isamorap.github.io */
+.g-back {
+  display: inline-block;
+  margin-bottom: 14px;
+  text-decoration: none;
+}
+
+/* ---- Rejilla de fichas ---- */
+.g-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--space-6); align-items: start; }
+.g-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-raised);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-1);
+}
+.g-card.is-planned { box-shadow: none; }
+.g-prev { position: relative; height: 208px; background: var(--bg-sunken); border-bottom: 1px solid var(--line-soft); overflow: hidden; }
+.g-prev-vacio {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-6);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--text-faint);
+  text-align: center;
+}
+
+/* ---- Preview vivo: componentes reales dentro de un contenedor con data-style ---- */
+.g-pv { position: absolute; inset: 0; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.g-pv-nav { display: flex; align-items: center; gap: 6px; }
+.g-pv-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--brand-ink); }
+.g-pv-bar { height: 8px; width: 44px; border-radius: 4px; background: var(--line-strong); opacity: 0.75; }
+.g-pv-bar.is-short { width: 24px; }
+.g-pv-title { margin: 0; font-size: 1.05rem; font-weight: 800; line-height: 1.1; color: var(--text-strong); letter-spacing: -0.02em; }
+.g-pv-sub { margin: 0; font-size: 11px; color: var(--text-soft); }
+.g-pv-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.g-pv-row .btn { padding: 6px 12px; font-size: 11px; }
+.g-pv-row .pill { font-size: 10px; padding: 3px 8px; }
+.g-pv-sw { display: flex; gap: 4px; margin-top: auto; }
+.g-pv-sw i { display: block; height: 14px; flex: 1; border-radius: 3px; }
+/* ---- Cuerpo de la ficha ---- */
+.g-body { padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); flex: 1; }
+.g-name { display: flex; align-items: baseline; gap: 8px; margin: 0; }
+.g-name b { font-family: var(--font-mono); font-size: 11px; font-weight: 400; color: var(--text-faint); }
+.g-name strong { color: var(--text-strong); font-size: 1.05rem; }
+.g-resumen { margin: 0; font-size: var(--text-small); color: var(--text-soft); }
+.g-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.g-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--text-soft);
+  background: var(--bg-sunken);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-pill);
+  padding: 3px 9px;
+}
+.g-tag.is-aa { color: var(--ok-fg); background: var(--ok-bg); border-color: transparent; }
+.g-tag.is-aa-star { color: var(--warn-fg); background: var(--warn-bg); border-color: transparent; }
+.g-tag.is-adoptable { color: var(--info-fg); background: var(--info-bg); border-color: transparent; }
+.g-acciones { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin-top: auto; padding-top: var(--space-2); }
+.g-acciones a { font-size: var(--text-small); font-weight: 700; color: var(--accent-700); text-decoration: none; border-bottom: 1px solid var(--accent-500); }
+.g-acciones a:hover { color: var(--accent-500); }
+.g-acciones a.g-suave { font-weight: 600; color: var(--text-soft); border-bottom-color: var(--line-strong); }
+.g-acciones a.g-suave:hover { color: var(--text-strong); }
+.g-pendiente { margin: 0; font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); }
+
+/* ---- Leyenda de cómo leer el muestrario ---- */
+.g-leyenda {
+  margin-top: var(--space-12);
+  border-top: 1px solid var(--line-soft);
+  padding-top: var(--space-8);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-8);
+}
+.g-leyenda h3 { margin-top: 0; }
+.g-leyenda p, .g-leyenda li { font-size: var(--text-small); color: var(--text-soft); }
+.g-leyenda ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.g-leyenda code { font-size: 11px; }
+.g-vacio { grid-column: 1 / -1; padding: var(--space-12); text-align: center; color: var(--text-soft); font-size: var(--text-small); }
+
+@media (max-width: 767px) {
+  .g-grid { grid-template-columns: 1fr; }
+  .g-prev { height: 168px; }
+  .g-wrap { padding-top: var(--space-8); }
+}

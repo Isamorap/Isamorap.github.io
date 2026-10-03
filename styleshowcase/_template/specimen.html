@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+  <!-- ESPÉCIMEN DEL MUESTRARIO ------------------------------------------------
+       Misma plantilla, 4 bloques: encabezado, tokens, botones y estados
+       operativos. El look lo pone el skin que llega por ?style=<id>
+       (por defecto: glassmorphism). Reutiliza tokens.css, components.css y
+       assets/ de la raíz: no duplica la base, la viste.
+       Abrir con doble clic (file://) funciona: nada de fetch ni módulos.
+       ---------------------------------------------------------------------- -->
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Espécimen · Muestrario de estilos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" />
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="../tokens.css" />
+    <link rel="stylesheet" href="../components.css" />
+    <link rel="stylesheet" href="specimen.css" />
+  </head>
+
+  <body class="specimen">
+    <!-- Cinta de museo: dice qué se está mirando y con qué archivos. -->
+    <div class="skin-tape">
+      <p class="skin-tape-id"><b id="tapeNum">03</b> <span id="tapeNombre">Glassmorphism</span></p>
+      <p class="skin-tape-meta">
+        <span class="skin-tag" id="tapeFamilia">Materiales blandos</span>
+        <span class="skin-tag" id="tapeModo">modo nativo: oscuro</span>
+        <span class="skin-tag is-a11y" id="tapeA11y">AA</span>
+        <span class="skin-tag" id="tapeVeredicto">experimental</span>
+      </p>
+      <nav class="skin-tape-nav" aria-label="Muestrario">
+        <a href="../index.html">← Galería</a>
+        <a href="#elegir-estilo">Elegir estilo ↓</a>
+        <a id="linkCss" href="../03-glassmorphism/style.css">style.css</a>
+        <a id="linkJson" href="../03-glassmorphism/style.json">style.json</a>
+        <a id="linkMd" href="../03-glassmorphism/STYLE.md">STYLE.md</a>
+      </nav>
+    </div>
+
+    <!-- BLOQUE 01 · ENCABEZADO -->
+    <p class="blocktag"><b>Bloque 01</b> Encabezado · nav de secciones + hero</p>
+
+    <header class="navwrap" id="encabezado">
+      <nav class="navpill" aria-label="Principal">
+        <!-- La marca es el único "puerta atrás" del espécimen: siempre a la
+             galería. Antes apuntaba a #encabezado (su propio ancla) y no hacía
+             nada. El texto "Style Showcase" le da nombre accesible, así que el
+             enlace no depende del icono para entenderse. -->
+        <a class="brand" href="../index.html" title="Volver a la galería">
+          <!-- --accent-500 es amarillo en neo-brutalism, y sobre la página clara
+               quedaba a 1.13:1. --skin-brand-ink deja que cada skin elija la
+               tinta que sí se lea; si no lo define, cae al acento. -->
+          <span class="material-symbols-outlined" style="font-size: 26px; color: var(--skin-brand-ink, var(--accent-500));" aria-hidden="true">auto_awesome</span>
+          <span>Style <strong>Showcase</strong></span>
+        </a>
+        <div class="navmenu">
+          <button id="menuBtn" class="menubtn" type="button" aria-haspopup="true" aria-expanded="false">
+            Bloques <span class="material-symbols-outlined">expand_more</span>
+          </button>
+          <div class="menu" id="menuList" hidden>
+            <a href="#encabezado"><b>01</b>Encabezado</a>
+            <a href="#tokens"><b>02</b>Tokens</a>
+            <a href="#botones"><b>03</b>Botones</a>
+            <a href="#estados"><b>04</b>Estados e interactivos</a>
+          </div>
+        </div>
+        <button id="themeToggle" class="iconbtn" type="button" aria-label="Cambiar tema">
+          <span class="material-symbols-outlined">light_mode</span>
+        </button>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow" id="heroEyebrow">Espécimen 03 · Glassmorphism</p>
+        <h1 id="heroTitle">Misma estructura, múltiples lenguajes visuales</h1>
+        <p class="lead">Los componentes estructurales se mantienen constantes: cambian los tokens de estilo.
+          Este encabezado demuestra cómo un skin redefine superficies, contrastes y jerarquía formal.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary btn-lg" href="#tokens">
+            Explorar tokens
+            <span class="btn-ring"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 12 12 2M4 2h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg></span>
+          </a>
+          <a class="btn btn-ghost btn-lg" href="#estados">Ver componentes</a>
+        </div>
+      </div>
+      <div class="hero-media shell">
+        <div class="shell-core">
+          <img src="../assets/cover.svg" alt="Composición geométrica abstracta de prueba" width="1600" height="907" />
+          <p class="hero-chip"><span class="dot dot-ok"></span>Espécimen en vivo · Versión neutral</p>
+        </div>
+      </div>
+    </section>
+    <!-- BLOQUE 02 · TOKENS -->
+    <p class="blocktag"><b>Bloque 02</b> Tokens · paleta, tipografía, forma y movimiento</p>
+
+    <section id="tokens" class="section">
+      <h2>Tokens: el estilo se lee en los valores</h2>
+      <p class="section-sub">Paleta real del skin; clic en cualquier muestra para copiar el hex. Comparar esta
+        sección entre dos estilos es comparar su ADN.</p>
+      <div class="swatch-groups" id="swatchGroups"></div>
+
+      <div class="token-duo">
+        <div class="token-pane">
+          <h3>Tipografía</h3>
+          <p class="type-display">Métricas 84/100</p>
+          <p class="spec"><strong>--text-display</strong> · clamp(2.4rem, 1.4rem + 4vw, 4.2rem)</p>
+          <p class="type-h2">Rendimiento de interfaz</p>
+          <p class="spec"><strong>--text-h2</strong> · clamp(1.5rem, 1.2rem + 1.4vw, 2.1rem) / 700</p>
+          <p class="type-body">El contenido del espécimen analiza la consistencia en espaciados, proporciones
+            y legibilidad en pantallas de alta densidad.</p>
+          <p class="spec"><strong>--text-body-size</strong> · 0.95rem / 1.55 · 400</p>
+          <p class="type-mono" id="typeMono">--text-strong: …</p>
+          <p class="spec"><strong>--font-mono</strong> · solo código y tokens</p>
+        </div>
+        <div class="token-pane">
+          <h3>Radios y sombras</h3>
+          <div class="shape-row">
+            <span class="shape" style="border-radius: var(--radius-sm)">sm</span>
+            <span class="shape" style="border-radius: var(--radius-md)">md</span>
+            <span class="shape" style="border-radius: var(--radius-lg)">lg</span>
+            <span class="shape" style="border-radius: var(--radius-pill)">pill</span>
+          </div>
+          <p class="spec"><strong>radio</strong> · sm md lg pill — los cuatro niveles, reescritos por el skin</p>
+          <div class="shape-row">
+            <span class="shape shadow-1">1</span>
+            <span class="shape shadow-2">2</span>
+            <span class="shape shadow-3">3</span>
+          </div>
+          <p class="spec"><strong>shadows</strong> · 3 niveles: la receta que más separa a un estilo de otro</p>
+        </div>
+      </div>
+
+      <div class="token-pane token-wide">
+        <h3>Espaciado y movimiento</h3>
+        <div class="space-row">
+          <span class="space-bar"><i style="height: 4px"></i><span>1</span></span>
+          <span class="space-bar"><i style="height: 8px"></i><span>2</span></span>
+          <span class="space-bar"><i style="height: 12px"></i><span>3</span></span>
+          <span class="space-bar"><i style="height: 16px"></i><span>4</span></span>
+          <span class="space-bar"><i style="height: 24px"></i><span>6</span></span>
+          <span class="space-bar"><i style="height: 32px"></i><span>8</span></span>
+          <span class="space-bar"><i style="height: 48px"></i><span>12</span></span>
+          <span class="space-bar"><i style="height: 64px"></i><span>16</span></span>
+          <span class="space-bar"><i style="height: 96px"></i><span>24</span></span>
+        </div>
+        <p class="spec"><strong>space</strong> · 4 8 12 16 24 32 48 64 96 — los mismos 9 valores en todos los
+          estilos: el espaciado no es del estilo, es de la base</p>
+        <div class="motion-row">
+          <!-- La etiqueta se rellena desde el token en `leerTokens()` (§8). Antes
+               iba fija ("160ms") y mentía en cuanto un skin estiraba el tiempo:
+               la pastilla animaba a 2200ms y decía 650ms. El texto va en data-tok
+               para que la lectura siga siendo la del skin activo. -->
+          <span class="motion-chip" style="--dur: var(--dur-1)" data-tok="--dur-1">160ms</span>
+          <span class="motion-chip" style="--dur: var(--dur-2)" data-tok="--dur-2">280ms</span>
+          <span class="motion-chip" style="--dur: var(--dur-3)" data-tok="--dur-3">650ms</span>
+        </div>
+        <p class="spec"><strong>motion</strong> · pasa el mouse: 1 micro, 2 estándar, 3 reveals</p>
+      </div>
+    </section>
+    <!-- BLOQUE 03 · BOTONES -->
+    <p class="blocktag"><b>Bloque 03</b> Botones · variantes, tamaños y estados</p>
+
+    <section id="botones" class="section">
+      <h2>Botones que se sienten físicos</h2>
+      <p class="section-sub">La etiqueta de cada botón nombra <strong>la variante de diseño</strong>, nunca una
+        acción ni un dato: el espécimen se puede copiar sin arrastrar vocabulario de negocio. Un radio, un acento
+        por contexto y press real en <code>:active</code>. Si el estilo funciona aquí, funciona en toda la app.</p>
+      <div class="btn-grid">
+        <div class="btn-cell"><button class="btn btn-primary" type="button">Primario</button><span>relleno de tinta</span></div>
+        <div class="btn-cell"><button class="btn btn-accent" type="button">Acento</button><span>relleno de acento · uno por vista</span></div>
+        <div class="btn-cell"><button class="btn btn-secondary" type="button">Secundario</button><span>filete + superficie</span></div>
+        <div class="btn-cell"><button class="btn btn-ghost" type="button">Fantasma</button><span>solo tinta, sin superficie</span></div>
+        <div class="btn-cell"><button class="btn btn-danger" type="button">Destructivo</button><span>sólido de alerta</span></div>
+        <div class="btn-cell"><button class="btn btn-primary" type="button" disabled>Inhabilitado</button><span>atributo <code>disabled</code></span></div>
+        <div class="btn-cell">
+          <button class="btn btn-primary" type="button">Con isla
+            <span class="btn-ring"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 12 12 2M4 2h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                  stroke-linejoin="round" /></svg></span>
+          </button><span>flecha en disco · solo con navegación</span>
+        </div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-sm" type="button">Compacto</button><span>variante de tamaño</span></div>
+        <div class="btn-cell btn-cell-dark"><button class="btn btn-light" type="button">Sobre color</button><span>contexto oscuro</span></div>
+        <div class="btn-cell btn-cell-dark">
+          <button class="btn btn-light" type="button">Sobre color
+            <span class="btn-ring"><svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 12 12 2M4 2h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                  stroke-linejoin="round" /></svg></span>
+          </button><span>contexto oscuro + isla</span>
+        </div>
+      </div>
+      <p class="spec" id="btnSpec"><strong>btn</strong> · leyendo tokens…</p>
+    </section>
+    <!-- BLOQUE 04 · TARJETAS Y DATOS -->
+    <p class="blocktag"><b>Bloque 04</b> Tarjetas y datos · chips interactivos, selector de estado e inputs</p>
+
+    <section id="estados" class="section">
+      <h2>Tarjetas interactivas y datos</h2>
+      <p class="section-sub">Cada componente se pinta con una <strong>familia de token</strong> —éxito, aviso, crítico,
+        información, neutro—, nunca con un estado de negocio. Así el color se puede reusar en cualquier proyecto
+        sin arrastrar vocabulario ajeno. Haz clic en los chips: actualizan la barra lateral y el estado visual.</p>
+      <div class="pill-row">
+        <span class="pill pill-ok">Éxito</span>
+        <span class="pill pill-ok">Confirmado</span>
+        <span class="pill pill-warn">Aviso</span>
+        <span class="pill pill-bad">Crítico</span>
+        <span class="pill pill-bad">Rechazado</span>
+        <span class="pill pill-neutral">Neutro</span>
+      </div>
+      <p class="spec"><strong>pill</strong> · 11px/700 · radio adaptado al estilo · la palabra la pone el proyecto, el color lo pone el token</p>
+      <p class="counter-row">
+        <span class="counter"><span class="dot dot-ok pulse"></span>24/28 <em>elementos</em></span>
+      </p>
+
+      <div class="kitgrid">
+        <article class="kitcard">
+          <div class="dbar dbar-ok"><span>Éxito</span></div>
+          <div class="kitcard-head">
+            <div class="kitcard-txt">
+              <p class="kitcard-title">Elemento de muestra</p>
+              <p class="kitcard-sub">Variante base · dos niveles de jerarquía</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 24px; color: var(--text-soft);">layers</span>
+          </div>
+          <div class="kitcard-body">
+            <div class="ck">
+              <button class="is-on is-ok" type="button"><span class="ckstate"></span><span>Éxito</span></button>
+              <button class="is-warn" type="button"><span class="ckstate"></span><span>Aviso</span></button>
+              <button class="is-bad" type="button"><span class="ckstate"></span><span>Crítico</span></button>
+            </div>
+            <label class="field">
+              <span>Campo de texto <em>(opcional)</em></span>
+              <input type="text" placeholder="Texto de ejemplo…" />
+            </label>
+          </div>
+        </article>
+
+        <article class="kitcard">
+          <div class="dbar dbar-warn"><span>Aviso</span></div>
+          <div class="kitcard-head">
+            <div class="kitcard-txt">
+              <p class="kitcard-title">Segundo elemento</p>
+              <p class="kitcard-sub">Misma estructura · otra familia de color</p>
+            </div>
+            <span class="material-symbols-outlined" style="font-size: 24px; color: var(--text-soft);">hourglass_top</span>
+          </div>
+          <div class="kitcard-body">
+            <div class="ck">
+              <button class="is-ok" type="button"><span class="ckstate"></span><span>Éxito</span></button>
+              <button class="is-on is-warn" type="button"><span class="ckstate"></span><span>Aviso</span></button>
+              <button class="is-bad" type="button"><span class="ckstate"></span><span>Crítico</span></button>
+            </div>
+          </div>
+        </article>
+      </div>
+      <p class="spec"><strong>dbar + ck</strong> · barra lateral de familia · chips de alternancia rápida · el texto del chip es del proyecto, la clase es del diseño</p>
+    </section>
+
+    <footer class="specimen-foot" id="elegir-estilo">
+      <div class="foot-pick">
+        <label class="pick-label" for="stylePick">Estilo de la muestra</label>
+        <div class="pick-row">
+          <button class="pick-btn pick-step" id="pickPrev" type="button" aria-label="Estilo anterior">
+            <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
+          </button>
+          <select id="stylePick" aria-describedby="pickHint"></select>
+          <button class="pick-btn pick-step" id="pickNext" type="button" aria-label="Estilo siguiente">
+            <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+          </button>
+          <button class="pick-btn pick-copy" id="pickCopy" type="button">Copiar enlace</button>
+        </div>
+        <p class="pick-hint" id="pickHint"></p>
+      </div>
+      <p>Style Showcase · espécimen de 4 bloques sobre componentes universales independientes.</p>
+      <p><a href="../index.html">← Volver a la galería</a> · <a href="../../portfolio.html">Portfolio de Isaac Mora</a> · <a href="#encabezado">Arriba</a></p>
+    </footer>
+
+    <div class="toast" role="status"></div>
+    <script src="../registry.js"></script>
+    <script src="specimen.js"></script>
+  </body>
+</html>

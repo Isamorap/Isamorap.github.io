@@ -1,0 +1,247 @@
+{
+  "$meta": {
+    "id": "cybercore",
+    "num": "06",
+    "nombre": "Cybercore",
+    "familia": "ruido-brutal",
+    "status": "ready",
+    "archivos": {
+      "skin": "style.css",
+      "brief": "STYLE.md"
+    },
+    "source_of_truth": "style.css",
+    "nota_hex": "Los colores de 8 dígitos son RGBA (#RRGGBBAA). Los de 6 son opacos.",
+    "nota": "Skin de la plantilla Showcase. Solo redefine tokens y overrides dentro de [data-style=\"cybercore\"]; no modifica components.css.",
+    "trampa": "Cuatro. (1) --skin-on-solid no puede ser un token único: en oscuro los sólidos se aclaran (tema negro) y necesitan tinta #04140d; en claro se oscurecen y necesitan blanco. (2) El verde fósforo #00ff9c es el acento del modo nativo y SÍ puede ser texto (15.03:1), pero en claro cae a 2.2:1 y hay que darle su versión oscura #00663f: no se puede declarar el acento una sola vez. (3) --line-strong se mide a 3:1 porque es el filete real del control, no decoración: los verdes \"bonitos\" del panel (#2c4a3f) dan 2.06:1. (4) El bloque nativo NO lleva [data-theme=\"dark\"]: aquí el oscuro es el por defecto y el claro va en [data-theme=\"light\"], al revés que en el 09, porque el espécimen fuerza data-theme sobre la página y el orden de cascada manda."
+  },
+  "aplicacion": {
+    "atributo": "[data-style=\"cybercore\"]",
+    "modo_nativo": "dark",
+    "modos": [
+      "dark",
+      "light"
+    ],
+    "capa_de_modo": "[data-theme=\"light\"][data-style=\"cybercore\"]",
+    "alcance_de_esta_muestra": [
+      "encabezado",
+      "tokens",
+      "botones",
+      "tarjetas-y-datos"
+    ]
+  },
+  "veredicto": "solo-museo",
+  "robar": [
+    "La rejilla como fondo real (background-image en 16px) y no como textura de adorno en un componente: es lo que convierte la página entera en una pantalla, no solo los paneles.",
+    "El resplandor de una sola tinta en las sombras (0 0 0 1px + halo) en lugar de la sombra difusa gris de la base: la profundidad sale del color, no del desenfoque.",
+    "La monoespaciada en TODO el árbol, incluidos botones, chips y etiquetas, y no solo en el texto corrido: si se queda en el body el estilo se lee como un blog con otra fuente.",
+    "Radio 0 en la escala entera, con el avatar incluido: en este estilo un círculo en el avatar rompe el relato de carcasa cortada.",
+    "MAYÚSCULAS con tracking en etiquetas y botones, al contrario de 12-swiss donde son un recurso escaso.",
+    "El instante: --dur-1 en 0ms. Un terminal no interpola el cambio de estado."
+  ],
+  "no_robar": [
+    "Poner el verde fósforo #00ff9c como texto de acento en el modo claro: cae a 2.2:1. Como texto va su versión oscura #00663f (6.25:1); el valor vivo queda para superficies, rejilla y barra de estado.",
+    "Declarar el acento una sola vez para los dos modos. El acento nativo puede ser texto y el de claro no: es el mismo motivo que el bubblegum en 09 y la lima en la misma ficha.",
+    "Medir --line-strong a 4.5:1 por costumbre: es el filete real del control, así que le corresponde 3:1 (WCAG 1.4.11). Los verdes decorativos del panel dan 2.06:1 y se quedan en --line-soft.",
+    "Meter la rejilla o el resplandor en --bg-page: components.css lo usa como color plano en .toast y el texto se queda sin pintar, en silencio.",
+    "Un borde grueso negro como en 05-neo-brutalism: aquí el borde es de 1px verde y lo que marca es la rejilla, no el grosor. Copiar el 05 sería copiar su marca, no la de este.",
+    "El degradado o la trama dentro de --skin-tray: esa caja es un color plano que se compone con alfa sobre el fondo."
+  ],
+  "a11y": {
+    "contraste": "AA",
+    "peor_caso": "Dark: texto fuerte #e8f5ef sobre #05090a 17.85:1 · cuerpo #b9cfc5 12.19:1 · soft #93b3a6 8.80:1 · faint #7ba394 7.15:1 · acento #00ff9c 15.03:1 · semánticos fg sobre su bg 8.58–10.50:1 · sólidos con tinta #04140d 5.83–14.21:1 · line-strong #3d6b58 3.28:1 (borde) · Light: texto fuerte #04140d sobre #eef2ee 16.71:1 · cuerpo #20392e 11.01:1 · soft #3d5f50 6.29:1 · faint #4b6d5e 5.09:1 (la cota baja real es 4.63:1 sobre --bg-sunken, más oscuro que el lienzo) · acento #00734a 5.23:1 · semánticos fg sobre su bg 6.49–7.99:1 · sólidos con blanco 5.91:1 · line-strong #6b8878 3.43:1 (borde)",
+    "reglas": [
+      "Los ratios se calculan contra la superficie resuelta (panel o lienzo), nunca contra la rejilla ni contra el resplandor: el texto no se mide contra una trama de líneas de 1px.",
+      "--skin-on-solid cambia de #04140d (oscuro) a #ffffff (claro) porque el tema nativo es negro y todos sus sólidos se aclaran; en claro el primario se oscurece y la tinta se invierte.",
+      "--text-faint se mide a 4.5:1 porque se usa a 11px, es decir texto normal. --line-strong se mide a 3:1 porque es borde de control, no texto.",
+      "El acento se mide en los dos modos por separado: #00ff9c a 15.03:1 en oscuro y #00734a a 5.23:1 en claro. Ninguno de los dos valores sirve para el otro modo.",
+      "Los sólidos de estado se miden contra su propia tinta, no contra la del tema: en oscuro es #04140d y da 5.83–14.21:1."
+    ]
+  },
+  "vocabulario": {
+    "regla": "Ningún componente de este skin codifica un dato. Las familias semánticas se nombran por su token (éxito, aviso, crítico, información, neutro) y la etiqueta la elige el proyecto. La flecha del hero es una muestra (\"Espécimen en vivo · Versión neutral\"), no un estado.",
+    "familias": [
+      "éxito",
+      "aviso",
+      "crítico",
+      "información",
+      "neutro"
+    ]
+  },
+  "tipografia": {
+    "familia": "ui-monospace / SF Mono / Cascadia Mono / Menlo / Consolas",
+    "nota": "La monoespaciada no se hereda sola: components.css pone la sans en botones, chips y etiquetas, así que el skin la declara también ahí. En un terminal el ancho fijo es información: las columnas de cifras se alinean y se leen de un vistazo."
+  },
+  "forma": {
+    "radius_sm": "0px",
+    "radius_md": "0px",
+    "radius_lg": "0px",
+    "radius_xl": "0px",
+    "radius_pill": "0px",
+    "borde": "1px sólido en --line-strong, verde; el grosor NO es la marca aquí"
+  },
+  "profundidad": {
+    "receta": "Anillo de 1px en la tinta del acento + halo del mismo color. Sin desenfoque, sin difusión, sin sombra gris.",
+    "shadow_1": "0 0 0 1px #00ff9c1f",
+    "shadow_2": "0 0 0 1px #00ff9c2b, 0 0 18px #00ff9c0f",
+    "shadow_3": "0 0 0 1px #00ff9c3d, 0 0 36px #00ff9c1a",
+    "nota": "El halo se apaga a un anillo de 1px en claro: sobre un fondo claro un resplandor verde se lee como mancha."
+  },
+  "textura": {
+    "receta": "Rejilla de 16px en background-image del body (dos linear-gradient cruzados, #00ff9c0a) más un radial muy tenue arriba. En las tarjetas grandes, scanlines de 3px en un ::before. Nunca dentro de --bg-page.",
+    "nota": "La rejilla no es decoracion: es el suelo del que sale el resplandor. Si se apaga, el skin pierde la mitad de su argumento."
+  },
+  "movimiento": {
+    "dur_1": "0ms",
+    "dur_2": "160ms",
+    "dur_3": "280ms",
+    "curva": "lineal (la base usa ease-out)",
+    "nota": "--dur-1 en 0 es la decisión más discutible del skin y la más fácil de revertir si el uso real la hace ilegible: se argumentan 0ms por el estado, no por la accesibilidad."
+  },
+  "tokens": {
+    "--bg-page": "#eef2ee",
+    "--bg-raised": "#ffffff",
+    "--bg-sunken": "#e2e8e3",
+    "--bg-nav": "#ffffffcc",
+    "--text-strong": "#04140d",
+    "--text-body": "#20392e",
+    "--text-soft": "#315045",
+    "--text-faint": "#4b6d5e",
+    "--line-soft": "#c9d8cf",
+    "--line-strong": "#6b8878",
+    "--brand-ink": "#04140d",
+    "--brand-ink-deep": "#010806",
+    "--brand-paper": "#ffffff",
+    "--accent-100": "#d7ece0",
+    "--accent-500": "#00734a",
+    "--accent-700": "#005537",
+    "--support-100": "#d7ece0",
+    "--support-500": "#1f7a4d",
+    "--support-700": "#145737",
+    "--cool-100": "#dbe8f2",
+    "--cool-500": "#0d4a6b",
+    "--cool-700": "#093b56",
+    "--ok-bg": "#d7ece0",
+    "--ok-fg": "#0a4d33",
+    "--ok-solid": "#00734a",
+    "--warn-bg": "#f2e6c8",
+    "--warn-fg": "#6b4a06",
+    "--warn-solid": "#8a6200",
+    "--ember-bg": "#f7e3d2",
+    "--ember-fg": "#8a4413",
+    "--ember-solid": "#c2571a",
+    "--bad-bg": "#f6dcdc",
+    "--bad-fg": "#8a1f1f",
+    "--bad-solid": "#c22a2a",
+    "--info-bg": "#dbe8f2",
+    "--info-fg": "#0d4a6b",
+    "--info-solid": "#0d4a6b",
+    "--radius-sm": "0px",
+    "--radius-md": "0px",
+    "--radius-lg": "0px",
+    "--radius-xl": "0px",
+    "--radius-pill": "0px",
+    "--dur-1": "0ms",
+    "--dur-2": "160ms",
+    "--dur-3": "280ms"
+  },
+  "puente": {
+    "--skin-on-solid": "#ffffff",
+    "--skin-on-dark": "#04140d",
+    "--skin-on-dark-soft": "#20392e",
+    "--skin-scrim": "#e2e8e3",
+    "--skin-tint": "#00663f1a",
+    "--skin-tint-strong": "#00663f2e",
+    "--skin-ring": "#ffffff4d",
+    "--skin-ring-dark": "#00663f1f",
+    "--skin-tray": "#ffffff",
+    "--skin-tray-radius": "0px",
+    "--skin-light-bg": "#e2e8e3",
+    "--skin-light-fg": "#04140d",
+    "--skin-light-bg-hover": "#d5ded8",
+    "--skin-inverse": "#04140d"
+  },
+  "modo_dark_tokens": {
+    "--bg-page": "#05090a",
+    "--bg-raised": "#0b1214",
+    "--bg-sunken": "#03070a",
+    "--bg-nav": "#07100ecc",
+    "--text-strong": "#e8f5ef",
+    "--text-body": "#b9cfc5",
+    "--text-soft": "#93b3a6",
+    "--text-faint": "#7ba394",
+    "--line-soft": "#1b2c26",
+    "--line-strong": "#3d6b58",
+    "--brand-ink": "#04140d",
+    "--brand-ink-deep": "#010806",
+    "--brand-paper": "#e8f5ef",
+    "--accent-100": "#0f2a20",
+    "--accent-500": "#00ff9c",
+    "--accent-700": "#00b871",
+    "--support-100": "#0e2419",
+    "--support-500": "#2fbf71",
+    "--support-700": "#1c7a48",
+    "--cool-100": "#0f2c3d",
+    "--cool-500": "#38bdf8",
+    "--cool-700": "#7dd3fc",
+    "--ok-bg": "#0c2e24",
+    "--ok-fg": "#6ee7b7",
+    "--ok-solid": "#4ade80",
+    "--warn-bg": "#33230c",
+    "--warn-fg": "#fcd34d",
+    "--warn-solid": "#ffb000",
+    "--ember-bg": "#2e1a0e",
+    "--ember-fg": "#fdba74",
+    "--ember-solid": "#fb923c",
+    "--bad-bg": "#3a1414",
+    "--bad-fg": "#fca5a5",
+    "--bad-solid": "#ff4d5e",
+    "--info-bg": "#0f2c3d",
+    "--info-fg": "#7dd3fc",
+    "--info-solid": "#38bdf8",
+    "--radius-sm": "0px",
+    "--radius-md": "0px",
+    "--radius-lg": "0px",
+    "--radius-xl": "0px",
+    "--radius-pill": "0px",
+    "--dur-1": "0ms",
+    "--dur-2": "160ms",
+    "--dur-3": "280ms"
+  },
+  "puente_dark": {
+    "--skin-on-solid": "#04140d",
+    "--skin-on-dark": "#e8f5ef",
+    "--skin-on-dark-soft": "#b9cfc5",
+    "--skin-scrim": "#04140d",
+    "--skin-tint": "#00ff9c1f",
+    "--skin-tint-strong": "#00ff9c40",
+    "--skin-ring": "#04140d3d",
+    "--skin-ring-dark": "#00ff9c1f",
+    "--skin-tray": "#0b1214",
+    "--skin-tray-radius": "0px",
+    "--skin-light-bg": "#16211d",
+    "--skin-light-fg": "#e8f5ef",
+    "--skin-light-bg-hover": "#1e2c27",
+    "--skin-inverse": "#e8f5ef"
+  },
+  "paleta": {
+    "Superficies": {
+      "Vacío": "#05090a",
+      "Panel": "#0b1214",
+      "Hondo": "#03070a",
+      "Tinta": "#04140d"
+    },
+    "Tinta y acento": {
+      "Fósforo": "#00ff9c",
+      "Secundaria": "#93b3a6",
+      "Ámbar": "#ffb000",
+      "Cian": "#38bdf8"
+    },
+    "Semánticos": {
+      "Éxito": "#4ade80",
+      "Aviso": "#ffb000",
+      "Crítico": "#ff4d5e",
+      "Neutro": "#93b3a6"
+    }
+  },
+  "nota_tokens": "Los radios (0px) y las duraciones NO se redeclaran en el modo claro: valen lo mismo en los dos temas y se heredan del bloque nativo a propósito. El campo \"tokens\" es el MODO CLARO y \"modo_dark_tokens\" el nativo, porque la ficha se lee desde fuera."
+}

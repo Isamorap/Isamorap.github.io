@@ -1,0 +1,171 @@
+{
+  "$meta": {
+    "id": "ethereal",
+    "num": "04",
+    "nombre": "Ethereal",
+    "familia": "materiales-blandos",
+    "status": "ready",
+    "archivos": { "skin": "style.css", "brief": "STYLE.md" },
+    "source_of_truth": "style.css",
+    "nota_hex": "Los colores de 8 dígitos son RGBA (#RRGGBBAA). Los de 6 son opacos.",
+    "nota": "Skin de la plantilla Showcase. Solo redefine tokens y overrides dentro de [data-style=\"ethereal\"]; no modifica components.css.",
+    "trampa": "Las nubes NO van en --bg-page: components.css usa ese token como color en `.toast { color: var(--bg-page) }`, y un gradiente ahí es un valor inválido para `color`. El cielo va en `background-image` del body; --bg-page sigue siendo un sólido."
+  },
+  "aplicacion": {
+    "atributo": "[data-style=\"ethereal\"]",
+    "modo_nativo": "light",
+    "modos": ["light", "dark"],
+    "capa_de_modo": "[data-theme=\"dark\"][data-style=\"ethereal\"]",
+    "alcance_de_esta_muestra": ["encabezado", "tokens", "botones", "tarjetas-y-datos"]
+  },
+  "veredicto": "experimental",
+  "robar": [
+    "Degradado de manchas radiales muy separadas y muy tenues, con `background-attachment: fixed`: el cielo se queda quieto y solo se mueve el contenido, y eso es lo que hace que la página se sienta liviana.",
+    "Sombras de tres capas con difuminado enorme y opacidad mínima, teñidas al color de la marca: la profundidad se lee como luz, no como una ficha apoyada.",
+    "Estirar los tres tiempos (220 / 700 / 2200 ms) en vez de uno solo: el reveal del scroll tarda 2200 ms y el contenido aparece como si se disolviera.",
+    "Abrir el interlineado (cuerpo 1.75, display 1.15) para conseguir aire sin inventar espaciado nuevo.",
+    "Acento claro con texto oscuro encima (lila sobre índigo, 5.55:1) en lugar de oscurecer el acento hasta que deje de ser suave."
+  ],
+  "no_robar": [
+    "Superficies translúcidas con texto encima: si el blanco baja de ~0.9 de alpha sobre un cielo con manchas, el texto deja de tener un plano y el AA deja de poder garantizarse. La superficie es translúcida; el texto se midió contra el blanco.",
+    "Grandes áreas de texto sobre el degradado sin un plano detrás: es el error clásico de este estilo y no lo tiene este skin.",
+    "`--dur-3` muy alto en un sistema con información densa: el reveal de 2.2 s es muy bonito en una portada y agotador en una tabla.",
+    "Poner un gradiente en un token que otra regla usa como color: rompe en silencio, solo en un componente que nadie estaba mirando (el toast).",
+    "Barra lateral o chip translúcidos: un estado tiene que poder leerse sin depender de lo que haya detrás."
+  ],
+  "a11y": {
+    "contraste": "AA",
+    "peor_caso": "Claro: línea fuerte #7d7a99 sobre #fdfcff 4.02:1 (borde) · secundario #6b6885 sobre #fdfcff 5.21:1 · acento-texto #5b4fb0 sobre #fdfcff 6.44:1 · botón de acento #3d3570 sobre lila #bdb2ee 5.55:1 · sólidos con blanco 4.83–5.93:1 · primary #ffffff sobre índigo #3a3760 11.08:1 · Dark: línea fuerte #6b6690 sobre #1c1b2b 3.17:1 (borde) · acento-texto #c9c0f5 sobre #1c1b2b 9.94:1",
+    "reglas": [
+      "El texto nunca se mide contra el cielo: las superficies quedan en #fdfcff (α 0.82 en tarjetas) y todos los ratios de texto están calculados contra ese blanco, no contra el degradado.",
+      "El botón de acento invierte el par (lila claro con tinta oscura). El blanco sobre lila no llega a AA, y oscurecer el lila habría matado la identidad del estilo.",
+      "--line-strong queda en 4.02:1 (claro) y 3.17:1 (oscuro): con sombras tan bajas, el filete es parte de la frontera real del control, no decoración.",
+      "El halo `--fx-glow-soft` baja a α 0.16 en oscuro: con el α de día (0.28) sobre superficie oscura se comería el filete de los controles.",
+      "La barra lateral y los sólidos semánticos siguen siendo sólidos y medidos contra blanco, igual que en los demás estilos."
+    ]
+  },
+"tipografia": {
+    "familia": "Montserrat (Google Fonts, ver <link> en el espécimen)",
+    "display": "1.15–4.2rem / 800 · interletrado -0.02em",
+    "tracking_display": "-0.02em",
+    "leading_body": "1.75 (la base es 1.55)",
+    "leading_tight": "1.15 (la base es 1.05)",
+    "nota": "No se cambia la familia. El aire se consigue abriendo el interlineado, no inventing padding: el contrato deja la escala de espaciado intacta y el aire tiene que salir de la caja de texto."
+  },
+  "forma": {
+    "radius_sm": "14px",
+    "radius_md": "18px",
+    "radius_lg": "24px",
+    "radius_xl": "34px",
+    "radius_pill": "999px",
+    "borde": "sin bordes duros; el filete fuerte #7d7a99 queda solo en lo accionable, porque las sombras son demasiado bajas para hacer de frontera por sí solas"
+  },
+  "profundidad": {
+    "receta": "tres capas, difuminado enorme (24–80px) y opacidad mínima (0.04–0.16), teñidas al violeta de marca",
+    "shadow_1": "0 2px 6px rgba(74,72,99,.04), 0 8px 24px rgba(120,105,190,.07)",
+    "shadow_2": "0 4px 10px rgba(74,72,99,.05), 0 18px 48px rgba(120,105,190,.11)",
+    "shadow_3": "0 8px 18px rgba(74,72,99,.06), 0 36px 80px rgba(120,105,190,.16)",
+    "nota": "El difuminado grande es lo que la separa de la sombra corporativa del estilo 23: ahí la sombra es corta y definida; acá es ancha y se desvanece."
+  },
+  "textura": {
+    "receta": "el cielo: cuatro manchas radiales, sin bordes duros, con `background-attachment: fixed`",
+    "nota": "No hay ruido ni grano. La textura la hace el degradado, y por eso tiene que estar en el fondo y no sobre el texto."
+  },
+  "movimiento": {
+    "dur_1": "220ms",
+    "dur_2": "700ms",
+    "dur_3": "2200ms",
+    "ease": "cubic-bezier(.22,.61,.24,1)",
+    "nota": "`--dur-3` gobierna el reveal del scroll (`.rv` en components.css). Es el parámetro que más distingue este estilo de todos los demás: el contenido tarda 2.2 s en aparecer."
+  },
+  "cielo": {
+    "donde": "`background-image` de `body.specimen`, NUNCA en `--bg-page`",
+    "por_que": "`components.css` usa `--bg-page` como color en `.toast { color: var(--bg-page) }`. Un gradiente es un valor inválido para `color`, así que el texto del toast se quedaría sin pintar — y solo falla ese componente, en silencio.",
+    "attachment": "fixed, para que el cielo quede quieto al hacer scroll"
+  },
+  "vocabulario": {
+    "regla": "Ningún componente de este skin codifica un dato. Las familias semánticas se nombran por su token (éxito, aviso, crítico, información, neutro) y la etiqueta la elige el proyecto que lo adopta.",
+    "prohibido": "Escribir un estado de negocio en la etiqueta de un botón, pill, chip o barra lateral."
+  },
+  "tokens": {
+    "--bg-page": "#f7f6fb",
+    "--bg-raised": "#fdfcff",
+    "--bg-sunken": "#f2f0f9",
+    "--bg-nav": "rgba(253, 252, 255, 0.72)",
+    "--text-strong": "#2b2a45",
+    "--text-body": "#4a4863",
+    "--text-soft": "#6b6885",
+    "--text-faint": "#8b88a3",
+    "--line-soft": "#e4e1f0",
+    "--line-strong": "#7d7a99",
+    "--brand-ink": "#3a3760",
+    "--brand-ink-deep": "#2a2846",
+    "--brand-paper": "#fdfcff",
+    "--accent-100": "#efecfb",
+    "--accent-500": "#8f83e0",
+    "--accent-700": "#5b4fb0",
+    "--support-100": "#ddf0e9",
+    "--support-500": "#2f7a63",
+    "--support-700": "#1f5a49",
+    "--cool-100": "#d9ecfb",
+    "--cool-500": "#2f7bbd",
+    "--cool-700": "#215a8c",
+    "--ok-bg": "#d7f2e6",
+    "--ok-fg": "#0d5c43",
+    "--ok-solid": "#047857",
+    "--warn-bg": "#fdeecd",
+    "--warn-fg": "#7a4a06",
+    "--warn-solid": "#b45309",
+    "--ember-bg": "#fbe6d8",
+    "--ember-fg": "#8a3a08",
+    "--ember-solid": "#c2410c",
+    "--bad-bg": "#fbdcdc",
+    "--bad-fg": "#8c1d1d",
+    "--bad-solid": "#b91c1c",
+    "--info-bg": "#d9ecfb",
+    "--info-fg": "#0b4a6f",
+    "--info-solid": "#0369a1",
+    "--radius-sm": "14px",
+    "--radius-md": "18px",
+    "--radius-lg": "24px",
+    "--radius-xl": "34px",
+    "--radius-pill": "999px",
+    "--dur-1": "220ms",
+    "--dur-2": "700ms",
+    "--dur-3": "2200ms",
+    "--leading-tight": "1.15",
+    "--leading-body": "1.75"
+  },
+  "puente": {
+    "--skin-on-solid": "#ffffff",
+    "--skin-on-dark": "#ffffff",
+    "--skin-on-dark-soft": "#d6d2ea",
+    "--skin-scrim": "#2a2846cc",
+    "--skin-tint": "#5b4fb012",
+    "--skin-tint-strong": "#5b4fb024",
+    "--skin-ring": "#5b4fb000",
+    "--skin-ring-dark": "#ffffff00",
+    "--skin-tray": "#ffffffb8",
+    "--skin-tray-radius": "24px",
+    "--skin-light-bg": "#fdfcff",
+    "--skin-light-fg": "#3a3760",
+    "--skin-light-bg-hover": "#f2f0f9",
+    "--skin-inverse": "#2b2a45"
+  },
+  "modo_dark": {
+    "cambia": [
+      "Cielo → #14131f y superficie → #1c1b2b: azul noche, no negro",
+      "Las nubes se mantienen pero más apagadas y frías (α 0.24–0.34)",
+      "Acento → periwinkle #a89cee y texto de acento → #c9c0f5 (9.94:1)",
+      "El halo baja a α 0.16: con el de día se comería el filete de los controles",
+      "El primario se aclara a lila: el índigo de claro desaparece sobre el azul noche",
+      "Superficies a α 0.92 en vez de 0.82: sobre un cielo con manchas, en oscuro el texto competiría con el degradado"
+    ],
+    "nota": "Las nubes sobreviven al modo oscuro porque son la identidad del estilo. Lo que DA LA VUELTA es el par del botón de acento: en claro es lila claro con tinta oscura, y en oscuro sigue siendo claro — lo que se invierte es el texto, no el fondo."
+  },
+  "palette": {
+    "Superficies": { "Cielo": "#f7f6fb", "Nube": "#fdfcff", "Hundido": "#f2f0f9", "Tinta": "#2b2a45" },
+    "Tinta y acento": { "Índigo": "#3a3760", "Secundaria": "#6b6885", "Periwinkle": "#8f83e0", "Lila claro": "#bdb2ee" },
+    "Semánticos": { "Éxito": "#047857", "Aviso": "#b45309", "Crítico": "#dc2626", "Neutro": "#6b6885" }
+  }
+}

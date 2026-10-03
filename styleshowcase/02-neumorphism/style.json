@@ -1,0 +1,159 @@
+{
+  "$meta": {
+    "id": "neumorphism",
+    "num": "02",
+    "nombre": "Neumorphism",
+    "familia": "materiales-blandos",
+    "status": "ready",
+    "archivos": { "skin": "style.css", "brief": "STYLE.md" },
+    "source_of_truth": "style.css",
+    "nota_hex": "Los colores de 8 dígitos son RGBA (#RRGGBBAA). Los de 6 son opacos.",
+    "nota": "Skin de la plantilla Showcase. Solo redefine tokens y overrides dentro de [data-style=\"neumorphism\"]; no modifica components.css.",
+    "advertencia": "Este es el estilo más frágil del muestrario. Su mecanismo central —superficie del mismo color que el fondo— choca de frente con la recomendación de accesibilidad de no distinguir un control solo por su sombra. Se documenta el problema y la red de seguridad (filete a 3:1 + tinta baja) en lugar de ocultarlo."
+  },
+  "aplicacion": {
+    "atributo": "[data-style=\"neumorphism\"]",
+    "modo_nativo": "light",
+    "modos": ["light", "dark"],
+    "capa_de_modo": "[data-theme=\"dark\"][data-style=\"neumorphism\"]",
+    "alcance_de_esta_muestra": ["encabezado", "tokens", "botones", "tarjetas-y-datos"]
+  },
+  "veredicto": "solo-museo",
+  "robar": [
+    "El estado presionado hundido (`inset`) como cuarta señal de interacción: comunica el contacto con la superficie mejor que un cambio de color, y no depende del contraste.",
+    "El relieve en degradado de 145° en el botón primario: da volumen al botón de color sin abandonar la receta de dos sombras.",
+    "Inhabilitado hundido en vez de apagado: 'no disponible' se lee como una posición, no como un color."
+  ],
+  "no_robar": [
+    "Superficie del mismo color que el fondo en texto de cuerpo: obliga a bajar la tinta a 9.47:1 y aun así no resuelve el límite del control. Es el motivo del veredicto solo-museo.",
+    "Eliminar el filete porque 'el relieve ya se ve': sin `--line-strong` a 3:1 el control no tiene frontera verificable (WCAG 1.4.11).",
+    "Escala como jerarquía: la profundidad no codifica datos. En tablas y listas largas el relieve es ruido.",
+    "La misma receta de sombra en modo oscuro con negro puro: la sombra se come el componente. Hay que teñirla a la superficie.",
+    "Estado seleccionado por color de fondo: en este estilo el color de fondo es el del entorno, así que no hay cambio posible. Se marca con `inset`."
+  ],
+  "a11y": {
+    "contraste": "AA*",
+    "peor_caso": "Claro: línea fuerte #6b7688 sobre #e0e5ec 3.63:1 · secundario #556070 sobre #e0e5ec 5.04:1 · primario (extremo claro) #b8551a con blanco 4.82:1 · dbar crítico #dc2626 con blanco 4.83:1 · Oscuro: línea fuerte #6b7688 sobre #232a35 3.14:1 · primario (extremo claro) #b85a1a con blanco 4.65:1",
+    "reglas": [
+      "El texto compite contra el fondo, no contra una superficie: por eso la tinta es #2d3748 (9.47:1) y no el #0f2432 de la base, y el secundario baja a 5.04:1.",
+      "`--line-strong` (#6b7688, 3.63:1 en claro y 3.14:1 en oscuro) es la red de seguridad del estilo: en ausencia de planos, es lo único que marca dónde termina un control. No es decoración y no debe quitarse.",
+      "Los cinco semáforos conservan su fondo propio (#d7f0e2, #fdeecd, #fbdcdc, #d6ecfa) en vez de fundirse con el plano: si se funden, dejan de informar. Es la excepción que abre el asterisco.",
+      "El foco usa doble señal: hundimiento más filete de acento de 2px con offset 3. Nunca solo color.",
+      "En oscuro la serie del primario baja un punto (#ad5317 / #8f400e) porque el extremo claro de la serie clara daba 4.18:1 con blanco."
+    ]
+  },
+  "tipografia": {
+    "familia": "Montserrat (Google Fonts, ver <link> en el espécimen)",
+    "display": "1.15–4.2rem / 800 · interletrado -0.02em",
+    "tracking_display": "-0.02em",
+    "nota": "No se cambia la familia. El aire entre elementos es lo que más ayuda: en un estilo sin bordes, el espaciado es parte de la frontera."
+  },
+  "forma": {
+    "radius_sm": "12px",
+    "radius_md": "16px",
+    "radius_lg": "24px",
+    "radius_xl": "32px",
+    "radius_pill": "999px",
+    "borde": "sin bordes decorativos; `--line-strong` #6b7688 solo en lo accionable, como frontera"
+  },
+  "profundidad": {
+    "receta": "dos sombras: una clara arriba-izquierda y una oscura abajo-derecha. El estado presionado invierte el signo con `inset`.",
+    "shadow_1": "-6px -6px 12px rgba(255,255,255,.85), 6px 6px 12px rgba(163,177,198,.6)",
+    "shadow_2": "-9px -9px 18px rgba(255,255,255,.9), 9px 9px 18px rgba(163,177,198,.65)",
+    "shadow_3": "-12px -12px 26px rgba(255,255,255,.95), 12px 12px 26px rgba(163,177,198,.7)",
+    "shadow_inset": "inset 4px 4px 8px rgba(163,177,198,.6), inset -4px -4px 8px rgba(255,255,255,.85) — token propio del skin: la base no lo trae",
+    "nota": "`--shadow-inset` es la única adición al contrato de tokens. Se declara como variable para que el hundimiento sea un estado de primera clase y no un valor repetido en tres selectores."
+  },
+  "textura": { "receta": "ninguna: el material es liso. La textura la produce el par de sombras, no un ruido" },
+  "movimiento": {
+    "dur_1": "160ms",
+    "dur_2": "280ms",
+    "dur_3": "650ms",
+    "ease": "cubic-bezier(.32,.72,0,1)",
+    "nota": "La transición del botón es solo de `box-shadow`. Se anula el `scale(0.98)` de la base porque el hundimiento ya comunica la presión y las dos señales compiten."
+  },
+  "vocabulario": {
+    "regla": "Ningún componente de este skin codifica un dato. Las familias semánticas se nombran por su token (éxito, aviso, crítico, información, neutro) y la etiqueta la elige el proyecto que lo adopta.",
+    "prohibido": "Escribir un estado de negocio en la etiqueta de un botón, pill, chip o barra lateral."
+  },
+  "tokens": {
+    "--bg-page": "#e0e5ec",
+    "--bg-raised": "#e0e5ec",
+    "--bg-sunken": "#e0e5ec",
+    "--bg-nav": "rgba(224, 229, 236, 0.85)",
+    "--text-strong": "#2d3748",
+    "--text-body": "#3f4a5a",
+    "--text-soft": "#556070",
+    "--text-faint": "#6b7688",
+    "--line-soft": "#c3cbd8",
+    "--line-strong": "#6b7688",
+    "--brand-ink": "#2d3748",
+    "--brand-ink-deep": "#232c39",
+    "--brand-paper": "#e0e5ec",
+    "--accent-100": "#f7e4d4",
+    "--accent-500": "#a8480f",
+    "--accent-700": "#8a3d0c",
+    "--support-100": "#d9e8df",
+    "--support-500": "#2f6b4f",
+    "--support-700": "#1e4a37",
+    "--cool-100": "#d6eaf7",
+    "--cool-500": "#0e7490",
+    "--cool-700": "#0b556b",
+    "--ok-bg": "#d7f0e2",
+    "--ok-fg": "#0f5132",
+    "--ok-solid": "#047857",
+    "--warn-bg": "#fdeecd",
+    "--warn-fg": "#7a4a06",
+    "--warn-solid": "#b45309",
+    "--ember-bg": "#fbe3d2",
+    "--ember-fg": "#8a3a08",
+    "--ember-solid": "#c2410c",
+    "--bad-bg": "#fbdcdc",
+    "--bad-fg": "#8c1d1d",
+    "--bad-solid": "#dc2626",
+    "--info-bg": "#d6ecfa",
+    "--info-fg": "#0b4a6f",
+    "--info-solid": "#0369a1",
+    "--radius-sm": "12px",
+    "--radius-md": "16px",
+    "--radius-lg": "24px",
+    "--radius-xl": "32px",
+    "--radius-pill": "999px",
+    "--dur-1": "160ms",
+    "--dur-2": "280ms",
+    "--dur-3": "650ms"
+  },
+  "adiciones_al_contrato": {
+    "--shadow-inset": "inset 4px 4px 8px rgba(163,177,198,.6), inset -4px -4px 8px rgba(255,255,255,.85) — estado presionado; la base no lo trae"
+  },
+  "puente": {
+    "--skin-on-solid": "#ffffff",
+    "--skin-on-dark": "#ffffff",
+    "--skin-on-dark-soft": "#d7dde7",
+    "--skin-scrim": "#2d3748cc",
+    "--skin-tint": "#2d37480f",
+    "--skin-tint-strong": "#2d37481a",
+    "--skin-ring": "#2d374800",
+    "--skin-ring-dark": "#ffffff00",
+    "--skin-tray": "#d5dbe4",
+    "--skin-tray-radius": "16px",
+    "--skin-light-bg": "#e0e5ec",
+    "--skin-light-fg": "#2d3748",
+    "--skin-light-bg-hover": "#d5dbe4",
+    "--skin-inverse": "#2d3748"
+  },
+  "modo_dark": {
+    "cambia": [
+      "Superficie #232a35 en claro y oscuro: el color del material cambia entero",
+      "La sombra oscura se tiñe a #0c1016 (azul) en vez de negro, y la luz sube a un gris al 5%: es lo que mantiene visible el canto del control",
+      "El acento se aclara a #d97a3c y el acento de texto a #f0a868 (7.23:1)",
+      "El primario usa su propio degradado, más oscuro que el de claro"
+    ],
+    "nota": "La receta del relieve es idéntica; lo que cambia es el color de las dos sombras. Reusar la receta de claro con negro puro es el error más común de este estilo y hace desaparecer los controles."
+  },
+  "palette": {
+    "Superficies": { "Plano": "#e0e5ec", "Superficie": "#e0e5ec", "Relieve claro": "#ffffff", "Relieve sombra": "#a3b1c6" },
+    "Tinta y acento": { "Talla": "#2d3748", "Secundaria": "#556070", "Terracota": "#a8480f", "Terracota texto": "#8a3d0c" },
+    "Semánticos": { "Éxito": "#047857", "Aviso": "#b45309", "Crítico": "#dc2626", "Neutro": "#556070" }
+  }
+}

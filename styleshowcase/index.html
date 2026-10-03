@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+
+<!-- GALERÍA DEL MUESTRARIO DE ESTILOS UI ---------------------------------------
+       Índice de los estilos visuales. Los previews son componentes REALES dentro de
+       un contenedor con [data-style]: cada skin aplica sus tokens sin iframes.
+       -------------------------------------------------------------------------- -->
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Muestrario de estilos de interfaz: múltiples identidades visuales sobre la misma plantilla universal de componentes." />
+  <title>Style Showcase · Catálogo de estilos UI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="components.css" />
+  <link rel="stylesheet" href="gallery.css" />
+</head>
+
+<body class="gallery">
+  <main class="g-wrap">
+    <header class="g-head">
+      <p><a class="g-fbtn g-back" href="../portfolio.html">← Isaac Mora · Portfolio</a></p>
+      <h1>Style Showcase</h1>
+      <p>Colección de componentes de muestra, múltiples identidades visuales. Cada estilo es una carpeta con su
+        <code>style.css</code>, su <code>style.json</code> y su <code>STYLE.md</code>. El espécimen muestra
+        cuatro bloques —encabezado, tokens, botones y tarjetas— sobre una base agnóstica universal.
+      </p>
+      <div class="g-meta">
+        <div><b id="mTotal">22</b>estilos declarados</div>
+        <div><b id="mListos">—</b>con skin construido</div>
+        <div><b id="mPendientes">—</b>pendientes</div>
+        <div><b id="mFamilias">6</b>familias</div>
+      </div>
+    </header>
+
+    <div class="g-filtros">
+      <span>familia</span>
+      <button class="g-fbtn is-on" type="button" data-familia="todas">Todas</button>
+      <button class="g-fbtn" type="button" data-familia="materiales-blandos">Materiales blandos</button>
+      <button class="g-fbtn" type="button" data-familia="ruido-brutal">Ruido y brutal</button>
+      <button class="g-fbtn" type="button" data-familia="retro-digital">Retro-digital</button>
+      <button class="g-fbtn" type="button" data-familia="sistema-razon">Sistema y razón</button>
+      <button class="g-fbtn" type="button" data-familia="materia-impresa">Materia impresa</button>
+      <button class="g-fbtn" type="button" data-familia="ornamento-historia">Ornamento e historia</button>
+    </div>
+
+    <div class="g-filtros">
+      <span>estado</span>
+      <button class="g-fbtn is-on" type="button" data-estado="todos">Todos</button>
+      <button class="g-fbtn" type="button" data-estado="ready">Con skin</button>
+      <button class="g-fbtn" type="button" data-estado="planned">Pendientes</button>
+    </div>
+
+    <div class="g-grid" id="gGrid"></div>
+
+    <section class="g-leyenda">
+      <div>
+        <h3>Cómo se lee una ficha</h3>
+        <br />
+        <ul>
+          <li><strong>Preview</strong>: componentes reales en vivo, sin maquetas estáticas.</li>
+          <li><strong>Familia</strong>: agrupa corrientes de diseño que comparten lenguaje formal.</li>
+          <li><strong>Contraste</strong>: <code>AA</code> verificado · <code>AA*</code> con excepciones documentadas.
+          </li>
+          <li><strong>Veredicto</strong>: <code>adoptable</code> apto para producción; <code>experimental</code>
+            y <code>solo-museo</code>, para estudio o exploración.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Filosofía</h3>
+        <br />  
+        <ul>
+          <li>Componentes universales para estandarización de proyectos.</li>
+          <li>Tokens que gobiernan el aspecto visual sin alterar la estructura funcional.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Style Showcase · Catálogo de corrientes visuales para interfaces web.</p>
+  </footer>
+
+  <script src="registry.js"></script>
+  <script src="gallery.js"></script>
+</body>
+
+</html>

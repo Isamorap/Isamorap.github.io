@@ -1,0 +1,445 @@
+/* ==========================================================================
+   ESTILO 01 · CLAYMORPHISM — variante "plastilina" de la plantilla Showcase
+   --------------------------------------------------------------------------
+   Modo nativo: claro. Modos implementados: light + dark (ambos en este archivo).
+   Qué cambia: TODO el borde duro desaparece. El límite entre dos superficies lo
+   dibuja una sombra doble (una clara arriba-izquierda, una oscura abajo-derecha)
+   sobre un fondo del MISMO tono que el objeto: eso produce el volumen blando.
+   Radios grandes (14–34px) y ningún filete de 1px.
+   Qué NO cambia: estructura, densidad, jerarquía de acciones ni el vocabulario
+   de estados (los cinco semáforos siguen existiendo, ahora en pasta).
+   Este archivo solo redefine tokens dentro de [data-style="claymorphism"];
+   nunca edita ../components.css.
+   Alcance de esta muestra: los 4 bloques del espécimen. Ver STYLE.md.
+   ========================================================================== */
+
+[data-style="claymorphism"] {
+  /* Lienzo: arena cálida. El fondo participa del volumen: si fuera blanco, la
+     sombra clara de la izquierda no tendría contra qué leerse. */
+  background-color: #e8e0d5;
+  color-scheme: light;
+
+  /* Superficies y texto */
+  --bg-page: #e8e0d5;
+  --bg-raised: #efe9e0;
+  --bg-sunken: #ddd4c7;
+  --bg-nav: #efe9e0;
+  --text-strong: #3b3226;
+  --text-body: #4a4033;
+  --text-soft: #655946;
+  --text-faint: #6e6250;
+  /* Aquí la línea NO separa: la sombra sí. Se mantiene un tono visible donde un
+     filete sí delimita, pero por debajo del 3:1 de WCAG 1.4.11. Excepción
+     medida y documentada en STYLE.md. */
+  --line-soft: #d3c8b8;
+  --line-strong: #a89a86;
+
+  /* Identidad y acento: terracota. El acento es masa, no tinta. */
+  --brand-ink: #8f3d10;
+  --brand-ink-deep: #6b2c0b;
+  --brand-paper: #efe9e0;
+  --accent-100: #f7e2d0;
+  --accent-500: #ad4a15;
+  --accent-700: #8f3d10;
+  --support-100: #e7ece2;
+  --support-500: #4a6b3d;
+  --support-700: #35502b;
+  --cool-100: #e2e8ea;
+  --cool-500: #40636e;
+  --cool-700: #2b464e;
+
+  /* Semánticos en pasta: fondo pálido y tinta oscura del mismo tono.
+     Los sólidos llevan texto blanco encima, así que van un punto más
+     profundos que antes para dejar margen: con #fff dan 4.62-4.69:1 y
+     siguen en 5.48-5.58:1 en el punto más oscuro del brillo pulsante. */
+  --ok-bg: #dff0e4;   --ok-fg: #1f6b3f;   --ok-solid: #458056;
+  --warn-bg: #fbeed0; --warn-fg: #8a5a00; --warn-solid: #956d22;
+  --ember-bg: #fbe6d5; --ember-fg: #8a4416; --ember-solid: #8a5228;
+  --bad-bg: #fadcdc;  --bad-fg: #9b2226;  --bad-solid: #bc5458;
+  --info-bg: #ddeaf5; --info-fg: #1c4a6e; --info-solid: #4a7fa5;
+
+  /* Forma: el radio es la mitad de la identidad. Grande y siempre parejo. */
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 26px;
+  --radius-xl: 34px;
+  --radius-pill: 999px;
+
+  /* Profundidad: la receta de la plastilina. Dos sombras del par de tonos de la
+     superficie, desplazadas en diagonal. NUNCA `none`: sin ellas el estilo deja
+     de existir. Es el único lugar del proyecto donde la sombra es estructura. */
+  --shadow-1: 6px 6px 12px #cec2b0, -6px -6px 12px #fffaf2;
+  --shadow-2: 10px 10px 20px #cec2b0, -10px -10px 20px #fffaf2;
+  --shadow-3: 16px 16px 32px #c8bba8, -16px -16px 32px #fffaf2;
+
+  /* Movimiento: blando y un punto lento. Nada de rebote: la plastilina cede,
+     no salta. */
+  --dur-1: 160ms;
+  --dur-2: 240ms;
+  --dur-3: 320ms;
+  --ease-out: cubic-bezier(0.34, 0.9, 0.4, 1);
+
+  /* Puente documentado en _template/specimen.css (hardcodes de components.css) */
+  --skin-on-solid: #ffffff;
+  --skin-on-dark: #f7f2ea;
+  --skin-on-dark-soft: #e0d6c8;
+  --skin-scrim: #4a4033e6;
+  --skin-tint: #4a40330f;
+  --skin-tint-strong: #4a40331f;
+  --skin-ring: #ffffff40;
+  --skin-ring-dark: #4a40331f;
+  --skin-tray: #efe9e0;
+  --skin-tray-radius: 26px;
+  --skin-light-bg: #f7f2ea;
+  --skin-light-fg: #3b3226;
+  --skin-light-bg-hover: #ffffff;
+  --skin-inverse: #3b3226;
+
+  /* Paleta de volumen: los tres tonos que mueven toda la receta. */
+  --clay: #efe9e0;
+  --clay-hi: #fffaf2;
+  --clay-lo: #cec2b0;
+  --clay-ink: #3b3226;
+}
+
+/* ==========================================================================
+   LA RECETA, APLICADA
+   --------------------------------------------------------------------------
+   components.css pone `border: 1px solid var(--line-soft)` en casi todo. Aquí se
+   retira el filete y se devuelve la sombra doble. Cada override va bajo
+   [data-style] para no tocar la base.
+   ========================================================================== */
+
+/* Botones: pesto sin filete, con volumen. El hover se HUNDE (inset). */
+[data-style="claymorphism"] .btn {
+  border: 0;
+  font-weight: 700;
+  box-shadow: 5px 5px 10px var(--clay-lo), -5px -5px 10px var(--clay-hi);
+  transition: box-shadow var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+}
+[data-style="claymorphism"] .btn:hover {
+  transform: translateY(1px);
+  box-shadow:
+    inset 4px 4px 8px rgba(120, 105, 84, 0.32),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.7);
+}
+[data-style="claymorphism"] .btn:active {
+  transform: translateY(2px);
+  box-shadow:
+    inset 6px 6px 12px rgba(120, 105, 84, 0.38),
+    inset -4px -4px 9px rgba(255, 255, 255, 0.62);
+}
+[data-style="claymorphism"] .btn-primary,
+[data-style="claymorphism"] .btn-secondary {
+  background: var(--clay);
+  color: var(--clay-ink);
+}
+[data-style="claymorphism"] .btn-accent,
+[data-style="claymorphism"] .btn-danger {
+  background: var(--accent-500);
+  color: var(--skin-on-solid);
+}
+[data-style="claymorphism"] .btn-light {
+  background: var(--skin-light-bg);
+  color: var(--skin-light-fg);
+}
+[data-style="claymorphism"] .btn-ghost {
+  background: transparent;
+  box-shadow: none;
+}
+[data-style="claymorphism"] .btn-ghost:hover {
+  box-shadow:
+    inset 3px 3px 7px rgba(120, 105, 84, 0.26),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.66);
+  transform: none;
+}
+/* Color medido, no opacidad: el texto conserva su relación con el fondo y el
+   control sigue leyéndose como control. */
+[data-style="claymorphism"] .btn:disabled {
+  background: var(--clay);
+  color: #7a6e5d;
+  box-shadow: 3px 3px 6px var(--clay-lo), -3px -3px 6px var(--clay-hi);
+}
+
+/* Celdas grandes del bloque 03. */
+[data-style="claymorphism"] .btn-cell {
+  background: var(--clay);
+  border: 0;
+  color: var(--clay-ink);
+  box-shadow: 6px 6px 12px var(--clay-lo), -6px -6px 12px var(--clay-hi);
+}
+[data-style="claymorphism"] .btn-cell-dark {
+  background: var(--brand-ink-deep);
+  color: var(--skin-on-solid);
+  box-shadow: 6px 6px 12px var(--clay-lo), -6px -6px 12px var(--clay-hi);
+}
+[data-style="claymorphism"] .btn-cell-dark > span:last-child {
+  color: var(--skin-on-dark-soft);
+}
+
+/* Superficies: tarjetas, paneles, menús, notas. Misma receta, radios generosos. */
+[data-style="claymorphism"] .shell,
+[data-style="claymorphism"] .token-pane,
+[data-style="claymorphism"] .card,
+[data-style="claymorphism"] .menu,
+[data-style="claymorphism"] .table-note,
+[data-style="claymorphism"] .clima-rows,
+[data-style="claymorphism"] .empty {
+  background: var(--clay);
+  border: 0;
+  box-shadow: 7px 7px 14px var(--clay-lo), -7px -7px 14px var(--clay-hi);
+}
+
+/* Chips de estado: pasta del color del estado, sin filete. */
+[data-style="claymorphism"] .pill {
+  border: 0;
+  font-weight: 700;
+  box-shadow: 3px 3px 7px var(--clay-lo), -3px -3px 7px var(--clay-hi);
+}
+[data-style="claymorphism"] .chip {
+  border: 0;
+  background: var(--bg-sunken);
+  box-shadow: 3px 3px 6px var(--clay-lo), -3px -3px 6px var(--clay-hi);
+}
+
+/* Barra de estado: el carril se hunde, pero conserva el color de la familia.
+   Antes se pintaba con --bg-sunken, que neutralizaba el sólido y dejaba el
+   texto blanco (o --skin-on-solid) sobre un tono de arcilla: 1.47:1 en claro
+   y 1.02:1 en oscuro. El inset se mantiene, que es lo que da el relieve. */
+[data-style="claymorphism"] .dbar {
+  background: var(--ok-solid);
+  border: 0;
+  box-shadow:
+    inset 3px 3px 6px rgba(120, 105, 84, 0.26),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+}
+[data-style="claymorphism"] .dbar-warn { background: var(--warn-solid); }
+[data-style="claymorphism"] .dbar-bad { background: var(--bad-solid); }
+[data-style="claymorphism"] .dbar span {
+  border-radius: var(--radius-pill);
+}
+
+/* Campos: la valleyeta. Un input de Clay se hunde, no se levanta. */
+[data-style="claymorphism"] input[type="text"],
+[data-style="claymorphism"] input[type="email"],
+[data-style="claymorphism"] select,
+[data-style="claymorphism"] textarea {
+  background: var(--clay);
+  border: 0;
+  border-radius: var(--radius-md);
+  color: var(--clay-ink);
+  box-shadow:
+    inset 4px 4px 8px rgba(120, 105, 84, 0.28),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.72);
+}
+
+/* Pestañas: la activa se hunde en la pastilla. */
+[data-style="claymorphism"] .tabs > button:not(.iconbtn) {
+
+/* Navegación flotante: la cápsula es una pastilla de pasta. */
+[data-style="claymorphism"] .navpill,
+[data-style="claymorphism"] .bottombar {
+  background: var(--clay);
+  border: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 8px 8px 18px var(--clay-lo), -8px -8px 18px var(--clay-hi);
+}
+[data-style="claymorphism"] .iconbtn {
+  background: var(--clay);
+  border: 0;
+  box-shadow: 4px 4px 9px var(--clay-lo), -4px -4px 9px var(--clay-hi);
+}
+[data-style="claymorphism"] .iconbtn:hover {
+  transform: translateY(1px);
+  box-shadow:
+    inset 3px 3px 7px rgba(120, 105, 84, 0.3),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.68);
+}
+
+/* Avatar: bola de pasta. */
+[data-style="claymorphism"] .avatar,
+[data-style="claymorphism"] .avatar-sm {
+  background: var(--clay);
+  border: 0;
+  color: var(--clay-ink);
+  box-shadow: 4px 4px 9px var(--clay-lo), -4px -4px 9px var(--clay-hi);
+}
+
+/* Cita: bloque de pasta con la tinta profunda. */
+[data-style="claymorphism"] .quote .shell-core {
+  background: var(--brand-ink-deep);
+  border-radius: var(--radius-lg);
+  box-shadow: 8px 8px 18px var(--clay-lo), -8px -8px 18px var(--clay-hi);
+}
+[data-style="claymorphism"] .quote p { color: var(--skin-on-dark); }
+[data-style="claymorphism"] .quote cite { color: var(--skin-on-dark-soft); }
+
+/* Chip sobre la imagen del héroe. */
+[data-style="claymorphism"] .hero-chip {
+  background: var(--skin-scrim);
+  border: 0;
+  border-radius: var(--radius-pill);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  color: var(--skin-on-dark);
+}
+
+/* Tipografía: no se cambia la familia (regla del contrato). El carácter viene
+   del peso blando y del interletrado corto, no de otra tipografía. */
+[data-style="claymorphism"] .type-display {
+  letter-spacing: -0.02em;
+  font-weight: 800;
+}
+[data-style="claymorphism"] .type-mono {
+  background: var(--clay);
+  border: 0;
+  color: var(--clay-ink);
+  box-shadow:
+    inset 3px 3px 7px rgba(120, 105, 84, 0.24),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.7);
+}
+
+  border: 0;
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  box-shadow: none;
+}
+[data-style="claymorphism"] .tabs > button:not(.iconbtn).is-on {
+  background: var(--clay);
+  color: var(--clay-ink);
+  box-shadow:
+    inset 3px 3px 7px rgba(120, 105, 84, 0.3),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.68);
+}
+[data-style="claymorphism"] .tabs > button:not(.iconbtn):hover {
+  background: var(--bg-sunken);
+}
+
+/* ==========================================================================
+   MODO OSCURO — el volumen no depende del color
+   --------------------------------------------------------------------------
+   La firma (sombra doble, radios grandes, cero filete) NO depende de que el
+   tono sea claro u oscuro, así que el modo oscuro es solo paleta: la sombra
+   clara se apaga y la oscura se convierte en el único relieve. Es el mismo
+   truco que una luz rasante de noche.
+   ========================================================================== */
+[data-theme="dark"][data-style="claymorphism"] {
+  background-color: #2b2620;
+  color-scheme: dark;
+
+  --bg-page: #2b2620;
+  --bg-raised: #332d26;
+  --bg-sunken: #241f1a;
+  --bg-nav: #332d26;
+  --text-strong: #f7f2ea;
+  --text-body: #e2d9cc;
+  --text-soft: #bdb1a0;
+  --text-faint: #a2968a;
+  --line-soft: #453d34;
+  --line-strong: #5f5548;
+
+  --brand-ink: #ffb98a;
+  --brand-ink-deep: #3a2c20;
+  --brand-paper: #332d26;
+  --accent-100: #4a2c17;
+  --accent-500: #ff9a5c;
+  --accent-700: #ffb98a;
+  --support-100: #2a3327;
+  --support-500: #a3c49a;
+  --support-700: #c2ddba;
+  --cool-100: #232e33;
+  --cool-500: #9ab8c4;
+  --cool-700: #bdd4dd;
+
+  /* Semánticos: los mismos pares que en claro, y también pasan AA. */
+  --ok-bg: #17352a;   --ok-fg: #8fdcb6;   --ok-solid: #458056;
+  --warn-bg: #3a2d0d; --warn-fg: #f0c85e; --warn-solid: #956d22;
+  --ember-bg: #3a2313; --ember-fg: #f0a878; --ember-solid: #b06a35;
+  --bad-bg: #3d1a1c;  --bad-fg: #f09a9a;  --bad-solid: #bc5458;
+  --info-bg: #152c3c; --info-fg: #9ed0ee; --info-solid: #4a7fa5;
+
+  /* En oscuro la luz viene de arriba: la sombra clara se apaga y la oscura se
+     separa más del fondo, porque sobre un tono bajo el relieve se pierde. */
+  --shadow-1: 6px 6px 12px #1c1813, -6px -6px 12px #3d362d;
+  --shadow-2: 10px 10px 20px #191510, -10px -10px 20px #443c32;
+  --shadow-3: 16px 16px 32px #151109, -16px -16px 32px #4b4238;
+
+  --clay: #332d26;
+  --clay-hi: #453d34;
+  --clay-lo: #1c1813;
+  --clay-ink: #f7f2ea;
+
+  /* Sobre sólidos. Aquí los sólidos son oscuros y el acento es claro, así que
+     no hay una sola tinta que sirva para los dos: hacen falta dos tokens. */
+  --skin-on-solid: #ffffff;
+  --skin-on-accent: #2b1a0c;
+  --skin-on-dark: #f7f2ea;
+  --skin-on-dark-soft: #e0d6c8;
+  --skin-scrim: #1c1813e6;
+  --skin-tint: #ffffff0f;
+  --skin-tint-strong: #ffffff1f;
+  --skin-ring: #ffffff2e;
+  --skin-ring-dark: #00000033;
+  --skin-tray: #332d26;
+  --skin-light-bg: #f7f2ea;
+  --skin-light-fg: #2b2620;
+  --skin-light-bg-hover: #ffffff;
+  --skin-inverse: #f7f2ea;
+}
+
+/* En oscuro el acento lleva tinta oscura: el blanco sobre terracota no llegaría
+   a AA. El botón primario vuelve a ser pasta neutra, como en claro. */
+[data-theme="dark"][data-style="claymorphism"] .btn-primary,
+[data-theme="dark"][data-style="claymorphism"] .btn-secondary {
+  background: var(--clay);
+  color: var(--clay-ink);
+}
+/* En oscuro el acento es claro, así que su texto va oscuro: ese par lo decide
+   --skin-on-accent, no --skin-on-solid (que aquí es blanco para las barras). */
+[data-theme="dark"][data-style="claymorphism"] .btn-accent,
+[data-theme="dark"][data-style="claymorphism"] .btn-danger {
+  background: var(--accent-500);
+  color: var(--skin-on-accent);
+}
+[data-theme="dark"][data-style="claymorphism"] .btn:disabled {
+  background: var(--clay);
+  color: #9d9286;
+}
+
+/* Sin sombra clara, el hundido se apoya solo en la oscura. */
+[data-theme="dark"][data-style="claymorphism"] .btn:hover,
+[data-theme="dark"][data-style="claymorphism"] .iconbtn:hover,
+[data-theme="dark"][data-style="claymorphism"] .tabs > button:not(.iconbtn).is-on {
+  box-shadow:
+    inset 4px 4px 8px rgba(0, 0, 0, 0.5),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.06);
+}
+[data-theme="dark"][data-style="claymorphism"] .type-mono,
+[data-theme="dark"][data-style="claymorphism"] input[type="text"],
+[data-theme="dark"][data-style="claymorphism"] select,
+[data-theme="dark"][data-style="claymorphism"] textarea,
+[data-theme="dark"][data-style="claymorphism"] .dbar {
+  box-shadow:
+    inset 4px 4px 8px rgba(0, 0, 0, 0.5),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.06);
+}
+[data-theme="dark"][data-style="claymorphism"] .quote .shell-core {
+  background: var(--brand-ink-deep);
+  box-shadow: 8px 8px 18px #1c1813, -8px -8px 18px #443c32;
+}
+[data-theme="dark"][data-style="claymorphism"] .eyebrow {
+  color: var(--accent-700);
+}
+
+/* Movimiento reducido: sin hundidos ni desplazamientos; la forma se mantiene. */
+@media (prefers-reduced-motion: reduce) {
+  [data-style="claymorphism"] .btn:hover,
+  [data-style="claymorphism"] .btn:active,
+  [data-style="claymorphism"] .iconbtn:hover {
+    transform: none;
+  }
+}
+
+
+
