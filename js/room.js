@@ -160,7 +160,6 @@ document.getElementById("freelook-toggle")?.classList.toggle("is-on", freeLook);
 // (derecha = derecha, como un FPS) y el click sigue interactuando.
 let lockClick = false;
 let needRelock = false;
-let expectUnlock = false;
 function lockPointer() {
   if (document.pointerLockElement === canvas) return;
   try {
@@ -191,13 +190,9 @@ document.addEventListener("pointerlockchange", () => {
       );
     }
   } else if (freeLook && lookMode) {
-    if (expectUnlock) {
-      // Soltado a propósito (abrir panel): no pedir re-click
-      expectUnlock = false;
-    } else {
-      // El navegador suelta el lock al tabular o con ESC: no se puede
-      // re-encerrar solo (exige gesto), así que se congela el hover para que
-      // la vista no gire loca y se pide el click de vuelta.
+    // Con foco (viaje a panel en curso, panel abierto o sentado) el soltado
+    // fue intencional. Sin foco (tab/ESC explorando) se pide el click.
+    if (!focused) {
       needRelock = true;
       flashTip(
         currentLang() === "es"
@@ -2837,12 +2832,6 @@ const easeInOut = (t) =>
 function focusObject(mesh) {
   const data = mesh.userData.room;
   if (!data || focused) return;
-  // Solo se suelta el cursor si se va a abrir UI (panel/overlay). Gato,
-  // puerta y sillones no abren nada: se sigue mirando encerrado.
-  if (data.id === "monitor" || PANELS[data.id]) {
-    expectUnlock = true;
-    unlockPointer();
-  }
   // Gato: caricia (miau + te mira + saltito), sin foco ni panel
   if (data.id === "cat") {
     petCat();
@@ -2906,6 +2895,9 @@ function focusObject(mesh) {
   hero.classList.add("is-focused");
   ui.tip?.classList.remove("is-on");
   ui.reticle?.classList.remove("is-hot");
+  // Se abre UI (panel/overlay): soltar el cursor para clickearla. Como
+  // `focused` ya quedó marcado, el pointerlockchange sabe que fue intencional.
+  unlockPointer();
   startTween(
     { yaw: f.yaw, pitch: f.pitch, dolly, fov: data.fov ?? 46, dur: 1.0 },
     () => {
