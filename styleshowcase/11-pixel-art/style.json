@@ -1,0 +1,183 @@
+{
+  "$meta": {
+    "id": "pixel-art",
+    "num": "11",
+    "nombre": "Pixel Art",
+    "familia": "retro-digital",
+    "status": "ready",
+    "archivos": {
+      "skin": "style.css",
+      "brief": "STYLE.md"
+    },
+    "source_of_truth": "style.css",
+    "nota_hex": "Los colores de 8 dígitos son RGBA (#RRGGBBAA). Los de 6 son opacos.",
+    "nota": "Sin clip-path en controles y sin cambiar la familia tipográfica: el carácter sale del interletrado, las mayúsculas y la sombra dura. La portada se vuelve pixel art con image-rendering: pixelated."
+  },
+  "aplicacion": {
+    "atributo": "[data-style=\"pixel-art\"]",
+    "modo_nativo": "dark",
+    "modos": [
+      "dark",
+      "light"
+    ],
+    "capa_de_modo": "[data-theme=\"light\"][data-style=\"pixel-art\"]",
+    "alcance_de_esta_muestra": [
+      "encabezado",
+      "tokens",
+      "botones",
+      "estados-operativos"
+    ]
+  },
+  "veredicto": "experimental",
+  "robar": [
+    "Sombra dura desplazada (4px 4px 0) como única elevación: sin blur no hay antialias y todo se lee como sprite.",
+    "Dither de damero a 4px como background-image de la superficie: textura sin tocar el texto.",
+    "image-rendering: pixelated sobre ilustración: convierte cualquier imagen en pixel art sin assets nuevos.",
+    "Botón que se hunde 2px en :active: el press físico reemplaza cualquier transición suave.",
+    "Modo claro que apaga el dither y oscurece el amarillo: el carácter sobrevive sin romper AA."
+  ],
+  "no_robar": [
+    "clip-path en controles interactivos: recorta el anillo de foco y el control deja de reconocerse.",
+    "Dither sobre texto o encima del contenido: la trama vive en la superficie.",
+    "Amarillo #ffd23f como texto pequeño sobre fondo claro: da 1.8:1, solo sirve como superficie con tinta oscura.",
+    "steps() en transiciones largas de layout: el salto sirve para micro-movimiento, no para reveals.",
+    "Parpadeo en bucle sobre texto que hay que leer: aquí solo parpadea el punto de estado."
+  ],
+  "a11y": {
+    "contraste": "AA",
+    "peor_caso": "Tenue #8b8b9e sobre fondo #101018: 5.67:1 · Rojo #ff7a7a sobre superficie: 7.50:1 · Claro: secundario #45455a 8.7:1 · Claro: dbar crema sobre #075c33 6.8:1 · 0 textos bajo AA en 296 nodos (medido en navegador)",
+    "reglas": [
+      "El amarillo #ffd23f se usa como superficie de botón con tinta #101018 encima (13.11:1), nunca como texto pequeño sobre negro salvo display grande.",
+      "En claro el amarillo se oscurece a #776000 (5.01:1) y el dither se apaga: la trama sobre papel es ruido.",
+      "El deshabilitado usa color medido (#8b8b9e sobre #2a2a3a), no opacidad.",
+      "El foco es un bloque de 3px con offset, sin halo: el píxel no emite luz.",
+      "prefers-reduced-motion apaga el parpadeo del punto de estado; la composición cuadrada se conserva.",
+      "La celda oscura usa mostaza profunda #6e5600 con rótulo casi pleno #f2f2e8: el mostaza habitual habría dejado el rótulo bajo AA."
+    ]
+  },
+  "tipografia": {
+    "familia": "Montserrat (la de la base, sin cambios)",
+    "display": "1.15–4.2rem / 800 · mayúsculas · line-height 1 · sombra dura 3px",
+    "tracking_display": "0.01em",
+    "nota": "No se cambia la familia (regla del contrato). El carácter sale de mayúsculas, peso 800 y text-shadow de 3px sin blur: el píxel de tinta."
+  },
+  "forma": {
+    "radius_sm": "0",
+    "radius_md": "0",
+    "radius_lg": "0",
+    "radius_xl": "0",
+    "radius_pill": "0",
+    "borde": "filete de 3px en botones, 2px en chips; en oscuro el filete es tinta clara, en claro es tinta oscura"
+  },
+  "profundidad": {
+    "receta": "sombra dura desplazada sin blur: 4/6/8px a negro sólido",
+    "shadow_1": "4px 4px 0 #000000",
+    "shadow_2": "6px 6px 0 #000000",
+    "shadow_3": "8px 8px 0 #000000"
+  },
+  "textura": {
+    "receta": "damero repeating-conic de 4px al 3.5% sobre superficies elevadas",
+    "nota": "Es background-image de la superficie. El texto nunca queda debajo de la trama."
+  },
+  "movimiento": {
+    "dur_1": "120ms",
+    "dur_2": "220ms",
+    "dur_3": "320ms",
+    "ease": "steps(4, end)",
+    "nota": "A saltos, como un sprite. El :active hunde el botón 2px en vez de animar sombras."
+  },
+  "efectos": {
+    "nota": "No enciende --fx-*: el pixel art no necesita scanlines ni glow. El parpadeo del punto de estado es un keyframes propio con steps."
+  },
+  "tokens": {
+    "--bg-page": "#101018",
+    "--bg-raised": "#1a1a2b",
+    "--bg-sunken": "#0b0b14",
+    "--bg-nav": "rgba(16, 16, 24, 0.92)",
+    "--text-strong": "#f2f2e8",
+    "--text-body": "#c9c9d4",
+    "--text-soft": "#45455a",
+    "--text-faint": "#55555f",
+    "--line-soft": "#2a2a3d",
+    "--line-strong": "#3d3d55",
+    "--brand-ink": "#ffd23f",
+    "--brand-ink-deep": "#6e5600",
+    "--brand-paper": "#101018",
+    "--accent-100": "#2e2305",
+    "--accent-500": "#ffd23f",
+    "--accent-700": "#e0a800",
+    "--support-100": "#0e2a1c",
+    "--support-500": "#41d97e",
+    "--support-700": "#1d7a46",
+    "--cool-100": "#0e2438",
+    "--cool-500": "#5eb2ff",
+    "--cool-700": "#2b6cb8",
+    "--ok-bg": "#0e2a1c",
+    "--ok-fg": "#095c36",
+    "--ok-solid": "#075c33",
+    "--warn-bg": "#2e2305",
+    "--warn-fg": "#ffd23f",
+    "--warn-solid": "#e0a800",
+    "--bad-bg": "#331016",
+    "--bad-fg": "#ff7a7a",
+    "--bad-solid": "#ff4d5e",
+    "--info-bg": "#0e2438",
+    "--info-fg": "#5eb2ff",
+    "--info-solid": "#3f9ef0",
+    "--radius-sm": "0px",
+    "--radius-md": "0px",
+    "--radius-lg": "0px",
+    "--radius-xl": "0px",
+    "--radius-pill": "0px",
+    "--ease-out": "steps(4, end)",
+    "--dur-1": "120ms",
+    "--dur-2": "220ms",
+    "--dur-3": "320ms",
+    "--tracking-wide": "0.18em"
+  },
+  "puente": {
+    "--skin-on-solid": "#101018",
+    "--skin-on-dark": "#f2f2e8",
+    "--skin-on-dark-soft": "#a3a3b5",
+    "--skin-on-scrim-soft": "#f2f2e8",
+    "--skin-scrim": "#101018f2",
+    "--skin-tint": "#ffd23f14",
+    "--skin-tint-strong": "#ffd23f2e",
+    "--skin-ring": "#1010184d",
+    "--skin-ring-dark": "#f2f2e826",
+    "--skin-tray": "#1a1a2b",
+    "--skin-tray-radius": "0px",
+    "--skin-light-bg": "#ffd23f",
+    "--skin-light-fg": "#101018",
+    "--skin-light-bg-hover": "#e0a800",
+    "--skin-inverse": "#f2f2e8"
+  },
+  "modo_dark": {
+    "cambia": [
+      "Fondo claro #efe9d8 → negro azulado #101018 de paleta limitada",
+      "Acento #776000 → #ffd23f (la moneda se enciende)",
+      "Se encienden dither de damero, sombra dura e image-rendering pixelado"
+    ],
+    "nota": "Es el modo de diseño. En claro el estilo no invierte el dither: lo apaga, porque la trama sobre papel es ruido. Esa asimetría es deliberada."
+  },
+  "palette": {
+    "Superficies": {
+      "Vacío": "#101018",
+      "Panel": "#1a1a2b",
+      "Hondo": "#0b0b14",
+      "Trama": "#ffffff0a"
+    },
+    "Tinta y acento": {
+      "Fósforo": "#f2f2e8",
+      "Secundaria": "#a3a3b5",
+      "Moneda": "#ffd23f",
+      "Unoarriba": "#41d97e"
+    },
+    "Semánticos": {
+      "Éxito": "#41d97e",
+      "Aviso": "#ffd23f",
+      "Crítico": "#ff7a7a",
+      "Neutro": "#8b8b9e"
+    }
+  }
+}

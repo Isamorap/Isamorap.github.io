@@ -279,9 +279,19 @@ body:not(.room-dead) {
     font-size: 1rem;
 }
 
-#room-menu #freelook-toggle.is-on {
+body #room-menu #freelook-toggle.is-on {
     border-color: var(--primary-color);
     color: var(--primary-color);
+}
+
+/* Pulso guía hasta que se activa el mirar-libre por primera vez */
+@keyframes roomPing {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+    50% { box-shadow: 0 0 0 3px var(--primary-color); }
+}
+
+body.room-new #room-menu #freelook-toggle {
+    animation: roomPing 1.6s ease-in-out infinite;
 }
 
 @media (pointer: coarse) {

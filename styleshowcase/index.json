@@ -140,7 +140,10 @@
       "nombre": "Cybercore",
       "familia": "ruido-brutal",
       "modo": "dark",
-      "modos": ["dark", "light"],
+      "modos": [
+        "dark",
+        "light"
+      ],
       "a11y": "AA",
       "veredicto": "solo-museo",
       "status": "ready",
@@ -209,11 +212,20 @@
       "nombre": "Pixel Art",
       "familia": "retro-digital",
       "modo": "dark",
-      "modos": [],
+      "modos": [
+        "dark",
+        "light"
+      ],
       "a11y": "AA",
       "veredicto": "experimental",
-      "status": "planned",
-      "resumen": "Bordes pixelados, sin antialias y paleta limitada."
+      "status": "ready",
+      "resumen": "Bordes pixelados, sin antialias y paleta limitada.",
+      "carpeta": "11-pixel-art",
+      "archivos": [
+        "style.css",
+        "style.json",
+        "STYLE.md"
+      ]
     },
     {
       "n": "12",
@@ -519,7 +531,7 @@
         "Neutro": "#7b8aa3"
       }
     },
-"cybercore": {
+    "cybercore": {
       "Superficies": {
         "Vacío": "#05090a",
         "Panel": "#0b1214",
@@ -597,6 +609,26 @@
         "Aviso": "#b45309",
         "Crítico": "#c81e2e",
         "Neutro": "#4c5e84"
+      }
+    },
+    "pixel-art": {
+      "Superficies": {
+        "Vacío": "#101018",
+        "Panel": "#1a1a2b",
+        "Hondo": "#0b0b14",
+        "Trama": "#ffffff0a"
+      },
+      "Tinta y acento": {
+        "Fósforo": "#f2f2e8",
+        "Secundaria": "#a3a3b5",
+        "Moneda": "#ffd23f",
+        "Unoarriba": "#41d97e"
+      },
+      "Semánticos": {
+        "Éxito": "#41d97e",
+        "Aviso": "#ffd23f",
+        "Crítico": "#ff7a7a",
+        "Neutro": "#8b8b9e"
       }
     }
   }

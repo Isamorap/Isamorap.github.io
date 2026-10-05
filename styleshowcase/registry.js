@@ -49,7 +49,7 @@ window.STYLE_ESTILOS = [
     "Cromo, burbujas y biseles brillantes de fin de milenio."],
   ["10", "synthwave", "Synthwave", "retro-digital", "dark", [], "AA*", "experimental",
     "Atardecer del 84: magenta y naranja sobre rejilla."],
-  ["11", "pixel-art", "Pixel Art", "retro-digital", "dark", [], "AA", "experimental",
+  ["11", "pixel-art", "Pixel Art", "retro-digital", "dark", ["dark", "light"], "AA", "experimental",
     "Bordes pixelados, sin antialias y paleta limitada."],
   ["12", "swiss", "Swiss Design", "sistema-razon", "light", ["light", "dark"], "AA", "adoptable",
     "Rejilla implacable, sans neutral y un rojo de acento."],
@@ -130,6 +130,35 @@ cybercore: [
     { grupo: "Superficies", colores: [["Vacío", "#05060a"], ["Panel", "#0b0e1a"], ["Hondo", "#030409"], ["Filete", "#00e5ff40"]] },
     { grupo: "Tinta y acento", colores: [["Blanco azulado", "#f2f6ff"], ["Secundaria", "#93a3bb"], ["Magenta", "#ff2e97"], ["Cian", "#00e5ff"]] },
     { grupo: "Semánticos", colores: [["Éxito", "#5cffc4"], ["Aviso", "#ffd166"], ["Crítico", "#ff5c7a"], ["Neutro", "#7b8aa3"]] }
+  ],
+  "pixel-art": [
+    {
+      grupo: "Superficies",
+      colores: [
+        ["Vacío", "#101018"],
+        ["Panel", "#1a1a2b"],
+        ["Hondo", "#0b0b14"],
+        ["Trama", "#ffffff0a"],
+      ],
+    },
+    {
+      grupo: "Tinta y acento",
+      colores: [
+        ["Fósforo", "#f2f2e8"],
+        ["Secundaria", "#a3a3b5"],
+        ["Moneda", "#ffd23f"],
+        ["Unoarriba", "#41d97e"],
+      ],
+    },
+    {
+      grupo: "Semánticos",
+      colores: [
+        ["Éxito", "#41d97e"],
+        ["Aviso", "#ffd23f"],
+        ["Crítico", "#ff7a7a"],
+        ["Neutro", "#8b8b9e"],
+      ],
+    },
   ],
   corporativo: [
     { grupo: "Superficies", colores: [["Papel", "#f6f8fa"], ["Blanco", "#ffffff"], ["Hueso", "#f4f6f8"], ["Tinta", "#0f2432"]] },

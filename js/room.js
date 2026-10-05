@@ -128,13 +128,12 @@ let freeLook = false;
 let anchorYaw = 0,
   anchorPitch = -0.04;
 try {
-  // Por defecto ENCENDIDO en puntero fino (mouse/trackpad): es LA forma de
-  // mirar. Solo se respeta un apagado explícito previo.
-  const stored = localStorage.getItem("room-freelook");
-  freeLook =
-    stored === null
-      ? window.matchMedia("(pointer: fine)").matches
-      : stored === "1";
+  // Opt-in explícito: sin esto, el hover previo al lock mueve la vista
+  // lento y distinto, y confunde. Solo se recuerda un encendido previo.
+  freeLook = localStorage.getItem("room-freelook") === "1";
+  if (localStorage.getItem("room-freelook") === null) {
+    document.body.classList.add("room-new");
+  }
 } catch (e) {
   /* sin storage no hay memoria */
 }
@@ -146,13 +145,20 @@ function toggleFreeLook() {
   } catch (e) {
     /* noop */
   }
+  document.body.classList.remove("room-new");
   anchorYaw = view.tYaw;
   anchorPitch = view.tPitch;
   document
     .getElementById("freelook-toggle")
     ?.classList.toggle("is-on", freeLook);
-  if (freeLook) lockPointer();
-  else unlockPointer();
+  if (freeLook) {
+    lockPointer();
+    flashTip(
+      currentLang() === "es"
+        ? "click en la escena para mirar con el mouse"
+        : "click the scene to look with the mouse",
+    );
+  } else unlockPointer();
 }
 document.getElementById("freelook-toggle")?.classList.toggle("is-on", freeLook);
 
@@ -261,9 +267,32 @@ window.addEventListener("resize", resize);
 resize();
 
 /* ── Luces ───────────────────────────────────────────────────────────── */
-scene.add(new THREE.HemisphereLight(0xfff2e0, 0x3a2f26, 0.75));
+/* ── Día/noche + cortinas: estado global de luz ───────────────────────── */
+let hemi = null;
+let lanternGlow = null;
+const garlandHalos = [];
+let nightMix = 0,
+  nightTarget = 0,
+  dayBase = 2.0;
+const dayCol = new THREE.Color(0xffe3b3);
+const nightCol = new THREE.Color(0x8fb3e8);
+const curtains = [];
+function toggleNight() {
+  nightTarget = nightTarget > 0.5 ? 0 : 1;
+  drawOutside(nightTarget > 0.5 ? "night" : "day");
+  flashTip(
+    nightTarget > 0.5
+      ? currentLang() === "es"
+        ? "modo noche 🌙 (click en la lámpara para volver)"
+        : "night mode 🌙 (click the lamp to revert)"
+      : currentLang() === "es"
+        ? "modo día ☀️"
+        : "day mode ☀️",
+  );
+}
+scene.add((hemi = new THREE.HemisphereLight(0xfff2e0, 0x3a2f26, 0.75)));
 
-const daylight = new THREE.DirectionalLight(0xd4e4ff, 1.35);
+const daylight = new THREE.DirectionalLight(0xffe3b3, 2.0);
 daylight.position.set(-1.5, 6.5, -4.2);
 daylight.target.position.set(0.2, 0, 1.2);
 daylight.castShadow = true;
@@ -278,14 +307,14 @@ daylight.shadow.radius = 6;
 daylight.shadow.blurSamples = 12;
 scene.add(daylight, daylight.target);
 
-const lampLight = new THREE.PointLight(0xffb46b, 8, 7, 2);
+const lampLight = new THREE.PointLight(0xffb46b, 3.2, 5, 2);
 lampLight.position.set(-2.55, 1.62, -2.15);
 // La lámpara SÍ arroja sombras: así la planta sombrea hacia la derecha,
 // lejos de la lámpara, como pide el ojo (y el escritorio asienta en cálido).
 lampLight.castShadow = true;
 lampLight.shadow.mapSize.set(512, 512);
 lampLight.shadow.camera.near = 0.08;
-lampLight.shadow.camera.far = 7;
+lampLight.shadow.camera.far = 5;
 lampLight.shadow.bias = -0.005;
 lampLight.shadow.radius = 4;
 lampLight.shadow.blurSamples = 8;
@@ -716,6 +745,9 @@ function buildLamp() {
   shade.castShadow = false;
   bulb.castShadow = false;
   scene.add(g);
+  markInteractive(base, { id: "lamp" });
+  markInteractive(pole, { id: "lamp" });
+  markInteractive(shade, { id: "lamp" });
   blobShadow(-2.55, -2.15, 0.62, 0.62, 0.4);
 }
 
@@ -745,35 +777,69 @@ function buildVentanal() {
   scene.add(glass);
 }
 
-/* Afuera: paisaje falso pintado + suelo nevado */
-function buildOutside() {
-  const c = document.createElement("canvas");
-  c.width = 512;
-  c.height = 288;
+/* Afuera: paisaje falso repintable (día soleado / noche estrellada) */
+let outsideCanvas, outsideTex, snowGroundMat, driftMat, moonShaft;
+function drawOutside(mode) {
+  const c = outsideCanvas;
   const g2 = c.getContext("2d");
+  const night = mode === "night";
   const sky = g2.createLinearGradient(0, 0, 0, 288);
-  sky.addColorStop(0, "#16233f");
-  sky.addColorStop(0.45, "#4a3a63");
-  sky.addColorStop(0.62, "#c96f5a");
-  sky.addColorStop(0.7, "#e8a06b");
-  sky.addColorStop(0.72, "#f4cf9a");
+  if (night) {
+    sky.addColorStop(0, "#070d1d");
+    sky.addColorStop(0.5, "#16233f");
+    sky.addColorStop(0.68, "#2c3350");
+    sky.addColorStop(0.72, "#3d4460");
+  } else {
+    sky.addColorStop(0, "#3f8fd2");
+    sky.addColorStop(0.5, "#8ec8ee");
+    sky.addColorStop(0.68, "#d8ecf7");
+    sky.addColorStop(0.72, "#f6e8c8");
+  }
   g2.fillStyle = sky;
   g2.fillRect(0, 0, 512, 288);
-  // Luna + halo
-  const halo = g2.createRadialGradient(400, 58, 2, 400, 58, 46);
-  halo.addColorStop(0, "rgba(244,236,216,0.9)");
-  halo.addColorStop(0.25, "rgba(244,236,216,0.35)");
-  halo.addColorStop(1, "rgba(244,236,216,0)");
-  g2.fillStyle = halo;
-  g2.fillRect(340, 0, 172, 120);
-  g2.fillStyle = "#f4ecd8";
-  g2.beginPath();
-  g2.arc(400, 58, 13, 0, 7);
-  g2.fill();
+  if (night) {
+    // Estrellas
+    g2.fillStyle = "rgba(255,255,255,0.9)";
+    for (let i = 0; i < 130; i++) {
+      const x = (i * 97 + 13) % 512;
+      const y = (i * 57 + 7) % 165;
+      const s = (i * 13) % 3 === 0 ? 2 : 1;
+      g2.globalAlpha = 0.35 + ((i * 29) % 65) / 100;
+      g2.fillRect(x, y, s, s);
+    }
+    g2.globalAlpha = 1;
+    // Luna + halo
+    const halo = g2.createRadialGradient(400, 58, 2, 400, 58, 52);
+    halo.addColorStop(0, "rgba(235,242,255,0.95)");
+    halo.addColorStop(0.25, "rgba(235,242,255,0.35)");
+    halo.addColorStop(1, "rgba(235,242,255,0)");
+    g2.fillStyle = halo;
+    g2.fillRect(336, 0, 176, 124);
+    g2.fillStyle = "#eef3ff";
+    g2.beginPath();
+    g2.arc(400, 58, 14, 0, 7);
+    g2.fill();
+    g2.fillStyle = "rgba(180,195,220,0.7)";
+    g2.beginPath();
+    g2.arc(395, 54, 3, 0, 7);
+    g2.fill();
+    g2.beginPath();
+    g2.arc(405, 63, 2, 0, 7);
+    g2.fill();
+  } else {
+    // Sol de mañana + halo
+    const halo = g2.createRadialGradient(400, 66, 4, 400, 66, 70);
+    halo.addColorStop(0, "rgba(255,250,230,1)");
+    halo.addColorStop(0.3, "rgba(255,240,200,0.55)");
+    halo.addColorStop(1, "rgba(255,240,200,0)");
+    g2.fillStyle = halo;
+    g2.fillRect(320, 0, 192, 150);
+    g2.fillStyle = "#fffbe8";
+    g2.beginPath();
+    g2.arc(400, 66, 17, 0, 7);
+    g2.fill();
+  }
   // Cordones montañosos
-  g2.fillStyle = "#3a4666";
-  g2.beginPath();
-  g2.moveTo(0, 210);
   const far = [
     [70, 140],
     [150, 205],
@@ -782,13 +848,31 @@ function buildOutside() {
     [420, 150],
     [512, 208],
   ];
+  g2.fillStyle = night ? "#232c47" : "#6a7fa0";
+  g2.beginPath();
+  g2.moveTo(0, 210);
   for (const [x, y] of far) g2.lineTo(x, y);
   g2.lineTo(512, 235);
   g2.lineTo(0, 235);
   g2.fill();
-  g2.fillStyle = "#2b3550";
-  g2.beginPath();
-  g2.moveTo(0, 225);
+  if (!night) {
+    // Gorros de nieve en las cumbres
+    g2.fillStyle = "#f4f8fc";
+    for (const [x, y] of [
+      [70, 140],
+      [240, 135],
+      [420, 150],
+    ]) {
+      g2.beginPath();
+      g2.moveTo(x - 22, y + 26);
+      g2.lineTo(x, y);
+      g2.lineTo(x + 22, y + 26);
+      g2.lineTo(x + 10, y + 22);
+      g2.lineTo(x, y + 28);
+      g2.lineTo(x - 10, y + 22);
+      g2.fill();
+    }
+  }
   const near = [
     [110, 175],
     [210, 228],
@@ -796,12 +880,15 @@ function buildOutside() {
     [430, 228],
     [512, 195],
   ];
+  g2.fillStyle = night ? "#1a2338" : "#4a6b4f";
+  g2.beginPath();
+  g2.moveTo(0, 225);
   for (const [x, y] of near) g2.lineTo(x, y);
   g2.lineTo(512, 250);
   g2.lineTo(0, 250);
   g2.fill();
   // Pinos
-  g2.fillStyle = "#1d2637";
+  g2.fillStyle = night ? "#121a2c" : "#2d4a33";
   for (let i = 0; i < 16; i++) {
     const x = 12 + i * 32 + ((i * 37) % 12);
     const h = 26 + ((i * 53) % 18);
@@ -813,33 +900,40 @@ function buildOutside() {
     g2.fillRect(x - 1.5, 232, 3, 7);
   }
   // Campo nevado + brillos
-  g2.fillStyle = "#dfe8f2";
+  g2.fillStyle = night ? "#a9bedd" : "#e8f0f8";
   g2.fillRect(0, 236, 512, 52);
-  g2.fillStyle = "rgba(255,255,255,0.9)";
+  g2.fillStyle = night ? "rgba(220,232,255,0.8)" : "rgba(255,255,255,0.9)";
   for (let i = 0; i < 60; i++) {
     g2.fillRect((i * 41 + 7) % 512, 240 + ((i * 29) % 44), 2, 2);
   }
-  const tex = new THREE.CanvasTexture(c);
-  tex.colorSpace = THREE.SRGBColorSpace;
+  outsideTex.needsUpdate = true;
+  if (snowGroundMat) snowGroundMat.color.setHex(night ? 0x8ea6c8 : 0xcfdce8);
+  if (driftMat) driftMat.color.setHex(night ? 0x9db2d2 : 0xe4edf5);
+}
+function buildOutside() {
+  outsideCanvas = document.createElement("canvas");
+  outsideCanvas.width = 512;
+  outsideCanvas.height = 288;
+  outsideTex = new THREE.CanvasTexture(outsideCanvas);
+  outsideTex.colorSpace = THREE.SRGBColorSpace;
+  drawOutside("day");
   const pano = new THREE.Mesh(
     new THREE.PlaneGeometry(9, 5),
-    new THREE.MeshBasicMaterial({ map: tex, fog: false }),
+    new THREE.MeshBasicMaterial({ map: outsideTex, fog: false }),
   );
   pano.position.set(-1.2, 1.9, -7.4);
   scene.add(pano);
-  const snow = new THREE.Mesh(
-    new THREE.PlaneGeometry(12, 4.4),
-    new THREE.MeshStandardMaterial({ color: 0xcfdce8, roughness: 1 }),
-  );
+  snowGroundMat = new THREE.MeshStandardMaterial({
+    color: 0xcfdce8,
+    roughness: 1,
+  });
+  const snow = new THREE.Mesh(new THREE.PlaneGeometry(12, 4.4), snowGroundMat);
   snow.rotation.x = -Math.PI / 2;
   snow.position.set(-1, 0.005, -5.3);
   snow.receiveShadow = true;
   scene.add(snow);
   // Dunas
-  const driftMat = new THREE.MeshStandardMaterial({
-    color: 0xe4edf5,
-    roughness: 1,
-  });
+  driftMat = new THREE.MeshStandardMaterial({ color: 0xe4edf5, roughness: 1 });
   for (const [x, z, s] of [
     [-2.8, -5.6, 0.7],
     [0.4, -6.0, 0.9],
@@ -850,8 +944,12 @@ function buildOutside() {
     d.position.set(x, 0, z);
     scene.add(d);
   }
+  // Haz de luna: entra por el ventanal solo de noche
+  moonShaft = new THREE.SpotLight(0x9db8ff, 0, 14, 0.5, 0.65, 1.6);
+  moonShaft.position.set(-1.7, 2.4, -5.2);
+  moonShaft.target.position.set(0.6, 0, 1.2);
+  scene.add(moonShaft, moonShaft.target);
 }
-
 /* Nieve cayendo entre el paisaje y el vidrio */
 function buildSnow() {
   const n = 380;
@@ -1053,6 +1151,7 @@ function buildArmchair() {
     pz: -1.12,
     yaw: -2.59,
     h: 1.1,
+    stand: { px: -1.98, pz: -0.3 },
   });
   add(new THREE.BoxGeometry(0.68, 0.6, 0.16), rust, 0, 0.66, -0.26, -0.1);
   add(new THREE.BoxGeometry(0.5, 0.4, 0.1), cream, 0, 0.62, -0.16, -0.1);
@@ -1130,6 +1229,7 @@ function buildSofa() {
       pz: -0.3 - s,
       yaw: Math.PI / 2,
       h: 1.2,
+      stand: { px: 2.25, pz: -0.3 - s },
     });
     add(new THREE.BoxGeometry(0.94, 0.44, 0.16), cream, s, 0.72, 0.28, -0.12);
   }
@@ -1836,14 +1936,21 @@ function buildCat() {
     cat.add(leg);
     catLegs.push(leg);
   }
-  catTail = new THREE.Mesh(
-    new THREE.TorusGeometry(0.11, 0.032, 8, 14, Math.PI * 0.75),
+  // Cola recta inclinada con punta: se lee bien desde todos los ángulos
+  // (el rizo toroidal se veía como aleta flotante desde atrás)
+  catTail = new THREE.Group();
+  catTail.position.set(-0.2, 0.28, 0);
+  catTail.rotation.z = 0.5;
+  const tailMesh = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.02, 0.032, 0.3, 8),
     fur,
   );
-  // Rizo vertical: nace abajo-atrás y se enrosca hacia arriba
-  catTail.position.set(-0.21, 0.36, 0);
-  catTail.rotation.z = -Math.PI / 2;
-  catTail.castShadow = true;
+  tailMesh.position.y = 0.13;
+  tailMesh.castShadow = true;
+  catTail.add(tailMesh);
+  const tailTip = new THREE.Mesh(new THREE.SphereGeometry(0.021, 8, 8), fur);
+  tailTip.position.y = 0.28;
+  catTail.add(tailTip);
   cat.add(catTail);
   cat.position.set(catState.x, 0, catState.z);
   scene.add(cat);
@@ -1855,6 +1962,52 @@ function pickCatTarget() {
   catState.tx = p.x;
   catState.tz = p.z;
   catState.pause = 1 + Math.random() * 3;
+}
+// Pasos suaves: golpe sordo sintetizado, sin assets
+function footstep() {
+  try {
+    const ctx = audioListener.context;
+    if (ctx.state !== "running") return;
+    const t0 = ctx.currentTime;
+    const o = ctx.createOscillator();
+    o.type = "triangle";
+    o.frequency.setValueAtTime(95, t0);
+    o.frequency.exponentialRampToValueAtTime(48, t0 + 0.09);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(0.1, t0 + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.11);
+    o.connect(g);
+    g.connect(audioListener.getInput());
+    o.start(t0);
+    o.stop(t0 + 0.13);
+  } catch (e) {
+    /* pasos silenciosos */
+  }
+}
+// Toc-toc en la puerta falsa
+function knock() {
+  try {
+    const ctx = audioListener.context;
+    if (ctx.state === "suspended") ctx.resume();
+    [0, 0.18].forEach((dl) => {
+      const t0 = ctx.currentTime + dl;
+      const o = ctx.createOscillator();
+      o.type = "sine";
+      o.frequency.setValueAtTime(170, t0);
+      o.frequency.exponentialRampToValueAtTime(90, t0 + 0.09);
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.3, t0 + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.12);
+      o.connect(g);
+      g.connect(audioListener.getInput());
+      o.start(t0);
+      o.stop(t0 + 0.14);
+    });
+  } catch (e) {
+    /* puerta muda */
+  }
 }
 function petCat() {
   meow();
@@ -2149,6 +2302,7 @@ function buildGarland() {
     halo.scale.set(0.16, 0.16, 1);
     halo.position.copy(bulb.position);
     scene.add(halo);
+    garlandHalos.push(halo.material);
   }
 }
 
@@ -2245,6 +2399,7 @@ function buildBeams() {
   const glow = new THREE.PointLight(0xffd9a0, 4, 6.5, 2);
   glow.position.set(0, 2.37, 0.9);
   scene.add(glow);
+  lanternGlow = glow;
 }
 
 /* Cortinas con caída ondulada a los lados del ventanal */
@@ -2283,7 +2438,30 @@ function buildCurtains() {
     drape.castShadow = true;
     drape.receiveShadow = true;
     scene.add(drape);
+    curtains.push({
+      mesh: drape,
+      openX: cx,
+      shutX: cx < -1.7 ? -2.1 : -1.3,
+      closed: false,
+      target: cx,
+    });
+    markInteractive(drape, { id: "curtain" });
   }
+}
+function toggleCurtain(mesh) {
+  const c = curtains.find((x) => x.mesh === mesh);
+  if (!c) return;
+  c.closed = !c.closed;
+  c.target = c.closed ? c.shutX : c.openX;
+  flashTip(
+    c.closed
+      ? currentLang() === "es"
+        ? "cortinas cerradas · la pieza se enfría"
+        : "curtains closed · the room cools down"
+      : currentLang() === "es"
+        ? "cortinas abiertas · entra la tarde"
+        : "curtains open · evening comes in",
+  );
 }
 
 /* Posters: marcos con CanvasTexture nítida (estética indie, no pixel) */
@@ -2326,7 +2504,11 @@ function posterTitle(id) {
       title: "STYLE SHOWCASE",
       sub: lang === "es" ? "Catálogo vivo" : "Live catalogue",
     };
-  if (id === "contact") return { title: "CONTACTO", sub: "hablemos · links" };
+  if (id === "contact")
+    return {
+      title: lang === "es" ? "CONTACTO" : "CONTACT",
+      sub: lang === "es" ? "hablemos · links" : "links · talk",
+    };
   return { title: "RUTA DE CENIZAS", sub: "Android · Godot" };
 }
 const posterDefs = [];
@@ -2458,6 +2640,8 @@ const LABELS = {
   music: { es: "Equipo · radio", en: "Stereo · radio" },
   cat: { es: "Gato · acariciar", en: "Cat · pet" },
   sit: { es: "Sentarse", en: "Sit down" },
+  lamp: { es: "Lámpara · día/noche", en: "Lamp · day/night" },
+  curtain: { es: "Cortina · abrir/cerrar", en: "Curtain · open/close" },
 };
 const PANELS = {
   about: {
@@ -2748,8 +2932,9 @@ function setSkin(id) {
   lampLight.color.setHex(
     id === "corporativo" ? 0xffb46b : id === "ethereal" ? 0xc9b8ff : 0x7fd4ff,
   );
-  daylight.intensity = id === "glassmorphism" ? 0.35 : 1.15;
   if (screenGlow) screenGlow.color.setHex(s.accent);
+  // La base diurna la resuelve el loop (mezcla con noche + cortinas)
+  dayBase = id === "glassmorphism" ? 0.7 : 2.0;
   drawScreen();
   paintSkinButtons();
 }
@@ -2837,6 +3022,16 @@ function focusObject(mesh) {
     petCat();
     return;
   }
+  // Lámpara de pie: alterna día/noche sin foco ni panel
+  if (data.id === "lamp") {
+    toggleNight();
+    return;
+  }
+  // Cortinas: se corren sin foco ni panel
+  if (data.id === "curtain") {
+    toggleCurtain(mesh);
+    return;
+  }
   // Sentarse en sillones: la cámara se muda al asiento
   if (data.id === "sit") {
     snapshot = {
@@ -2849,6 +3044,7 @@ function focusObject(mesh) {
       h: view.tH,
     };
     focused = "sit";
+    lastSitSpot = data.stand || null;
     hero.classList.add("is-focused");
     ui.tip?.classList.remove("is-on");
     ui.reticle?.classList.remove("is-hot");
@@ -2875,6 +3071,7 @@ function focusObject(mesh) {
   }
   // Objetos de chiste (puerta): tooltip y nada más, sin foco ni panel
   if (data.id !== "monitor" && !PANELS[data.id]) {
+    if (data.id === "door") knock();
     flashTip(data.joke ? data.joke[currentLang()] || data.joke.es : "…");
     return;
   }
@@ -2932,13 +3129,26 @@ function exitFocus() {
   anchorPitch = back.pitch;
 }
 
-// Pararse del sillón SIN teletransporte: se queda donde está, de pie.
-function standUp() {
+// Pararse del sillón SIN teletransporte: tween al punto de parado.
+let standing = false;
+let lastSitSpot = null;
+function standUp(animated) {
   ui.panel.classList.remove("is-open");
   ui.screen.classList.remove("is-open");
   hero.classList.remove("is-focused");
   focused = null;
-  view.h = view.tH = CAM_H;
+  const spot = lastSitSpot || { px: view.px, pz: view.pz };
+  lastSitSpot = null;
+  if (animated) {
+    standing = true;
+    startTween({ px: spot.px, pz: spot.pz, h: CAM_H, dur: 0.9 }, () => {
+      standing = false;
+    });
+  } else {
+    view.px = view.tPx = spot.px;
+    view.pz = view.tPz = spot.pz;
+    view.h = view.tH = CAM_H;
+  }
 }
 
 /* ── Entrada / home ────────────────────────────────────────────────────
@@ -3081,30 +3291,14 @@ canvas.addEventListener("pointermove", (e) => {
     return;
   }
   if (e.pointerId !== lookId) {
-    // Hover de escritorio: resaltar cursor + mirar-libre por posición
+    // Hover de escritorio: solo resaltar cursor. Mirar sin arrastrar vive
+    // en el Pointer Lock (activación explícita con F/botón + click).
     if (!p) {
       const r = canvas.getBoundingClientRect();
       mouseNDC = {
         x: ((e.clientX - r.left) / r.width) * 2 - 1,
         y: -((e.clientY - r.top) / r.height) * 2 + 1,
       };
-      if (
-        freeLook &&
-        e.pointerType === "mouse" &&
-        lookMode &&
-        !focused &&
-        !tween &&
-        !needRelock
-      ) {
-        tween = null;
-        // Signo natural: cursor a la derecha = mirar a la derecha
-        view.tYaw = anchorYaw - mouseNDC.x * 1.1;
-        view.tPitch = THREE.MathUtils.clamp(
-          anchorPitch + mouseNDC.y * 0.45,
-          PITCH_MIN,
-          PITCH_MAX,
-        );
-      }
     }
     return;
   }
@@ -3116,9 +3310,9 @@ canvas.addEventListener("pointermove", (e) => {
         dy = e.clientY - dragLast.y;
       dragLast = { x: e.clientX, y: e.clientY };
       if (Math.abs(dx) + Math.abs(dy) > 1) {
-        if (focused === "sit") standUp();
+        if (focused === "sit") standUp(true);
         else if (focused) exitFocus();
-        tween = null;
+        if (!standing) tween = null;
         view.tYaw -= dx * 0.0032;
         // Natural en todas partes: arrastrar arriba = mirar arriba
         view.tPitch = THREE.MathUtils.clamp(
@@ -3289,14 +3483,15 @@ window.addEventListener("keydown", (e) => {
     const c = pickAt(0, 0);
     if (c) focusObject(c);
   } else if (e.key === "e" || e.key === "E") {
-    // E = usar lo apuntado; sentado = pararse
-    if (focused === "sit") standUp();
+    // E = usar lo apuntado; sentado = pararse con animación
+    if (focused === "sit") standUp(true);
     else if (!focused) {
       const c = pickAt(0, 0);
       if (c) focusObject(c);
     }
   } else if (e.key === "Escape") {
-    if (
+    if (focused === "sit") standUp(true);
+    else if (
       focused ||
       ui.panel.classList.contains("is-open") ||
       ui.screen.classList.contains("is-open")
@@ -3400,8 +3595,9 @@ function animate() {
     }
     const len = Math.hypot(mx, mz);
     if (len > 0.05) {
-      // Sentado + caminar = pararse en el sitio (sin teletransporte)
-      if (focused === "sit") standUp();
+      // Sentado + caminar = pararse con animación y seguir (la tecla sigue
+      // apretada, así que al terminar el tween se camina sin corte)
+      if (focused === "sit") standUp(true);
       else if (focused) exitFocus();
       const run =
         keysDown.has("ShiftLeft") || keysDown.has("ShiftRight") ? 2.7 : 1.6;
@@ -3416,8 +3612,13 @@ function animate() {
       view.px = view.tPx = p.x;
       view.pz = view.tPz = p.z;
       if (!REDUCED) {
+        const prevBob = bobPhase;
         bobPhase += dt * (run > 2 ? 11 : 8);
         bobAmp += (0.025 - bobAmp) * Math.min(dt * 6, 1);
+        // Un paso por cada medio ciclo de balanceo
+        if (Math.floor(bobPhase / Math.PI) !== Math.floor(prevBob / Math.PI)) {
+          footstep();
+        }
       }
     } else {
       bobAmp += (0 - bobAmp) * Math.min(dt * 6, 1);
@@ -3469,6 +3670,26 @@ function animate() {
     updateCat(dt, t);
   }
   updateSteam(dt);
+  // Mezcla día/noche + cortinas deslizándose
+  nightMix += THREE.MathUtils.clamp(
+    nightTarget - nightMix,
+    -dt * 0.7,
+    dt * 0.7,
+  );
+  const shutDim =
+    curtains.length > 0 && curtains.every((c) => c.closed) ? 0.55 : 1;
+  daylight.intensity = (dayBase * (1 - nightMix) + 0.14 * nightMix) * shutDim;
+  daylight.color.lerpColors(dayCol, nightCol, nightMix);
+  if (hemi) hemi.intensity = 0.95 * (1 - nightMix) + 0.16 * nightMix;
+  lampLight.intensity = 3.2 * (1 - nightMix) + 13 * nightMix;
+  if (lanternGlow) lanternGlow.intensity = 4 * (1 - nightMix) + 7 * nightMix;
+  if (moonShaft) moonShaft.intensity = 5.5 * nightMix;
+  renderer.toneMappingExposure = 1.12 * (1 - nightMix) + 1.0 * nightMix;
+  for (const m of garlandHalos)
+    m.opacity = 0.55 * (1 - nightMix) + 0.9 * nightMix;
+  for (const c of curtains) {
+    c.mesh.position.x += (c.target - c.mesh.position.x) * Math.min(dt * 3, 1);
+  }
   clockTick += dt;
   if (clockTick > 30) {
     clockTick = 0;
