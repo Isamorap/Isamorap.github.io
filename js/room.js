@@ -128,13 +128,14 @@ let freeLook = false;
 let anchorYaw = 0,
   anchorPitch = -0.04;
 try {
-  // Opt-in explícito: sin esto, el hover previo al lock mueve la vista
-  // lento y distinto, y confunde. Solo se recuerda un encendido previo.
-  freeLook = localStorage.getItem("room-freelook") === "1";
-  if (localStorage.getItem("room-freelook") === null) {
+  // Por defecto el mouse mira la cámara (1:1). Se recuerda la elección previa.
+  const stored = localStorage.getItem("room-freelook");
+  freeLook = stored === null ? true : stored === "1";
+  if (stored === null) {
     document.body.classList.add("room-new");
   }
 } catch (e) {
+  freeLook = true;
   /* sin storage no hay memoria */
 }
 function toggleFreeLook() {
@@ -3159,6 +3160,7 @@ function enterLook() {
   lookMode = true;
   hero.classList.add("room-look");
   canvas.style.touchAction = "none";
+  canvas.style.cursor = "none"; // el mouse mueve la cámara directamente
   lazyLoadSkins();
 }
 function goHome() {
@@ -3291,9 +3293,20 @@ canvas.addEventListener("pointermove", (e) => {
     return;
   }
   if (e.pointerId !== lookId) {
-    // Hover de escritorio: solo resaltar cursor. Mirar sin arrastrar vive
-    // en el Pointer Lock (activación explícita con F/botón + click).
-    if (!p) {
+    // Mouse suelto sobre el canvas: girar directamente con el movimiento
+    // del mouse (1:1). El pointer lock (click) da movimiento ilimitado y
+    // oculta el cursor; sin lock sigue respondiendo al movimiento del ratón.
+    if (!p && document.pointerLockElement !== canvas) {
+      if (Math.abs(e.movementX) + Math.abs(e.movementY) > 0) {
+        view.tYaw -= e.movementX * 0.003;
+        view.tPitch = THREE.MathUtils.clamp(
+          view.tPitch - e.movementY * 0.003,
+          PITCH_MIN,
+          PITCH_MAX,
+        );
+        anchorYaw = view.tYaw;
+        anchorPitch = view.tPitch;
+      }
       const r = canvas.getBoundingClientRect();
       mouseNDC = {
         x: ((e.clientX - r.left) / r.width) * 2 - 1,
@@ -3578,11 +3591,12 @@ function animate() {
       d?.();
     }
   } else {
-    const s = REDUCED ? 1 : 1 - Math.exp(-dt * 9);
-    view.yaw += (view.tYaw - view.yaw) * s;
-    view.pitch += (view.tPitch - view.pitch) * s;
-    view.dolly += (view.tDolly - view.dolly) * s;
-    view.fov += (view.tFov - view.fov) * s;
+    // Mirar 1:1 directo: la cámara sigue al mouse sin suavizado ni retraso.
+    // (dolly y fov sí conservan su suavizado para que no se vean bruscos).
+    view.yaw = view.tYaw;
+    view.pitch = view.tPitch;
+    view.dolly += (view.tDolly - view.dolly) * (REDUCED ? 1 : 1 - Math.exp(-dt * 9));
+    view.fov += (view.tFov - view.fov) * (REDUCED ? 1 : 1 - Math.exp(-dt * 9));
   }
   // Caminar (WASD / joystick). Pausado durante travellings; si caminas con
   // foco abierto, el foco se suelta (igual que al arrastrar).
