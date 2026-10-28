@@ -5,7 +5,6 @@ const hero = document.getElementById("home");
 // Modo ambiente (index): la habitación de fondo, viva pero sin interacción.
 const AMBIENT = document.body.dataset.roomMode === "ambient";
 const ui = {
-  reticle: document.getElementById("room-reticle"),
   tip: document.getElementById("room-tip"),
   hint: document.getElementById("room-hint"),
   exit: document.getElementById("room-exit"),
@@ -57,6 +56,7 @@ const view = {
   tH: CAM_H,
 };
 let lookMode = false;
+let immersive = false; // modo juego: cursor oculto, crosshair, UI oculta
 let focused = null; // id del objeto enfocado
 let snapshot = null; // vista previa al foco para volver
 let tween = null; // {from, to, t, dur, done}
@@ -165,7 +165,6 @@ document.getElementById("freelook-toggle")?.classList.toggle("is-on", freeLook);
 
 // Pointer Lock: el cursor queda centrado y oculto, el mouse rota la vista
 // (derecha = derecha, como un FPS) y el click sigue interactuando.
-let lockClick = false;
 let needRelock = false;
 function lockPointer() {
   if (document.pointerLockElement === canvas) return;
@@ -3048,7 +3047,6 @@ function focusObject(mesh) {
     lastSitSpot = data.stand || null;
     hero.classList.add("is-focused");
     ui.tip?.classList.remove("is-on");
-    ui.reticle?.classList.remove("is-hot");
     startTween(
       {
         yaw: data.yaw,
@@ -3092,7 +3090,6 @@ function focusObject(mesh) {
   focused = data.id;
   hero.classList.add("is-focused");
   ui.tip?.classList.remove("is-on");
-  ui.reticle?.classList.remove("is-hot");
   // Se abre UI (panel/overlay): soltar el cursor para clickearla. Como
   // `focused` ya quedó marcado, el pointerlockchange sabe que fue intencional.
   unlockPointer();
@@ -3111,9 +3108,8 @@ function exitFocus() {
   ui.panel.classList.remove("is-open");
   ui.screen.classList.remove("is-open");
   hero.classList.remove("is-focused");
-  // Cerrar panel con click/tecla ES gesto: re-encerrar de inmediato para
-  // seguir mirando sin fricción (si falla por cooldown, queda el hover).
-  if (freeLook) lockPointer();
+  // Al abrir/cerrar un panel soltamos el cursor para usar la UI.
+  unlockPointer();
   if (!focused) return;
   const back = snapshot || {
     yaw: 0,
@@ -3128,6 +3124,8 @@ function exitFocus() {
   startTween({ ...back, dur: 0.8 });
   anchorYaw = back.yaw;
   anchorPitch = back.pitch;
+  // Si estamos inmersivos, al terminar el viaje volvemos a encerrar el cursor.
+  if (immersive) lockPointer();
 }
 
 // Pararse del sillón SIN teletransporte: tween al punto de parado.
@@ -3158,10 +3156,18 @@ function standUp(animated) {
 function enterLook() {
   if (lookMode) return;
   lookMode = true;
-  hero.classList.add("room-look");
+  immersive = true;
+  hero.classList.add("room-look", "immersive");
+  document.body.classList.add("immersive");
   canvas.style.touchAction = "none";
-  canvas.style.cursor = "none"; // el mouse mueve la cámara directamente
   lazyLoadSkins();
+  lockPointer();
+}
+function exitImmersive() {
+  immersive = false;
+  hero.classList.remove("immersive");
+  document.body.classList.remove("immersive");
+  unlockPointer();
 }
 function goHome() {
   exitFocus();
@@ -3221,6 +3227,8 @@ function stickHide() {
 
 canvas.addEventListener("pointerdown", (e) => {
   if (!lookMode) return;
+  // Si hay un panel abierto, el click pertenece a la UI, no a la cámara.
+  if (focused) return;
   const leftZone =
     e.pointerType !== "mouse" && e.clientX < window.innerWidth * 0.45;
   pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -3241,20 +3249,21 @@ canvas.addEventListener("pointerdown", (e) => {
     lookId = e.pointerId;
     dragLast = { x: e.clientX, y: e.clientY };
     downInfo = { x: e.clientX, y: e.clientY, t: performance.now() };
-    // En mirar-libre sin lock, el click re-centra el mouse (lock) en vez de
-    // activar de inmediato: ese tap solo encierra el cursor, no dispara.
+    // Si estamos inmersivos y no hay pointer lock, al hacer clic volvemos a
+    // encerrar el cursor para seguir mirando.
     if (
-      freeLook &&
+      immersive &&
       e.pointerType === "mouse" &&
       document.pointerLockElement !== canvas
     ) {
-      lockClick = true;
       lockPointer();
     }
   }
 });
 canvas.addEventListener("pointermove", (e) => {
   if (!lookMode) return;
+  // Si hay un panel abierto, la cámara se detiene: el mouse va a la UI.
+  if (focused) return;
   // Pointer Lock: cursor centrado, derecha = derecha, click = usar
   if (document.pointerLockElement === canvas) {
     if (
@@ -3292,29 +3301,8 @@ canvas.addEventListener("pointermove", (e) => {
     }
     return;
   }
-  if (e.pointerId !== lookId) {
-    // Mouse suelto sobre el canvas: girar directamente con el movimiento
-    // del mouse (1:1). El pointer lock (click) da movimiento ilimitado y
-    // oculta el cursor; sin lock sigue respondiendo al movimiento del ratón.
-    if (!p && document.pointerLockElement !== canvas) {
-      if (Math.abs(e.movementX) + Math.abs(e.movementY) > 0) {
-        view.tYaw -= e.movementX * 0.003;
-        view.tPitch = THREE.MathUtils.clamp(
-          view.tPitch - e.movementY * 0.003,
-          PITCH_MIN,
-          PITCH_MAX,
-        );
-        anchorYaw = view.tYaw;
-        anchorPitch = view.tPitch;
-      }
-      const r = canvas.getBoundingClientRect();
-      mouseNDC = {
-        x: ((e.clientX - r.left) / r.width) * 2 - 1,
-        y: -((e.clientY - r.top) / r.height) * 2 + 1,
-      };
-    }
-    return;
-  }
+  // Fuera de pointer lock el mouse no mueve la cámara: solo la UI.
+  if (e.pointerId !== lookId) return;
   if (p) {
     p.x = e.clientX;
     p.y = e.clientY;
@@ -3349,16 +3337,15 @@ function endPointer(e) {
     stickHide();
     return;
   }
+  // Si hay un panel abierto, el click ya fue consumido por la UI.
+  if (focused) return;
   if (e.pointerId !== lookId) return;
   const wasDown = downInfo;
   lookId = null;
   if (wasDown) {
     const moved = Math.hypot(e.clientX - wasDown.x, e.clientY - wasDown.y);
     const dt = performance.now() - wasDown.t;
-    // El click que encierra el cursor no activa nada (solo centra el mouse)
-    if (lockClick) {
-      lockClick = false;
-    } else if (moved < 8 && dt < 450) {
+    if (moved < 8 && dt < 450) {
       handleTap(e.clientX, e.clientY);
     }
   }
@@ -3369,15 +3356,11 @@ canvas.addEventListener("pointerup", endPointer);
 canvas.addEventListener("pointercancel", endPointer);
 
 function handleTap(px, py) {
-  // En lock el cursor está congelado: se apunta con la retícula (centro).
+  // En lock el cursor está congelado: se apunta con el centro de la pantalla.
   if (document.pointerLockElement === canvas) {
     const center = pickAt(0, 0);
     if (center) {
       focusObject(center);
-      return;
-    }
-    if (focused) {
-      exitFocus();
       return;
     }
     return;
@@ -3390,12 +3373,7 @@ function handleTap(px, py) {
     focusObject(hit);
     return;
   }
-  if (focused) {
-    exitFocus();
-    return;
-  }
-  const center = pickAt(0, 0);
-  if (center) focusObject(center);
+  // Click en el vacío: no enfocar nada, solo seguir mirando.
 }
 
 // Rueda = inclinarse (en modo look el scroll de página está bloqueado)
@@ -3510,7 +3488,11 @@ window.addEventListener("keydown", (e) => {
       ui.screen.classList.contains("is-open")
     )
       exitFocus();
-    else goHome();
+    else if (immersive) {
+      exitImmersive();
+    } else {
+      goHome();
+    }
   }
   // Las flechas también mueven el ancla del mirar-libre
   anchorYaw = view.tYaw;
@@ -3649,7 +3631,6 @@ function animate() {
     hoverCheck = 0;
     const hit = pickAt(0, 0);
     centerId = hit?.userData.room.id ?? null;
-    ui.reticle?.classList.toggle("is-hot", !!centerId);
     if (Date.now() > flashUntil) {
       if (centerId && LABELS[centerId]) {
         ui.tip.textContent = LABELS[centerId][currentLang()];

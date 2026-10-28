@@ -42,27 +42,7 @@ body:not(.room-dead) {
 
 /* Retícula central: solo visible en modo look */
 .room-reticle {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 10px;
-    height: 10px;
-    margin: -5px 0 0 -5px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.85);
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.15s ease, background 0.15s ease;
-}
-
-.hero.room-look .room-reticle {
-    opacity: 0.9;
-}
-
-.room-reticle.is-hot {
-    transform: scale(1.6);
-    background: var(--primary-color);
-    border-color: var(--primary-color);
+    display: none;
 }
 
 /* Tooltip del objeto apuntado */
@@ -978,4 +958,44 @@ body.room-dead .room-clock {
 .room-skinbar button:not(.is-on):hover {
     border-color: var(--glass-border);
     color: var(--primary-color);
+}
+
+/* Puntero de mira (crosshair): solo visible en modo inmersivo */
+#crosshair {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 24px;
+    height: 24px;
+    margin: -12px 0 0 -12px;
+    pointer-events: none;
+    z-index: 25;
+    display: none;
+}
+#crosshair::before,
+#crosshair::after {
+    content: "";
+    position: absolute;
+    background: rgba(255, 255, 255, 0.75);
+}
+#crosshair::before {
+    left: 50%;
+    top: 0;
+    width: 2px;
+    height: 100%;
+}
+#crosshair::after {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+}
+
+/* Modo inmersivo: se oculta todo el menú/UI, solo queda la escena + crosshair */
+.hero.immersive #room-menu,
+.hero.immersive #room-ui {
+    display: none !important;
+}
+.hero.immersive #crosshair {
+    display: block;
 }
